@@ -1,0 +1,4 @@
+@font-face {
+  font-family: 'px_sans_nouveaux';
+  src: local('px_sans_nouveaux'), url(./fonts/px_sans_nouveaux.ttf) format('woff');
+}
