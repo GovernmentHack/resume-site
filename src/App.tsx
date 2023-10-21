@@ -13,15 +13,20 @@ const DesktopBackground = styled.div`
   margin: -8px;
 `
 
+function generateIcons(count: number) {
+  const iconArray = [];
+  for (let key = 0; key<count; key++) {
+    iconArray.push(<DesktopIcon icon="directory_closed_cool-0.png" initialLocation={{x: 8, y: (key*56)+8}} key={key}/>);
+  }
+  return iconArray;
+}
+
 function App() {
   return (
     <DndProvider backend={HTML5Backend} key={1}>
       <DesktopBackground>
         <Desktop>
-          <DesktopIcon icon="directory_closed_cool-0.png"/>
-          <DesktopIcon icon="directory_closed_cool-0.png"/>
-          <DesktopIcon icon="directory_closed_cool-0.png"/>
-          <DesktopIcon icon="directory_closed_cool-0.png"/>
+          {generateIcons(4)}
         </Desktop>
         <StartBar/>
       </DesktopBackground>

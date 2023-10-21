@@ -17,10 +17,10 @@ const Desktop: React.FunctionComponent<{ children: ReactNode }> = ({children}) =
       dropLocation: monitor.getClientOffset(),
     }),
     hover: (item, monitor) => {
-      console.log(monitor.canDrop());
+      // console.log(monitor.canDrop());
     },
     drop: (item, monitor) => {
-      const endLocation = monitor.getInitialSourceClientOffset();
+      const endLocation = monitor.getSourceClientOffset();
       return endLocation;
     },
   }));
