@@ -34,6 +34,10 @@ const ContextMenuButton = styled.div`
   letter-spacing: -.025em;
   text-rendering: optimizeLegibility;
   height: 14px;
+  &:hover {
+    background-color: teal;
+    color: white;
+  }
   `
 
 const NewFolderButtonIcon = styled.div`
@@ -63,6 +67,8 @@ function getModalStyle(location: {x: number, y: number}): Modal.Styles {
     },
     overlay: {
       backgroundColor: "unset",
+      width: "98px",
+      bottom: "auto",
     }
   }
 };
@@ -100,6 +106,9 @@ const handleClick: ({setDesktopContextMenuIsOpen, setFiles, setDesktopContextMen
         setDesktopContextMenuIsOpen(true);
         event.preventDefault();
         event.stopPropagation();
+      }
+      else {
+        setDesktopContextMenuIsOpen(false);
       }
     }
 };
@@ -141,7 +150,10 @@ const Desktop: React.FunctionComponent = () => {
         <ContextMenuButton
           onMouseEnter={() => setDesktopNewContextMenuIsOpen(true)}
           onMouseLeave={() => setDesktopNewContextMenuIsOpen(false)}
-          style={{ backgroundColor: desktopContextNewMenuIsOpen ? "teal" : undefined, color: desktopContextNewMenuIsOpen ? "white": undefined }}
+          style={{
+            backgroundColor: desktopContextNewMenuIsOpen ? "teal" : undefined,
+            color: desktopContextNewMenuIsOpen ? "white": undefined 
+          }}
         >
           <div>Ne<u>w</u></div>
           <div>▶</div>
@@ -151,7 +163,11 @@ const Desktop: React.FunctionComponent = () => {
             style={getModalStyle({x: desktopContextMenuLocation.x+100, y: desktopContextMenuLocation.y})}
           >
             <ContextMenuButton
-              style={{justifyContent: "flex-start", paddingLeft: "2px"}}
+              style={{
+                justifyContent: "flex-start",
+                paddingLeft: "2px",
+                cursor: "default",
+              }}
               onClick={() => handleNewFolderClick(
                 {
                   setFiles,
