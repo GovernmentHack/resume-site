@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import StartBar from './StartBar';
 import Desktop from './Desktop';
 import DesktopIcon from './DesktopIcon';
-import { HTML5Backend } from 'react-dnd-html5-backend'
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { TouchBackend } from 'react-dnd-touch-backend';
 import { DndProvider, XYCoord } from 'react-dnd'
 import { DragTypes, FileIcon } from './utils/constants';
 
@@ -22,6 +23,11 @@ export type File = {
   location: XYCoord,
 };
 
+function isTouchDevice() {
+  return (('ontouchstart' in window) ||
+     (navigator.maxTouchPoints > 0));
+}
+
 function generateIcons(count: number) {
   const iconArray = [];
   for (let key = 0; key<count; key++) {
@@ -37,7 +43,7 @@ function App() {
 
   return (
     <FileContext.Provider value={{files, setFiles}}>
-      <DndProvider backend={HTML5Backend} context={window}>
+      <DndProvider backend={isTouchDevice() ? TouchBackend : HTML5Backend} context={window}>
         <DesktopBackground>
           <Desktop/>
           <StartBar/>
