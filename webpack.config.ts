@@ -1,6 +1,7 @@
 import path from "path";
 import { Configuration } from "webpack";
 import HtmlWebpackPlugin from "html-webpack-plugin";
+import CopyPlugin from "copy-webpack-plugin";
 
 const config: Configuration = {
   mode:
@@ -30,6 +31,14 @@ const config: Configuration = {
   plugins: [
     new HtmlWebpackPlugin({
       template: "./public/index.html",
+    }),
+    new CopyPlugin({
+      patterns: [
+        { from: "public/icons", to: "icons" },
+        { from: "public/favicon.ico", to: "favicon.ico" },
+        { from: "public/manifest.json", to: "manifest.json" },
+        { from: "public/robots.txt", to: "robots.txt" },
+      ],
     }),
   ],
 };
