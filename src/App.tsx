@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { createContext, useState } from 'react';
 import styled from 'styled-components';
 import StartBar from './StartBar';
 import Desktop from './Desktop';
 import DesktopIcon from './DesktopIcon';
 import { HTML5Backend } from 'react-dnd-html5-backend'
-import { DndProvider } from 'react-dnd'
+import { DndProvider, XYCoord } from 'react-dnd'
+import { DragTypes, FileIcon } from './utils/constants';
 
 const DesktopBackground = styled.div`
   background-color: teal;
@@ -13,24 +14,36 @@ const DesktopBackground = styled.div`
   margin: -8px;
 `
 
+export type File = {
+  icon: typeof FileIcon[keyof typeof FileIcon];
+  fileName: string;
+  type: typeof DragTypes[keyof typeof DragTypes];
+  fileId: string;
+  location: XYCoord,
+};
+
 function generateIcons(count: number) {
   const iconArray = [];
   for (let key = 0; key<count; key++) {
-    iconArray.push(<DesktopIcon icon="directory_closed_cool-0.png" initialLocation={{x: 8, y: (key*56)+8}} key={key}/>);
+    iconArray.push(<DesktopIcon type={DragTypes.folder} initialLocation={{x: 8, y: (key*56)+8}} fileId={key.toString()}/>);
   }
   return iconArray;
 }
 
+export const FileContext = createContext<{files: File[], setFiles: React.Dispatch<React.SetStateAction<File[]>>}>({files: [], setFiles: () => {}});
+
 function App() {
+  const [files, setFiles] = useState<File[]>([]);
+
   return (
-    <DndProvider backend={HTML5Backend} key={1}>
-      <DesktopBackground>
-        <Desktop>
-          {generateIcons(4)}
-        </Desktop>
-        <StartBar/>
-      </DesktopBackground>
-    </DndProvider>
+    <FileContext.Provider value={{files, setFiles}}>
+      <DndProvider backend={HTML5Backend} context={window}>
+        <DesktopBackground>
+          <Desktop/>
+          <StartBar/>
+        </DesktopBackground>
+      </DndProvider>
+    </FileContext.Provider>
   );
 }
 

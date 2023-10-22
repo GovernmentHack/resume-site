@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { DragSourceMonitor, XYCoord, useDrag } from 'react-dnd'
 import styled from 'styled-components';
-import { DragTypes } from './utils/constants';
+import { DragTypes, FileIcon } from './utils/constants';
 
 const DRAG_OFFSET_FIX = 17;
 
@@ -33,22 +33,25 @@ const IconText = styled.span`
 `;
 
 type DesktopIconProps = {
-  icon?: string;
+  icon?: typeof FileIcon[keyof typeof FileIcon];
   initialLocation?: XYCoord;
   fileName?: string;
-
+  fileId: string;
+  type: typeof DragTypes[keyof typeof DragTypes];
 };
 
 const DesktopIcon: React.FunctionComponent<DesktopIconProps> = (
   {
-    icon = "directory_closed_cool-0.png",
+    icon = FileIcon.closedFolder,
     initialLocation = { x: 8, y: 8 },
     fileName = "New Folder",
+    fileId,
+    type,
   }
 ) => {
   const [location, setLocation] = useState(initialLocation);
   const [{ isDragging, endLocation }, drag, dragPreview] = useDrag(() => ({
-    type: DragTypes.DesktopIcon,
+    type,
     collect: (monitor: DragSourceMonitor<unknown, unknown>) => {
       return {
         isDragging: monitor.isDragging(),
@@ -67,7 +70,7 @@ const DesktopIcon: React.FunctionComponent<DesktopIconProps> = (
   }));
 
   return (
-    <IconContainer ref={dragPreview} style={{ opacity: isDragging ? 0 : 1, left: location.x, top: location.y}}>
+    <IconContainer ref={dragPreview} style={{ opacity: isDragging ? 0 : 1, left: location.x, top: location.y}} key={fileId}>
       <IconImage ref={drag} style={{ backgroundImage: `url(icons/${icon})`}} />
       <IconText>{fileName}</IconText>
     </IconContainer>

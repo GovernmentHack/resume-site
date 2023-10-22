@@ -2,9 +2,12 @@
   "name": "resume-site",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://governmenthack.github.io/resume-site/",
   "scripts": {
     "start": "webpack-dev-server --open --mode development --hot",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -28,7 +31,9 @@
     "react": "18.2.0",
     "react-dnd": "16.0.1",
     "react-dnd-html5-backend": "16.0.1",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-modal": "3.16.1",
+    "uuid": "9.0.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "5.17.0",
@@ -37,7 +42,9 @@
     "@types/jest": "27.5.2",
     "@types/node": "16.18.59",
     "@types/react": "18.2.31",
-    "@types/react-dom": "^18.2.14",
+    "@types/react-dom": "18.2.14",
+    "@types/react-modal": "3.16.2",
+    "@types/uuid": "9.0.6",
     "css-loader": "^6.8.1",
     "eslint": "8.28.0",
     "eslint-config-prettier": "8.5.0",
