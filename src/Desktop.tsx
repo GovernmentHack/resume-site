@@ -33,7 +33,7 @@ const ContextMenuButton = styled.div`
   margin-left: 2px;
   letter-spacing: -.025em;
   text-rendering: optimizeLegibility;
-  height: 14px;
+  height: 16px;
   cursor: default;
   &:hover {
     background-color: teal;
@@ -53,7 +53,7 @@ const DisabledMenuItem = styled.div`
   margin-left: 2px;
   letter-spacing: -.025em;
   text-rendering: optimizeLegibility;
-  height: 14px;
+  height: 16px;
   color: grey;
   text-shadow: 1px 1px 2px white;
   cursor: default;
@@ -61,6 +61,14 @@ const DisabledMenuItem = styled.div`
 
 const NewFolderButtonIcon = styled.div`
   background-image: url(icons/directory_closed_cool-1.png);
+  background-repeat: no-repeat;
+  height: 18px;
+  width: 18px;
+  padding-right: 2px;
+`
+
+const NewTextDocumentIcon = styled.div`
+  background-image: url(icons/notepad_file-1.png);
   background-repeat: no-repeat;
   height: 18px;
   width: 18px;
@@ -102,13 +110,13 @@ function handleNewFolderClick(
   }) {
   closeModals();
   setFiles([...files,
-  {
-    fileId: uuidv4(),
-    icon: FileIcon.closedFolder,
-    fileName: "New Folder",
-    type: DragTypes.folder,
-    location,
-  }
+    {
+      fileId: uuidv4(),
+      icon: FileIcon.closedFolder,
+      fileName: "New Folder",
+      type: DragTypes.folder,
+      location,
+    }
   ]);
 }
 
@@ -222,6 +230,15 @@ const Desktop: React.FunctionComponent = () => {
               <div><u>F</u>older</div>
             </ContextMenuButton>
             <Divider />
+            <DisabledMenuItem
+              style={{
+                justifyContent: "flex-start",
+                paddingLeft: "2px",
+              }}
+            >
+              <NewTextDocumentIcon />
+              <div>Text Document</div>
+            </DisabledMenuItem>
           </Modal>
         </ContextMenuButton>
         <Divider />
