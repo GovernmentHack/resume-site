@@ -34,11 +34,30 @@ const ContextMenuButton = styled.div`
   letter-spacing: -.025em;
   text-rendering: optimizeLegibility;
   height: 14px;
+  cursor: default;
   &:hover {
     background-color: teal;
     color: white;
   }
-  `
+`
+
+const DisabledMenuItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  padding-right: 4px;
+  padding-left: 16px;
+  padding-bottom: 3px;
+  padding-top: 1px;
+  margin-right: 2px;
+  margin-left: 2px;
+  letter-spacing: -.025em;
+  text-rendering: optimizeLegibility;
+  height: 14px;
+  color: grey;
+  text-shadow: 1px 1px 2px white;
+  cursor: default;
+`
 
 const NewFolderButtonIcon = styled.div`
   background-image: url(icons/directory_closed_cool-1.png);
@@ -51,7 +70,7 @@ const NewFolderButtonIcon = styled.div`
 function getModalStyle(location: {x: number, y: number}): Modal.Styles {
   return {
     content: {
-      width: "98px",
+      width: "164px",
       bottom: "auto",
       top: location.y,
       left: location.x,
@@ -67,7 +86,7 @@ function getModalStyle(location: {x: number, y: number}): Modal.Styles {
     },
     overlay: {
       backgroundColor: "unset",
-      width: "98px",
+      width: "164px",
       bottom: "auto",
     }
   }
@@ -147,6 +166,25 @@ const Desktop: React.FunctionComponent = () => {
         onRequestClose={() => setDesktopContextMenuIsOpen(false)}
         style={getModalStyle(desktopContextMenuLocation)}
       >
+        <DisabledMenuItem>
+          <div><u>V</u>iew</div>
+          <div>▶</div>
+        </DisabledMenuItem>
+        <DisabledMenuItem>
+          <div>S<u>o</u>rt by</div>
+          <div>▶</div>
+        </DisabledMenuItem>
+        <ContextMenuButton>
+          <div>R<u>e</u>fresh</div>
+        </ContextMenuButton>
+        <Divider />
+        <DisabledMenuItem>
+          <div><u>P</u>aste</div>
+        </DisabledMenuItem>
+        <DisabledMenuItem>
+          <div>Paste <u>s</u>hortcut</div>
+        </DisabledMenuItem>
+        <Divider />
         <ContextMenuButton
           onMouseEnter={() => setDesktopNewContextMenuIsOpen(true)}
           onMouseLeave={() => setDesktopNewContextMenuIsOpen(false)}
@@ -160,13 +198,12 @@ const Desktop: React.FunctionComponent = () => {
           <Modal
             isOpen={desktopContextNewMenuIsOpen}
             onRequestClose={() => setDesktopNewContextMenuIsOpen(false)}
-            style={getModalStyle({x: desktopContextMenuLocation.x+100, y: desktopContextMenuLocation.y})}
+            style={getModalStyle({x: desktopContextMenuLocation.x+164, y: desktopContextMenuLocation.y+108})}
           >
             <ContextMenuButton
               style={{
                 justifyContent: "flex-start",
                 paddingLeft: "2px",
-                cursor: "default",
               }}
               onClick={() => handleNewFolderClick(
                 {
