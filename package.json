@@ -2,7 +2,7 @@
   "name": "resume-site",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://governmenthack.github.io/resume-site/",
+  "homepage": "https://governmenthack.github.io/resume-site",
   "scripts": {
     "start": "webpack-dev-server --open --mode development --hot",
     "build": "webpack --mode production",
