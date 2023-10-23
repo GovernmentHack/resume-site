@@ -120,12 +120,13 @@ function handleNewFolderClick(
         location,
         isHighlighted: false,
         textIsEditing: true,
+        isOpen: false,
       }
     ]);
     closeModals();
 }
 
-const handleDesktopClick: ({setDesktopContextMenuIsOpen, setFiles, setDesktopContextMenuLocation, files}:
+const getDesktopClickHandler: ({setDesktopContextMenuIsOpen, setFiles, setDesktopContextMenuLocation, files}:
   {
     setDesktopContextMenuIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
     setFiles: React.Dispatch<React.SetStateAction<File[]>>;
@@ -147,59 +148,6 @@ const handleDesktopClick: ({setDesktopContextMenuIsOpen, setFiles, setDesktopCon
       }
     }
 };
-
-function handleIconClick({files, setFiles, fileId}: {files: File[]; setFiles: React.Dispatch<React.SetStateAction<File[]>>, fileId: string}) {
-  const fileToChange = files.find((file) => file.fileId === fileId);
-  const otherFiles = files.filter((file) => file.fileId !== fileId);
-  if (fileToChange) {
-    setFiles([
-      ...otherFiles,
-      {
-        ...fileToChange,
-        isHighlighted: !fileToChange.isHighlighted,
-      }
-    ]);
-  }
-}
-
-function handleIconTextClick({files, setFiles, fileId}: {files: File[]; setFiles: React.Dispatch<React.SetStateAction<File[]>>, fileId: string}) {
-  const fileToChange = files.find((file) => file.fileId === fileId);
-  const otherFiles = files.filter((file) => file.fileId !== fileId);
-  if (fileToChange) {
-    if (!fileToChange.textIsEditing) {
-      setFiles([
-        ...otherFiles.map((file) => ({
-          ...file,
-          textIsEditing: false,
-        })),
-        {
-          ...fileToChange,
-          textIsEditing: !fileToChange.textIsEditing,
-        }
-      ]);
-    }
-  }
-}
-
-function getIconTextSaveHandler({files, setFiles, fileId}: {files: File[]; setFiles: React.Dispatch<React.SetStateAction<File[]>>, fileId: string}) {
-  return (newFileName: string) => {
-    const fileToChange = files.find((file) => file.fileId === fileId);
-    const otherFiles = files.filter((file) => file.fileId !== fileId);
-    if (fileToChange) {
-      if (fileToChange.textIsEditing) {
-        setFiles([
-          ...otherFiles,
-          {
-            ...fileToChange,
-            textIsEditing: false,
-            isHighlighted: false,
-            fileName: newFileName,
-          }
-        ]);
-      }
-    }
-  }
-}
 
 const Desktop: React.FunctionComponent = () => {
   const {files, setFiles} = useContext(FileContext);
@@ -237,25 +185,12 @@ const Desktop: React.FunctionComponent = () => {
   return (
     <DesktopDiv
       ref={drop}
-      onClick={handleDesktopClick({setDesktopContextMenuIsOpen, setFiles, setDesktopContextMenuLocation, files})}
-      onContextMenu={handleDesktopClick({setDesktopContextMenuIsOpen, setFiles, setDesktopContextMenuLocation, files})}
+      onClick={getDesktopClickHandler({setDesktopContextMenuIsOpen, setFiles, setDesktopContextMenuLocation, files})}
+      onContextMenu={getDesktopClickHandler({setDesktopContextMenuIsOpen, setFiles, setDesktopContextMenuLocation, files})}
     >
       {files.map((file) => 
         <DesktopIcon 
           {...file}
-          onClickHandler={
-            (event) => {
-              event.stopPropagation();
-              handleIconClick({fileId: file.fileId, files, setFiles})
-            }
-          }
-          onTextClickHandler={
-            (event) => {
-              event.stopPropagation();
-              handleIconTextClick({fileId: file.fileId, files, setFiles})
-            }
-          }
-          onTextSave={getIconTextSaveHandler({files, setFiles, fileId: file.fileId})}
           key={file.fileId}
         />)
       }

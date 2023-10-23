@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { DragSourceMonitor, XYCoord, useDrag } from 'react-dnd'
 import styled from 'styled-components';
 import { DragTypes, FileIcon } from './utils/constants';
-import { File } from './App';
+import { File, FileContext } from './App';
 
 export type FileDragItem = Pick<File, "fileId">;
 
@@ -57,11 +57,66 @@ const IconTextEditable = styled.input`
   background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='white' stroke-width='3' stroke-dasharray='1%2c 2' stroke-dashoffset='0' stroke-linecap='butt'/%3e%3c/svg%3e");
 `;
 
-type DesktopIconProps = File & {
-  onClickHandler: React.MouseEventHandler<HTMLDivElement>;
-  onTextClickHandler: React.MouseEventHandler<HTMLDivElement>;
-  onTextSave: (arg0: string) => void;
-};
+function getIconClickHandler({files, setFiles, fileId}: {files: File[]; setFiles: React.Dispatch<React.SetStateAction<File[]>>, fileId: string}): React.MouseEventHandler<HTMLDivElement> {
+  return (event) => {
+    event.stopPropagation();
+    const fileToChange = files.find((file) => file.fileId === fileId);
+    const otherFiles = files.filter((file) => file.fileId !== fileId);
+    if (fileToChange) {
+      setFiles([
+        ...otherFiles,
+        {
+          ...fileToChange,
+          isHighlighted: !fileToChange.isHighlighted,
+        }
+      ]);
+    }
+  }
+}
+
+function getIconTextClickHandler({files, setFiles, fileId}: {files: File[]; setFiles: React.Dispatch<React.SetStateAction<File[]>>, fileId: string}): React.MouseEventHandler<HTMLDivElement> {
+  return (event) => {
+    event.stopPropagation();
+    const fileToChange = files.find((file) => file.fileId === fileId);
+    const otherFiles = files.filter((file) => file.fileId !== fileId);
+    if (fileToChange) {
+      if (!fileToChange.textIsEditing) {
+        setFiles([
+          ...otherFiles.map((file) => ({
+            ...file,
+            textIsEditing: false,
+          })),
+          {
+            ...fileToChange,
+            textIsEditing: !fileToChange.textIsEditing,
+          }
+        ]);
+      }
+    }
+  }
+}
+
+function getIconTextSaveHandler({files, setFiles, fileId, newFileName}: {files: File[]; setFiles: React.Dispatch<React.SetStateAction<File[]>>, fileId: string, newFileName: string}): React.KeyboardEventHandler<HTMLInputElement> {
+  return (event) => {
+    if (event.key === "Enter") {
+      const fileToChange = files.find((file) => file.fileId === fileId);
+      const otherFiles = files.filter((file) => file.fileId !== fileId);
+      if (fileToChange && fileToChange.textIsEditing) {
+        setFiles([
+          ...otherFiles,
+          {
+            ...fileToChange,
+            textIsEditing: false,
+            isHighlighted: false,
+            fileName: newFileName,
+          }
+        ]);
+      }
+    }
+  }
+}
+
+type DesktopIconProps = File;
 
 const DesktopIcon: React.FunctionComponent<DesktopIconProps> = (
   {
@@ -72,11 +127,9 @@ const DesktopIcon: React.FunctionComponent<DesktopIconProps> = (
     type,
     isHighlighted,
     textIsEditing,
-    onClickHandler,
-    onTextClickHandler,
-    onTextSave,
   }
 ) => {
+  const {files, setFiles} = useContext(FileContext);
   const [tempFileName, setTempFileName] = useState(fileName);
   const [{ isDragging }, drag, dragPreview] = useDrag<FileDragItem, unknown, {isDragging: boolean}>(() => ({
     type,
@@ -97,7 +150,11 @@ const DesktopIcon: React.FunctionComponent<DesktopIconProps> = (
   }));
 
   return (
-    <IconContainer ref={dragPreview} style={{ opacity: isDragging ? 0 : 1, left: location.x, top: location.y}} onClick={onClickHandler}>
+    <IconContainer
+      ref={dragPreview}
+      style={{ opacity: isDragging ? 0 : 1, left: location.x, top: location.y}}
+      onClick={getIconClickHandler({fileId, files, setFiles})}
+    >
       <IconImage
         ref={drag}
         style={{
@@ -111,18 +168,14 @@ const DesktopIcon: React.FunctionComponent<DesktopIconProps> = (
           onChange={(event) => {
             setTempFileName(event.target.value);
           }}
-          onKeyUp={(event) => {
-            if (event.key === "Enter") {
-              onTextSave(tempFileName);
-            }
-          }}
+          onKeyUp={getIconTextSaveHandler({fileId, files, setFiles, newFileName: tempFileName})}
           autoFocus
         /> :
         <IconText
           style={{
             boxShadow: isHighlighted ? "inset 0 0 0 1000px rgba(1, 1, 122,.5)" : undefined,
           }}
-          onClick={onTextClickHandler}
+          onClick={getIconTextClickHandler({fileId, files, setFiles})}
         >
           {fileName}
         </IconText>
