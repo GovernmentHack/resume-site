@@ -119,7 +119,7 @@ function handleNewFolderClick(
         type: DragTypes.folder,
         location,
         isHighlighted: false,
-        textIsEditing: false,
+        textIsEditing: true,
       }
     ]);
     closeModals();
