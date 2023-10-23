@@ -290,6 +290,7 @@ const Desktop: React.FunctionComponent = () => {
             backgroundColor: desktopContextNewMenuIsOpen ? "teal" : undefined,
             color: desktopContextNewMenuIsOpen ? "white": undefined 
           }}
+          onClick={(event) => event.stopPropagation()}
         >
           <div>Ne<u>w</u></div>
           <div>▶</div>
