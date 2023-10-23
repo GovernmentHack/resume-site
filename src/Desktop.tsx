@@ -119,6 +119,7 @@ function handleNewFolderClick(
         type: DragTypes.folder,
         location,
         isHighlighted: false,
+        textIsEditing: false,
       }
     ]);
     closeModals();
@@ -141,7 +142,7 @@ const handleDesktopClick: ({setDesktopContextMenuIsOpen, setFiles, setDesktopCon
       }
       else if (event.type === "click") {
         setDesktopContextMenuIsOpen(false);
-        const unhighlightedIcons = files.map(file => ({ ...file, isHighlighted: false }));
+        const unhighlightedIcons = files.map(file => ({ ...file, isHighlighted: false, textIsEditing: false }));
         setFiles(unhighlightedIcons);
       }
     }
@@ -158,6 +159,45 @@ function handleIconClick({files, setFiles, fileId}: {files: File[]; setFiles: Re
         isHighlighted: !fileToChange.isHighlighted,
       }
     ]);
+  }
+}
+
+function handleIconTextClick({files, setFiles, fileId}: {files: File[]; setFiles: React.Dispatch<React.SetStateAction<File[]>>, fileId: string}) {
+  const fileToChange = files.find((file) => file.fileId === fileId);
+  const otherFiles = files.filter((file) => file.fileId !== fileId);
+  if (fileToChange) {
+    if (!fileToChange.textIsEditing) {
+      setFiles([
+        ...otherFiles.map((file) => ({
+          ...file,
+          textIsEditing: false,
+        })),
+        {
+          ...fileToChange,
+          textIsEditing: !fileToChange.textIsEditing,
+        }
+      ]);
+    }
+  }
+}
+
+function getIconTextSaveHandler({files, setFiles, fileId}: {files: File[]; setFiles: React.Dispatch<React.SetStateAction<File[]>>, fileId: string}) {
+  return (newFileName: string) => {
+    const fileToChange = files.find((file) => file.fileId === fileId);
+    const otherFiles = files.filter((file) => file.fileId !== fileId);
+    if (fileToChange) {
+      if (fileToChange.textIsEditing) {
+        setFiles([
+          ...otherFiles,
+          {
+            ...fileToChange,
+            textIsEditing: false,
+            isHighlighted: false,
+            fileName: newFileName,
+          }
+        ]);
+      }
+    }
   }
 }
 
@@ -200,12 +240,25 @@ const Desktop: React.FunctionComponent = () => {
       onClick={handleDesktopClick({setDesktopContextMenuIsOpen, setFiles, setDesktopContextMenuLocation, files})}
       onContextMenu={handleDesktopClick({setDesktopContextMenuIsOpen, setFiles, setDesktopContextMenuLocation, files})}
     >
-      {files.map((file) => <DesktopIcon {...file} onClickHandler={
-        (event) => {
-          event.stopPropagation();
-          handleIconClick({fileId: file.fileId, files, setFiles})}
-        }
-      />)}
+      {files.map((file) => 
+        <DesktopIcon 
+          {...file}
+          onClickHandler={
+            (event) => {
+              event.stopPropagation();
+              handleIconClick({fileId: file.fileId, files, setFiles})
+            }
+          }
+          onTextClickHandler={
+            (event) => {
+              event.stopPropagation();
+              handleIconTextClick({fileId: file.fileId, files, setFiles})
+            }
+          }
+          onTextSave={getIconTextSaveHandler({files, setFiles, fileId: file.fileId})}
+          key={file.fileId}
+        />)
+      }
       <Modal
         isOpen={desktopContextMenuIsOpen}
         onRequestClose={() => setDesktopContextMenuIsOpen(false)}

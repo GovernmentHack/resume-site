@@ -33,21 +33,51 @@ const IconText = styled.span`
   text-rendering: optimizeLegibility;
 `;
 
+/**
+ * border-style: dashed;
+  border-size: 0.5px;
+  border-color: white;
+  border-radius: 0;
+ */
+
+const IconTextEditable = styled.input`
+  width: 70px;
+  height: 14px;
+  background-color: rgba(1, 1, 122,.5);
+  outline: none;
+  border: none;
+  color: white;
+  display: block;
+  font-family: px_sans_nouveaux;
+  font-size: 8px;
+  letter-spacing: -.025em;
+  line-height: 12px;
+  text-align: center;
+  text-rendering: optimizeLegibility;
+  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='white' stroke-width='3' stroke-dasharray='1%2c 2' stroke-dashoffset='0' stroke-linecap='butt'/%3e%3c/svg%3e");
+`;
+
 type DesktopIconProps = File & {
   onClickHandler: React.MouseEventHandler<HTMLDivElement>;
+  onTextClickHandler: React.MouseEventHandler<HTMLDivElement>;
+  onTextSave: (arg0: string) => void;
 };
 
 const DesktopIcon: React.FunctionComponent<DesktopIconProps> = (
   {
-    icon = FileIcon.closedFolder,
+    icon,
     location,
-    fileName = "New Folder",
+    fileName,
     fileId,
     type,
     isHighlighted,
+    textIsEditing,
     onClickHandler,
+    onTextClickHandler,
+    onTextSave,
   }
 ) => {
+  const [tempFileName, setTempFileName] = useState(fileName);
   const [{ isDragging }, drag, dragPreview] = useDrag<FileDragItem, unknown, {isDragging: boolean}>(() => ({
     type,
     collect: (monitor: DragSourceMonitor<unknown, unknown>) => {
@@ -67,7 +97,7 @@ const DesktopIcon: React.FunctionComponent<DesktopIconProps> = (
   }));
 
   return (
-    <IconContainer ref={dragPreview} style={{ opacity: isDragging ? 0 : 1, left: location.x, top: location.y}} key={fileId} onClick={onClickHandler}>
+    <IconContainer ref={dragPreview} style={{ opacity: isDragging ? 0 : 1, left: location.x, top: location.y}} onClick={onClickHandler}>
       <IconImage
         ref={drag}
         style={{
@@ -75,11 +105,28 @@ const DesktopIcon: React.FunctionComponent<DesktopIconProps> = (
           boxShadow: isHighlighted ? "inset 0 0 0 1000px rgba(1, 1, 122,.5)" : undefined,
         }}
       />
-      <IconText
-        style={{
-          boxShadow: isHighlighted ? "inset 0 0 0 1000px rgba(1, 1, 122,.5)" : undefined,
-        }}
-      >{fileName}</IconText>
+      {textIsEditing ?
+        <IconTextEditable
+          value={tempFileName}
+          onChange={(event) => {
+            setTempFileName(event.target.value);
+          }}
+          onKeyUp={(event) => {
+            if (event.key === "Enter") {
+              onTextSave(tempFileName);
+            }
+          }}
+          autoFocus
+        /> :
+        <IconText
+          style={{
+            boxShadow: isHighlighted ? "inset 0 0 0 1000px rgba(1, 1, 122,.5)" : undefined,
+          }}
+          onClick={onTextClickHandler}
+        >
+          {fileName}
+        </IconText>
+      }
     </IconContainer>
   );
 }

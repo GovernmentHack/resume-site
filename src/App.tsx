@@ -22,6 +22,7 @@ export type File = {
   fileId: string;
   location: XYCoord,
   isHighlighted: boolean;
+  textIsEditing: boolean;
 };
 
 function isTouchDevice() {
