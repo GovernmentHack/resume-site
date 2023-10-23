@@ -3,9 +3,11 @@ import { DropTargetMonitor, XYCoord, useDrop } from 'react-dnd'
 import { DragTypes, FileIcon } from "./utils/constants";
 import styled from 'styled-components';
 import { FileContext, File } from './App';
-import DesktopIcon from './DesktopIcon';
+import DesktopIcon, { FileDragItem } from './DesktopIcon';
 import Modal from "react-modal";
 import { v4 as uuidv4 } from "uuid";
+
+const DRAG_OFFSET_FIX = 17;
 
 const DesktopDiv = styled.div`
   height: 100%;
@@ -91,6 +93,7 @@ function getModalStyle(location: {x: number, y: number}): Modal.Styles {
       padding: "0",
       fontFamily: "px_sans_nouveaux",
       fontSize: "9px",
+      zIndex: 10000,
     },
     overlay: {
       backgroundColor: "unset",
@@ -108,25 +111,27 @@ function handleNewFolderClick(
     closeModals: () => void,
     location: XYCoord,
   }) {
-  closeModals();
-  setFiles([...files,
-    {
-      fileId: uuidv4(),
-      icon: FileIcon.closedFolder,
-      fileName: "New Folder",
-      type: DragTypes.folder,
-      location,
-    }
-  ]);
+    setFiles([...files,
+      {
+        fileId: uuidv4(),
+        icon: FileIcon.closedFolder,
+        fileName: "New Folder",
+        type: DragTypes.folder,
+        location,
+        isHighlighted: false,
+      }
+    ]);
+    closeModals();
 }
 
-const handleClick: ({setDesktopContextMenuIsOpen, setFiles, setDesktopContextMenuLocation}:
+const handleDesktopClick: ({setDesktopContextMenuIsOpen, setFiles, setDesktopContextMenuLocation, files}:
   {
     setDesktopContextMenuIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
     setFiles: React.Dispatch<React.SetStateAction<File[]>>;
+    files: File[];
     setDesktopContextMenuLocation: React.Dispatch<React.SetStateAction<{x: number; y: number}>>
   }) => React.MouseEventHandler<HTMLDivElement> = 
-  ({setDesktopContextMenuIsOpen, setFiles, setDesktopContextMenuLocation}) => {
+  ({setDesktopContextMenuIsOpen, setFiles, files, setDesktopContextMenuLocation}) => {
     return (event) => {
       if (event.type === 'contextmenu') {
         setDesktopContextMenuLocation({x: event.clientX, y: event.clientY});
@@ -134,14 +139,32 @@ const handleClick: ({setDesktopContextMenuIsOpen, setFiles, setDesktopContextMen
         event.preventDefault();
         event.stopPropagation();
       }
-      else {
+      else if (event.type === "click") {
         setDesktopContextMenuIsOpen(false);
+        const unhighlightedIcons = files.map(file => ({ ...file, isHighlighted: false }));
+        setFiles(unhighlightedIcons);
       }
     }
 };
 
+function handleIconClick({files, setFiles, fileId}: {files: File[]; setFiles: React.Dispatch<React.SetStateAction<File[]>>, fileId: string}) {
+  const fileToChange = files.find((file) => file.fileId === fileId);
+  const otherFiles = files.filter((file) => file.fileId !== fileId);
+  if (fileToChange) {
+    setFiles([
+      ...otherFiles,
+      {
+        ...fileToChange,
+        isHighlighted: !fileToChange.isHighlighted,
+      }
+    ]);
+  }
+}
+
 const Desktop: React.FunctionComponent = () => {
-  const [{ canDrop, isOver, dropLocation }, drop] = useDrop(() => ({
+  const {files, setFiles} = useContext(FileContext);
+
+  const [{ canDrop, isOver, dropLocation }, drop] = useDrop<FileDragItem, unknown, {canDrop: boolean; isOver: boolean; dropLocation: XYCoord | null}>(() => ({
     accept: [DragTypes.file, DragTypes.folder],
     collect: (monitor: DropTargetMonitor<unknown, unknown>) => ({
       isOver: monitor.isOver(),
@@ -153,11 +176,20 @@ const Desktop: React.FunctionComponent = () => {
     },
     drop: (item, monitor) => {
       const endLocation = monitor.getSourceClientOffset();
-      return endLocation;
+      const fileToChange = files.find((file) => file.fileId === item.fileId);
+      const otherFiles = files.filter((file) => file.fileId !== item.fileId);
+      if (fileToChange && endLocation) {
+        setFiles([
+          ...otherFiles,
+          {
+            ...fileToChange,
+            location: {x: endLocation.x-DRAG_OFFSET_FIX, y: endLocation.y},
+          }
+        ]);
+      }
     },
-  }));
+  }), [files]);
 
-  const {files, setFiles} = useContext(FileContext);
   const [desktopContextMenuIsOpen, setDesktopContextMenuIsOpen] = React.useState(false);
   const [desktopContextNewMenuIsOpen, setDesktopNewContextMenuIsOpen] = React.useState(false);
   const [desktopContextMenuLocation, setDesktopContextMenuLocation] = React.useState({x: 0, y: 0});
@@ -165,10 +197,15 @@ const Desktop: React.FunctionComponent = () => {
   return (
     <DesktopDiv
       ref={drop}
-      onClick={handleClick({setDesktopContextMenuIsOpen, setFiles, setDesktopContextMenuLocation})}
-      onContextMenu={handleClick({setDesktopContextMenuIsOpen, setFiles, setDesktopContextMenuLocation})}
+      onClick={handleDesktopClick({setDesktopContextMenuIsOpen, setFiles, setDesktopContextMenuLocation, files})}
+      onContextMenu={handleDesktopClick({setDesktopContextMenuIsOpen, setFiles, setDesktopContextMenuLocation, files})}
     >
-      {files.map((file) => <DesktopIcon fileId={file.fileId} fileName={file.fileName} icon={file.icon} type={file.type} initialLocation={file.location}/>)}
+      {files.map((file) => <DesktopIcon {...file} onClickHandler={
+        (event) => {
+          event.stopPropagation();
+          handleIconClick({fileId: file.fileId, files, setFiles})}
+        }
+      />)}
       <Modal
         isOpen={desktopContextMenuIsOpen}
         onRequestClose={() => setDesktopContextMenuIsOpen(false)}
@@ -206,15 +243,16 @@ const Desktop: React.FunctionComponent = () => {
           <Modal
             isOpen={desktopContextNewMenuIsOpen}
             onRequestClose={() => setDesktopNewContextMenuIsOpen(false)}
-            style={getModalStyle({x: desktopContextMenuLocation.x+164, y: desktopContextMenuLocation.y+108})}
+            style={getModalStyle({x: desktopContextMenuLocation.x+164, y: desktopContextMenuLocation.y+118})}
           >
             <ContextMenuButton
               style={{
                 justifyContent: "flex-start",
                 paddingLeft: "2px",
               }}
-              onClick={() => handleNewFolderClick(
-                {
+              onClick={(event) => {
+                event.stopPropagation();
+                handleNewFolderClick({
                   setFiles,
                   files,
                   location: desktopContextMenuLocation,
@@ -222,8 +260,8 @@ const Desktop: React.FunctionComponent = () => {
                     setDesktopNewContextMenuIsOpen(false);
                     setDesktopContextMenuIsOpen(false);
                   }
-                }
-              )
+                });
+              }
             }
             >
               <NewFolderButtonIcon/>

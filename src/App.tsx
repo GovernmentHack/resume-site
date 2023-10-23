@@ -21,19 +21,12 @@ export type File = {
   type: typeof DragTypes[keyof typeof DragTypes];
   fileId: string;
   location: XYCoord,
+  isHighlighted: boolean;
 };
 
 function isTouchDevice() {
   return (('ontouchstart' in window) ||
      (navigator.maxTouchPoints > 0));
-}
-
-function generateIcons(count: number) {
-  const iconArray = [];
-  for (let key = 0; key<count; key++) {
-    iconArray.push(<DesktopIcon type={DragTypes.folder} initialLocation={{x: 8, y: (key*56)+8}} fileId={key.toString()}/>);
-  }
-  return iconArray;
 }
 
 export const FileContext = createContext<{files: File[], setFiles: React.Dispatch<React.SetStateAction<File[]>>}>({files: [], setFiles: () => {}});

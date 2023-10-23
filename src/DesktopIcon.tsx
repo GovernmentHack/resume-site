@@ -2,14 +2,15 @@ import React, { useState } from 'react';
 import { DragSourceMonitor, XYCoord, useDrag } from 'react-dnd'
 import styled from 'styled-components';
 import { DragTypes, FileIcon } from './utils/constants';
+import { File } from './App';
 
-const DRAG_OFFSET_FIX = 17;
+export type FileDragItem = Pick<File, "fileId">;
 
 const IconContainer = styled.div`
   height: 48px;
   position: absolute;
   width: 70px;
-  z-index: 99999;
+  z-index: 100;
 `;
 
 const IconImage = styled.div`
@@ -32,47 +33,53 @@ const IconText = styled.span`
   text-rendering: optimizeLegibility;
 `;
 
-type DesktopIconProps = {
-  icon?: typeof FileIcon[keyof typeof FileIcon];
-  initialLocation?: XYCoord;
-  fileName?: string;
-  fileId: string;
-  type: typeof DragTypes[keyof typeof DragTypes];
+type DesktopIconProps = File & {
+  onClickHandler: React.MouseEventHandler<HTMLDivElement>;
 };
 
 const DesktopIcon: React.FunctionComponent<DesktopIconProps> = (
   {
     icon = FileIcon.closedFolder,
-    initialLocation = { x: 8, y: 8 },
+    location,
     fileName = "New Folder",
     fileId,
     type,
+    isHighlighted,
+    onClickHandler,
   }
 ) => {
-  const [location, setLocation] = useState(initialLocation);
-  const [{ isDragging, endLocation }, drag, dragPreview] = useDrag(() => ({
+  const [{ isDragging }, drag, dragPreview] = useDrag<FileDragItem, unknown, {isDragging: boolean}>(() => ({
     type,
     collect: (monitor: DragSourceMonitor<unknown, unknown>) => {
       return {
         isDragging: monitor.isDragging(),
-        endLocation: monitor.getClientOffset(),
       }
     },
     end: (draggedItem, monitor) => {
-      const tempLocation = monitor.getDropResult() as XYCoord | null;
-      if (tempLocation) {
-        setLocation({...tempLocation, x: tempLocation.x-DRAG_OFFSET_FIX });
-      }
+      // stub
     },
     options: {
       dropEffect: "move"
+    },
+    item: {
+      fileId,
     }
   }));
 
   return (
-    <IconContainer ref={dragPreview} style={{ opacity: isDragging ? 0 : 1, left: location.x, top: location.y}} key={fileId}>
-      <IconImage ref={drag} style={{ backgroundImage: `url(icons/${icon})`}} />
-      <IconText>{fileName}</IconText>
+    <IconContainer ref={dragPreview} style={{ opacity: isDragging ? 0 : 1, left: location.x, top: location.y}} key={fileId} onClick={onClickHandler}>
+      <IconImage
+        ref={drag}
+        style={{
+          backgroundImage: `url(icons/${icon})`,
+          boxShadow: isHighlighted ? "inset 0 0 0 1000px rgba(1, 1, 122,.5)" : undefined,
+        }}
+      />
+      <IconText
+        style={{
+          boxShadow: isHighlighted ? "inset 0 0 0 1000px rgba(1, 1, 122,.5)" : undefined,
+        }}
+      >{fileName}</IconText>
     </IconContainer>
   );
 }
