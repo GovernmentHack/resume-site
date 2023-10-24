@@ -1,6 +1,12 @@
 export const DragTypes = {
   textFile: "textFile",
   folder: "folder",
+  window: "window",
+} as const;
+
+export const FileTypes = {
+  textFile: "textFile",
+  folder: "folder",
 } as const;
 
 export const FileIcon = {

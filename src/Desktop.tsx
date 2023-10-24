@@ -2,10 +2,12 @@ import React, { useContext } from "react";
 import { DropTargetMonitor, XYCoord, useDrop } from "react-dnd";
 import { DragTypes, FileIcon } from "./utils/constants";
 import styled from "styled-components";
-import { FileContext, File } from "./App";
-import DesktopIcon, { FileDragItem } from "./DesktopIcon";
+import { FileContext } from "./App";
+import DesktopIcon from "./DesktopIcon";
 import Modal from "react-modal";
 import { v4 as uuidv4 } from "uuid";
+import DesktopWindow from "./DesktopWindow";
+import { File, FileDragItem } from "./utils/types";
 
 const DRAG_OFFSET_FIX = 17;
 
@@ -125,6 +127,7 @@ function getNewFolderClickHandler({
         fileName: "New Folder",
         type: DragTypes.folder,
         location,
+        windowLocation: { x: 24, y: 24 },
         isHighlighted: false,
         textIsEditing: true,
         isOpen: false,
@@ -155,6 +158,7 @@ function getNewTextFileClickHandler({
         fileName: "New Text Document",
         type: DragTypes.textFile,
         location,
+        windowLocation: { x: 24, y: 24 },
         isHighlighted: false,
         textIsEditing: true,
         isOpen: false,
@@ -209,7 +213,7 @@ const Desktop: React.FunctionComponent = () => {
     { canDrop: boolean; isOver: boolean; dropLocation: XYCoord | null }
   >(
     () => ({
-      accept: [DragTypes.textFile, DragTypes.folder],
+      accept: [DragTypes.textFile, DragTypes.folder, DragTypes.window],
       collect: (monitor: DropTargetMonitor<unknown, unknown>) => ({
         isOver: monitor.isOver(),
         canDrop: monitor.canDrop(),
@@ -227,10 +231,19 @@ const Desktop: React.FunctionComponent = () => {
             ...otherFiles,
             {
               ...fileToChange,
-              location: {
-                x: endLocation.x - DRAG_OFFSET_FIX,
-                y: endLocation.y,
-              },
+              ...(item.type === "window"
+                ? {
+                    windowLocation: {
+                      x: endLocation.x,
+                      y: endLocation.y,
+                    },
+                  }
+                : {
+                    location: {
+                      x: endLocation.x - DRAG_OFFSET_FIX,
+                      y: endLocation.y,
+                    },
+                  }),
             },
           ]);
         }
@@ -265,6 +278,12 @@ const Desktop: React.FunctionComponent = () => {
       {files.map((file) => (
         <DesktopIcon {...file} key={file.fileId} />
       ))}
+      {files.map(
+        (file) =>
+          file.isOpen && (
+            <DesktopWindow {...file} key={`${file.fileId}-window`} />
+          ),
+      )}
       <Modal
         isOpen={desktopContextMenuIsOpen}
         onRequestClose={() => setDesktopContextMenuIsOpen(false)}

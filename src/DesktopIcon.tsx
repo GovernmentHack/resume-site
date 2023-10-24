@@ -1,9 +1,8 @@
 import React, { useContext, useState } from "react";
 import { DragSourceMonitor, useDrag } from "react-dnd";
 import styled from "styled-components";
-import { File, FileContext } from "./App";
-
-export type FileDragItem = Pick<File, "fileId">;
+import { FileContext } from "./App";
+import { File, FileDragItem } from "./utils/types";
 
 const IconContainer = styled.div`
   height: 48px;
@@ -68,6 +67,31 @@ function getIconClickHandler({
         {
           ...fileToChange,
           isHighlighted: !fileToChange.isHighlighted,
+        },
+      ]);
+    }
+  };
+}
+
+function getIconDoubleClickHandler({
+  files,
+  setFiles,
+  fileId,
+}: {
+  files: File[];
+  setFiles: React.Dispatch<React.SetStateAction<File[]>>;
+  fileId: string;
+}): React.MouseEventHandler<HTMLDivElement> {
+  return (event) => {
+    event.stopPropagation();
+    const fileToChange = files.find((file) => file.fileId === fileId);
+    const otherFiles = files.filter((file) => file.fileId !== fileId);
+    if (fileToChange) {
+      setFiles([
+        ...otherFiles,
+        {
+          ...fileToChange,
+          isOpen: true,
         },
       ]);
     }
@@ -164,6 +188,7 @@ const DesktopIcon: React.FunctionComponent<DesktopIconProps> = ({
     },
     item: {
       fileId,
+      type,
     },
   }));
 
@@ -172,6 +197,7 @@ const DesktopIcon: React.FunctionComponent<DesktopIconProps> = ({
       ref={dragPreview}
       style={{ opacity: isDragging ? 0 : 1, left: location.x, top: location.y }}
       onClick={getIconClickHandler({ fileId, files, setFiles })}
+      onDoubleClick={getIconDoubleClickHandler({ fileId, files, setFiles })}
     >
       <IconImage
         ref={drag}

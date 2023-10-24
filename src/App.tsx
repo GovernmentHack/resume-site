@@ -5,8 +5,8 @@ import Desktop from "./Desktop";
 import Modal from "react-modal";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { TouchBackend } from "react-dnd-touch-backend";
-import { DndProvider, XYCoord } from "react-dnd";
-import { DragTypes, FileIcon } from "./utils/constants";
+import { DndProvider } from "react-dnd";
+import { File } from "./utils/types";
 
 const DesktopBackground = styled.div`
   background-color: teal;
@@ -14,17 +14,6 @@ const DesktopBackground = styled.div`
   width: 100vw;
   margin: -8px;
 `;
-
-export type File = {
-  icon: (typeof FileIcon)[keyof typeof FileIcon];
-  fileName: string;
-  type: (typeof DragTypes)[keyof typeof DragTypes];
-  fileId: string;
-  location: XYCoord;
-  isHighlighted: boolean;
-  textIsEditing: boolean;
-  isOpen: boolean;
-};
 
 function isTouchDevice() {
   return "ontouchstart" in window || navigator.maxTouchPoints > 0;

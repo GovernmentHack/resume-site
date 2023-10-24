@@ -2,3 +2,7 @@
   font-family: 'px_sans_nouveaux';
   src: local('px_sans_nouveaux'), url(./fonts/px_sans_nouveaux.ttf) format('woff');
 }
+@font-face {
+  font-family: 'ms-sans-serif';
+  src: local('ms-sans-serif'), url(./fonts/ms-sans-serif-1.ttf) format('woff');
+}
