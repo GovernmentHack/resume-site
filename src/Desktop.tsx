@@ -94,6 +94,7 @@ function getModalStyle(location: { x: number; y: number }): Modal.Styles {
       fontFamily: "px_sans_nouveaux",
       fontSize: "9px",
       zIndex: 10000,
+      position: "fixed",
     },
     overlay: {
       backgroundColor: "unset",
@@ -103,7 +104,7 @@ function getModalStyle(location: { x: number; y: number }): Modal.Styles {
   };
 }
 
-function handleNewFolderClick({
+function getNewFolderClickHandler({
   setFiles,
   files,
   closeModals,
@@ -113,21 +114,54 @@ function handleNewFolderClick({
   files: File[];
   closeModals: () => void;
   location: XYCoord;
-}) {
-  setFiles([
-    ...files,
-    {
-      fileId: uuidv4(),
-      icon: FileIcon.closedFolder,
-      fileName: "New Folder",
-      type: DragTypes.folder,
-      location,
-      isHighlighted: false,
-      textIsEditing: true,
-      isOpen: false,
-    },
-  ]);
-  closeModals();
+}): React.MouseEventHandler<HTMLDivElement> {
+  return (event) => {
+    event.stopPropagation();
+    setFiles([
+      ...files,
+      {
+        fileId: uuidv4(),
+        icon: FileIcon.closedFolder,
+        fileName: "New Folder",
+        type: DragTypes.folder,
+        location,
+        isHighlighted: false,
+        textIsEditing: true,
+        isOpen: false,
+      },
+    ]);
+    closeModals();
+  };
+}
+
+function getNewTextFileClickHandler({
+  setFiles,
+  files,
+  closeModals,
+  location,
+}: {
+  setFiles: React.Dispatch<React.SetStateAction<File[]>>;
+  files: File[];
+  closeModals: () => void;
+  location: XYCoord;
+}): React.MouseEventHandler<HTMLDivElement> {
+  return (event) => {
+    event.stopPropagation();
+    setFiles([
+      ...files,
+      {
+        fileId: uuidv4(),
+        icon: FileIcon.textFile,
+        fileName: "New Text Document",
+        type: DragTypes.textFile,
+        location,
+        isHighlighted: false,
+        textIsEditing: true,
+        isOpen: false,
+      },
+    ]);
+    closeModals();
+  };
 }
 
 const getDesktopClickHandler: ({
@@ -175,7 +209,7 @@ const Desktop: React.FunctionComponent = () => {
     { canDrop: boolean; isOver: boolean; dropLocation: XYCoord | null }
   >(
     () => ({
-      accept: [DragTypes.file, DragTypes.folder],
+      accept: [DragTypes.textFile, DragTypes.folder],
       collect: (monitor: DropTargetMonitor<unknown, unknown>) => ({
         isOver: monitor.isOver(),
         canDrop: monitor.canDrop(),
@@ -291,18 +325,15 @@ const Desktop: React.FunctionComponent = () => {
                 justifyContent: "flex-start",
                 paddingLeft: "2px",
               }}
-              onClick={(event) => {
-                event.stopPropagation();
-                handleNewFolderClick({
-                  setFiles,
-                  files,
-                  location: desktopContextMenuLocation,
-                  closeModals: () => {
-                    setDesktopNewContextMenuIsOpen(false);
-                    setDesktopContextMenuIsOpen(false);
-                  },
-                });
-              }}
+              onClick={getNewFolderClickHandler({
+                setFiles,
+                files,
+                location: desktopContextMenuLocation,
+                closeModals: () => {
+                  setDesktopNewContextMenuIsOpen(false);
+                  setDesktopContextMenuIsOpen(false);
+                },
+              })}
             >
               <NewFolderButtonIcon />
               <div>
@@ -310,15 +341,24 @@ const Desktop: React.FunctionComponent = () => {
               </div>
             </ContextMenuButton>
             <Divider />
-            <DisabledMenuItem
+            <ContextMenuButton
               style={{
                 justifyContent: "flex-start",
                 paddingLeft: "2px",
               }}
+              onClick={getNewTextFileClickHandler({
+                setFiles,
+                files,
+                location: desktopContextMenuLocation,
+                closeModals: () => {
+                  setDesktopNewContextMenuIsOpen(false);
+                  setDesktopContextMenuIsOpen(false);
+                },
+              })}
             >
               <NewTextDocumentIcon />
               <div>Text Document</div>
-            </DisabledMenuItem>
+            </ContextMenuButton>
           </Modal>
         </ContextMenuButton>
         <Divider />

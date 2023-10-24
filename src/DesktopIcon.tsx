@@ -9,7 +9,7 @@ const IconContainer = styled.div`
   height: 48px;
   position: absolute;
   width: 70px;
-  z-index: 100;
+  z-index: 0;
 `;
 
 const IconImage = styled.div`
