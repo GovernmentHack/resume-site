@@ -33,6 +33,7 @@ function App() {
       <DndProvider
         backend={isTouchDevice() ? TouchBackend : HTML5Backend}
         context={window}
+        options={{ enableMouseEvents: true }}
       >
         <DesktopBackground>
           <Desktop />
