@@ -3,6 +3,7 @@ import { DragSourceMonitor, useDrag } from "react-dnd";
 import styled from "styled-components";
 import { FileContext } from "./App";
 import { File, FileDragItem } from "./utils/types";
+import { disableDragging } from "./utils/constants";
 
 const IconContainer = styled.div`
   height: 48px;
@@ -169,7 +170,7 @@ const DesktopIcon: React.FunctionComponent<DesktopIconProps> = ({
 }) => {
   const { files, setFiles } = useContext(FileContext);
   const [tempFileName, setTempFileName] = useState(fileName);
-  const [{ isDragging }, drag, dragPreview] = useDrag<
+  const [{ isDragging }, drag] = useDrag<
     FileDragItem,
     unknown,
     { isDragging: boolean }
@@ -194,13 +195,12 @@ const DesktopIcon: React.FunctionComponent<DesktopIconProps> = ({
 
   return (
     <IconContainer
-      ref={dragPreview}
+      ref={drag}
       style={{ opacity: isDragging ? 0 : 1, left: location.x, top: location.y }}
       onClick={getIconClickHandler({ fileId, files, setFiles })}
       onDoubleClick={getIconDoubleClickHandler({ fileId, files, setFiles })}
     >
       <IconImage
-        ref={drag}
         style={{
           backgroundImage: `url(icons/${icon})`,
           boxShadow: isHighlighted
@@ -230,6 +230,7 @@ const DesktopIcon: React.FunctionComponent<DesktopIconProps> = ({
               : undefined,
           }}
           onClick={getIconTextClickHandler({ fileId, files, setFiles })}
+          {...disableDragging}
         >
           {fileName}
         </IconText>
