@@ -1,66 +1,25 @@
 import React, { useContext } from "react";
 import { DropTargetMonitor, XYCoord, useDrop } from "react-dnd";
-import { DragTypes, FileIcon } from "./utils/constants";
+import {
+  DragTypes,
+  FileIcon,
+  getContextMenuModalStyle,
+} from "./utils/constants";
 import styled from "styled-components";
 import { FileContext } from "./App";
 import DesktopIcon from "./DesktopIcon";
 import Modal from "react-modal";
 import { v4 as uuidv4 } from "uuid";
-import DesktopWindow from "./DesktopWindow";
-import { File, FileDragItem } from "./utils/types";
+import TextFileDesktopWindow from "./DesktopWindow";
+import { File, FileDragItem, Folder, TextFile } from "./utils/types";
+import { DisabledMenuItem } from "./ContextMenuComponents/DisabledMenuItem";
+import { ContextMenuButton } from "./ContextMenuComponents/ContextMenuButton";
+import { ContextMenuDivider } from "./ContextMenuComponents/ContextMenuDivider";
 
 const DRAG_OFFSET_FIX = 17;
 
 const DesktopDiv = styled.div`
   height: 100%;
-`;
-
-const Divider = styled.div`
-  border-top: 1px solid #7f7f7f;
-  border-bottom: 2px solid #dfdfdf;
-  height: 0px;
-  margin-right: 2px;
-  margin-left: 2px;
-  margin-top: 3px;
-  margin-bottom: 3px;
-`;
-
-const ContextMenuButton = styled.div`
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  padding-right: 4px;
-  padding-left: 16px;
-  padding-bottom: 3px;
-  padding-top: 1px;
-  margin-right: 2px;
-  margin-left: 2px;
-  letter-spacing: -0.025em;
-  text-rendering: optimizeLegibility;
-  height: 16px;
-  cursor: default;
-  &:hover {
-    background-color: teal;
-    color: white;
-  }
-`;
-
-const DisabledMenuItem = styled.div`
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  padding-right: 4px;
-  padding-left: 16px;
-  padding-bottom: 3px;
-  padding-top: 1px;
-  margin-right: 2px;
-  margin-left: 2px;
-  letter-spacing: -0.025em;
-  text-rendering: optimizeLegibility;
-  height: 16px;
-  color: grey;
-  text-shadow: 1px 1px 2px white;
-  cursor: default;
 `;
 
 const NewFolderButtonIcon = styled.div`
@@ -80,30 +39,7 @@ const NewTextDocumentIcon = styled.div`
 `;
 
 function getModalStyle(location: { x: number; y: number }): Modal.Styles {
-  return {
-    content: {
-      width: "164px",
-      bottom: "auto",
-      top: location.y,
-      left: location.x,
-      borderLeft: "2px solid #dfdfdf",
-      borderTop: "2px solid #dfdfdf",
-      borderRight: "2px solid #7f7f7f",
-      borderBottom: "2px solid #7f7f7f",
-      backgroundColor: "silver",
-      borderRadius: 0,
-      padding: "0",
-      fontFamily: "px_sans_nouveaux",
-      fontSize: "9px",
-      zIndex: 10000,
-      position: "fixed",
-    },
-    overlay: {
-      backgroundColor: "unset",
-      width: "164px",
-      bottom: "auto",
-    },
-  };
+  return getContextMenuModalStyle(location);
 }
 
 function getNewFolderClickHandler({
@@ -131,7 +67,7 @@ function getNewFolderClickHandler({
         isHighlighted: false,
         textIsEditing: true,
         isOpen: false,
-      },
+      } as Folder,
     ]);
     closeModals();
   };
@@ -162,7 +98,9 @@ function getNewTextFileClickHandler({
         isHighlighted: false,
         textIsEditing: true,
         isOpen: false,
-      },
+        isEditable: true,
+        content: "",
+      } as TextFile,
     ]);
     closeModals();
   };
@@ -280,8 +218,9 @@ const Desktop: React.FunctionComponent = () => {
       ))}
       {files.map(
         (file) =>
-          file.isOpen && (
-            <DesktopWindow {...file} key={`${file.fileId}-window`} />
+          file.isOpen &&
+          file.type === "textFile" && (
+            <TextFileDesktopWindow {...file} key={`${file.fileId}-window`} />
           ),
       )}
       <Modal
@@ -306,7 +245,7 @@ const Desktop: React.FunctionComponent = () => {
             R<u>e</u>fresh
           </div>
         </ContextMenuButton>
-        <Divider />
+        <ContextMenuDivider />
         <DisabledMenuItem>
           <div>
             <u>P</u>aste
@@ -317,7 +256,7 @@ const Desktop: React.FunctionComponent = () => {
             Paste <u>s</u>hortcut
           </div>
         </DisabledMenuItem>
-        <Divider />
+        <ContextMenuDivider />
         <ContextMenuButton
           onMouseEnter={() => setDesktopNewContextMenuIsOpen(true)}
           onMouseLeave={() => setDesktopNewContextMenuIsOpen(false)}
@@ -359,7 +298,7 @@ const Desktop: React.FunctionComponent = () => {
                 <u>F</u>older
               </div>
             </ContextMenuButton>
-            <Divider />
+            <ContextMenuDivider />
             <ContextMenuButton
               style={{
                 justifyContent: "flex-start",
@@ -380,7 +319,7 @@ const Desktop: React.FunctionComponent = () => {
             </ContextMenuButton>
           </Modal>
         </ContextMenuButton>
-        <Divider />
+        <ContextMenuDivider />
       </Modal>
     </DesktopDiv>
   );

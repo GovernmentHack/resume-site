@@ -6,14 +6,32 @@ export type FileDragItem = {
   type: (typeof DragTypes)[keyof typeof DragTypes];
 };
 
-export type File = {
-  icon: (typeof FileIcon)[keyof typeof FileIcon];
+export type TextFile = {
   fileName: string;
-  type: (typeof FileTypes)[keyof typeof FileTypes];
   fileId: string;
   location: XYCoord;
   windowLocation: XYCoord;
   isHighlighted: boolean;
   textIsEditing: boolean;
   isOpen: boolean;
+  content: string;
+  isEditable: boolean;
+  type: typeof FileTypes.textFile;
+  icon: typeof FileIcon.textFile;
 };
+
+export type Folder = {
+  fileName: string;
+  fileId: string;
+  location: XYCoord;
+  windowLocation: XYCoord;
+  isHighlighted: boolean;
+  textIsEditing: boolean;
+  isOpen: boolean;
+  content: never;
+  isEditable: never;
+  type: typeof FileTypes.folder;
+  icon: typeof FileIcon.closedFolder;
+};
+
+export type File = TextFile | Folder;

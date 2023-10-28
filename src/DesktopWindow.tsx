@@ -1,11 +1,18 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { FileContext } from "./App";
 import styled from "styled-components";
-import { FileDragItem, File } from "./utils/types";
+import { FileDragItem, File, TextFile } from "./utils/types";
 import { DragSourceMonitor, useDrag } from "react-dnd";
-import { DragTypes, disableDragging } from "./utils/constants";
+import {
+  DragTypes,
+  disableDragging,
+  getContextMenuModalStyle,
+} from "./utils/constants";
+import Modal from "react-modal";
+import { ContextMenuButton } from "./ContextMenuComponents/ContextMenuButton";
+import { ContextMenuDivider } from "./ContextMenuComponents/ContextMenuDivider";
 
-type WindowProps = File;
+type TextFileWindowProps = TextFile;
 
 const WindowContainer = styled.div`
   padding-right: 2px;
@@ -51,22 +58,35 @@ const Toolbar = styled.div`
   flex: 0 0 auto;
 `;
 
-/** For if I ever make the toolbar enabled */
-// const ToolbarText = styled.div`
-//   flex: 0 0 auto;
-//   color: white;
-//   line-height: 12px;
-//   font-size: 12px;
-//   padding-left: 16px;
-// `;
+const ToolbarText = styled.div`
+  flex: 0 0 auto;
+  color: black;
+  line-height: 18px;
+  font-size: 12px;
+  text-align: center;
+  padding-left: 8px;
+  padding-right: 8px;
+  height: 18px;
+  border: 2px solid transparent;
+  &:hover {
+    border-right: 2px solid #dfdfdf;
+    border-bottom: 2px solid #dfdfdf;
+    border-left: 2px solid #7f7f7f;
+    border-top: 2px solid #7f7f7f;
+  }
+`;
 
 const ToolbarTextDisabled = styled.div`
   flex: 0 0 auto;
   color: white;
-  line-height: 12px;
+  line-height: 18px;
   font-size: 12px;
-  padding-left: 16px;
+  text-align: center;
+  padding-left: 8px;
+  padding-right: 8px;
+  height: 18px;
   color: grey;
+  border: 2px solid transparent;
   text-shadow: 1px 1px 2px white;
 `;
 
@@ -74,7 +94,7 @@ const ToolbarTextDisabled = styled.div`
  * Scroll bar styling mostly from from Dakedres: https://gist.github.com/Dakedres/0ccda599648833a1c2f65d3967aa131b
  * Thanks, cause, I got really frstrated getting my own scrollbar style to work 🙃
  */
-const TextBox = styled.div`
+const TextBox = styled.textarea`
   background-color: white;
   background-size: contain;
   border-right: 2px solid #ededed;
@@ -91,6 +111,9 @@ const TextBox = styled.div`
   height: 100px;
   padding: 1px;
   overflow: scroll;
+  box-shadow: none;
+  resize: none;
+  outline: none;
 
   &::-webkit-scrollbar {
     width: 16px;
@@ -230,12 +253,50 @@ function getCloseClickHandler({
   };
 }
 
-const DesktopWindow: React.FunctionComponent<WindowProps> = ({
+function getSaveFileClickHandler({
+  files,
+  setFiles,
+  fileId,
+  closeMenu,
+  newContent,
+}: {
+  files: File[];
+  setFiles: React.Dispatch<React.SetStateAction<File[]>>;
+  fileId: string;
+  closeMenu: () => void;
+  newContent: string;
+}): React.MouseEventHandler<HTMLDivElement> {
+  return (event) => {
+    event.stopPropagation();
+    closeMenu();
+    const fileToChange = files.find((file) => file.fileId === fileId);
+    const otherFiles = files.filter((file) => file.fileId !== fileId);
+    if (fileToChange) {
+      setFiles([
+        ...otherFiles,
+        {
+          ...fileToChange,
+          isOpen: false,
+          content: newContent,
+        } as TextFile,
+      ]);
+    }
+  };
+}
+
+function getModalStyle(location: { x: number; y: number }): Modal.Styles {
+  return getContextMenuModalStyle(location);
+}
+
+const TextFileDesktopWindow: React.FunctionComponent<TextFileWindowProps> = ({
   fileId,
   fileName,
   windowLocation,
+  content,
 }) => {
   const { files, setFiles } = useContext(FileContext);
+  const [fileMenuIsOpen, setFileMenuIsOpen] = useState(false);
+  const [tempTextContent, setTempTextContent] = useState(content);
   const [{ isDragging }, drag] = useDrag<
     FileDragItem,
     unknown,
@@ -263,7 +324,9 @@ const DesktopWindow: React.FunctionComponent<WindowProps> = ({
         left: windowLocation.x,
         top: windowLocation.y,
         opacity: isDragging ? 0 : 1,
+        zIndex: 0,
       }}
+      onClick={() => setFileMenuIsOpen(false)}
     >
       <WindowHeader>
         <NotepadIcon />
@@ -274,18 +337,64 @@ const DesktopWindow: React.FunctionComponent<WindowProps> = ({
         />
       </WindowHeader>
       <Toolbar {...disableDragging}>
-        <ToolbarTextDisabled>File</ToolbarTextDisabled>
+        <ToolbarText
+          onClick={(event) => {
+            setFileMenuIsOpen(true);
+            event.stopPropagation();
+          }}
+          style={
+            fileMenuIsOpen
+              ? {
+                  borderRight: "2px solid #dfdfdf",
+                  borderBottom: "2px solid #dfdfdf",
+                  borderLeft: "2px solid #7f7f7f",
+                  borderTop: "2px solid #7f7f7f",
+                }
+              : {}
+          }
+        >
+          File
+        </ToolbarText>
         <ToolbarTextDisabled>Edit</ToolbarTextDisabled>
         <ToolbarTextDisabled>Search</ToolbarTextDisabled>
         <ToolbarTextDisabled>Help</ToolbarTextDisabled>
       </Toolbar>
-      <TextBox {...disableDragging}>
-        {Array.from(Array(250).keys()).map((num) => (
-          <div key={num}>test</div>
-        ))}
-      </TextBox>
+      <TextBox
+        {...disableDragging}
+        value={tempTextContent}
+        onChange={(event) => {
+          setTempTextContent(event.target.value);
+        }}
+      />
+      <Modal
+        isOpen={fileMenuIsOpen}
+        onRequestClose={() => setFileMenuIsOpen(false)}
+        style={getModalStyle({
+          x: windowLocation.x + 8,
+          y: windowLocation.y + 52,
+        })}
+      >
+        <ContextMenuButton
+          style={{
+            justifyContent: "flex-start",
+            paddingLeft: "2px",
+          }}
+          onClick={getSaveFileClickHandler({
+            fileId,
+            files,
+            setFiles,
+            newContent: tempTextContent,
+            closeMenu: () => setFileMenuIsOpen(false),
+          })}
+        >
+          <div>
+            <u>S</u>ave
+          </div>
+        </ContextMenuButton>
+        <ContextMenuDivider />
+      </Modal>
     </WindowContainer>
   );
 };
 
-export default DesktopWindow;
+export default TextFileDesktopWindow;
