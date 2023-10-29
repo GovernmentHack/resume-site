@@ -1,9 +1,9 @@
 import React, { useContext, useState } from "react";
 import { DragSourceMonitor, useDrag } from "react-dnd";
 import styled from "styled-components";
-import { FileContext } from "./App";
-import { File, FileDragItem } from "./utils/types";
-import { disableDragging } from "./utils/constants";
+import { FileContext } from "../App";
+import { File, FileDragItem } from "../utils/types";
+import { disableDragging } from "../utils/constants";
 
 const IconContainer = styled.div`
   height: 48px;

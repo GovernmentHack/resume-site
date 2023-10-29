@@ -1,5 +1,5 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const Bar = styled.div`
   background-color: silver;
@@ -17,7 +17,7 @@ const Bar = styled.div`
   -moz-user-select: none;
   -ms-user-select: none;
   z-index: 99999;
-`
+`;
 
 const StartButton = styled.div`
   background-color: silver;
@@ -25,7 +25,11 @@ const StartButton = styled.div`
   border-left: 1px solid #fff;
   border-right: 1px solid gray;
   border-bottom: 1px solid gray;
-  box-shadow: inset 1px 1px #dfdfdf, 1px 0 #000, 0 1px #000, 1px 1px #000;
+  box-shadow:
+    inset 1px 1px #dfdfdf,
+    1px 0 #000,
+    0 1px #000,
+    1px 1px #000;
   color: #000000;
   display: inline-block;
   float: left;
@@ -35,14 +39,14 @@ const StartButton = styled.div`
   min-width: 45px;
   padding: 2px 6px 3px;
   vertical-align: middle;
-`
+`;
 
 const StartButtonIcon = styled.div`
   background-image: url(icons/start-button.png);
   background-repeat: no-repeat;
   height: 14px;
   width: 45px;
-`
+`;
 
 const StartBar: React.FunctionComponent<{}> = () => {
   return (
@@ -52,6 +56,6 @@ const StartBar: React.FunctionComponent<{}> = () => {
       </StartButton>
     </Bar>
   );
-}
+};
 
 export default StartBar;

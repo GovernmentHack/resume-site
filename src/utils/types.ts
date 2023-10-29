@@ -18,6 +18,7 @@ export type TextFile = {
   isEditable: boolean;
   type: typeof FileTypes.textFile;
   icon: typeof FileIcon.textFile;
+  directory: string | null;
 };
 
 export type Folder = {
@@ -28,10 +29,11 @@ export type Folder = {
   isHighlighted: boolean;
   textIsEditing: boolean;
   isOpen: boolean;
-  content: never;
-  isEditable: never;
+  content: null;
+  isEditable: boolean;
   type: typeof FileTypes.folder;
   icon: typeof FileIcon.closedFolder;
+  directory: string | null;
 };
 
 export type File = TextFile | Folder;

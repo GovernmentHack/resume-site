@@ -1,7 +1,7 @@
 import React, { createContext, useState } from "react";
 import styled from "styled-components";
-import StartBar from "./StartBar";
-import Desktop from "./Desktop";
+import StartBar from "./Components/StartBar";
+import Desktop from "./Components/Desktop";
 import Modal from "react-modal";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { TouchBackend } from "react-dnd-touch-backend";

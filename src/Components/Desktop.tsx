@@ -4,14 +4,14 @@ import {
   DragTypes,
   FileIcon,
   getContextMenuModalStyle,
-} from "./utils/constants";
+} from "../utils/constants";
 import styled from "styled-components";
-import { FileContext } from "./App";
+import { FileContext } from "../App";
 import DesktopIcon from "./DesktopIcon";
 import Modal from "react-modal";
 import { v4 as uuidv4 } from "uuid";
 import TextFileDesktopWindow from "./DesktopWindow";
-import { File, FileDragItem, Folder, TextFile } from "./utils/types";
+import { File, FileDragItem, Folder, TextFile } from "../utils/types";
 import { DisabledMenuItem } from "./ContextMenuComponents/DisabledMenuItem";
 import { ContextMenuButton } from "./ContextMenuComponents/ContextMenuButton";
 import { ContextMenuDivider } from "./ContextMenuComponents/ContextMenuDivider";
@@ -67,6 +67,7 @@ function getNewFolderClickHandler({
         isHighlighted: false,
         textIsEditing: true,
         isOpen: false,
+        directory: null,
       } as Folder,
     ]);
     closeModals();
@@ -100,6 +101,7 @@ function getNewTextFileClickHandler({
         isOpen: false,
         isEditable: true,
         content: "",
+        directory: null,
       } as TextFile,
     ]);
     closeModals();

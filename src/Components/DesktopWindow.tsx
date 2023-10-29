@@ -1,13 +1,13 @@
 import React, { useContext, useState } from "react";
-import { FileContext } from "./App";
+import { FileContext } from "../App";
 import styled from "styled-components";
-import { FileDragItem, File, TextFile } from "./utils/types";
+import { FileDragItem, File, TextFile } from "../utils/types";
 import { DragSourceMonitor, useDrag } from "react-dnd";
 import {
   DragTypes,
   disableDragging,
   getContextMenuModalStyle,
-} from "./utils/constants";
+} from "../utils/constants";
 import Modal from "react-modal";
 import { ContextMenuButton } from "./ContextMenuComponents/ContextMenuButton";
 import { ContextMenuDivider } from "./ContextMenuComponents/ContextMenuDivider";
