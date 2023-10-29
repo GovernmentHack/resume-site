@@ -11,6 +11,7 @@ import {
 import Modal from "react-modal";
 import { ContextMenuButton } from "./ContextMenuComponents/ContextMenuButton";
 import { ContextMenuDivider } from "./ContextMenuComponents/ContextMenuDivider";
+import { DisabledMenuItem } from "./ContextMenuComponents/DisabledMenuItem";
 
 type TextFileWindowProps = TextFile;
 
@@ -212,7 +213,7 @@ const Spacer = styled.div`
   flex: 1 0 auto;
 `;
 
-const CloseIcon = styled.div`
+const CloseIcon = styled.button`
   background-image: url(icons/close-icon.png);
   background-repeat: no-repeat;
   background-color: silver;
@@ -226,6 +227,12 @@ const CloseIcon = styled.div`
   flex: 0 0 auto;
   margin: 2px;
   padding: 6px;
+  &:active {
+    border-right: 2px solid #ededed;
+    border-bottom: 2px solid #ededed;
+    border-left: 2px solid #404040;
+    border-top: 2px solid #404040;
+  }
 `;
 
 function getCloseClickHandler({
@@ -236,7 +243,7 @@ function getCloseClickHandler({
   files: File[];
   setFiles: React.Dispatch<React.SetStateAction<File[]>>;
   fileId: string;
-}): React.MouseEventHandler<HTMLDivElement> {
+}): React.MouseEventHandler<any> {
   return (event) => {
     event.stopPropagation();
     const fileToChange = files.find((file) => file.fileId === fileId);
@@ -374,11 +381,19 @@ const TextFileDesktopWindow: React.FunctionComponent<TextFileWindowProps> = ({
           y: windowLocation.y + 52,
         })}
       >
+        <DisabledMenuItem>
+          <div>
+            <u>N</u>ew
+          </div>
+          <div>Ctrl+N</div>
+        </DisabledMenuItem>
+        <DisabledMenuItem>
+          <div>
+            <u>O</u>pen
+          </div>
+          <div>Ctrl+O</div>
+        </DisabledMenuItem>
         <ContextMenuButton
-          style={{
-            justifyContent: "flex-start",
-            paddingLeft: "2px",
-          }}
           onClick={getSaveFileClickHandler({
             fileId,
             files,
@@ -390,8 +405,22 @@ const TextFileDesktopWindow: React.FunctionComponent<TextFileWindowProps> = ({
           <div>
             <u>S</u>ave
           </div>
+          <div>Ctrl+S</div>
         </ContextMenuButton>
+        <DisabledMenuItem>
+          <div>
+            Save <u>A</u>s
+          </div>
+          <div>Ctrl+Shift+S</div>
+        </DisabledMenuItem>
         <ContextMenuDivider />
+        <ContextMenuButton
+          onClick={getCloseClickHandler({ fileId, files, setFiles })}
+        >
+          <div>
+            E<u>x</u>it
+          </div>
+        </ContextMenuButton>
       </Modal>
     </WindowContainer>
   );

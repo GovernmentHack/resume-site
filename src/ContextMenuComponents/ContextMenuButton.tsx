@@ -15,7 +15,7 @@ export const ContextMenuButton = styled.div`
   height: 16px;
   cursor: default;
   &:hover {
-    background-color: teal;
+    background-color: navy;
     color: white;
   }
 `;
