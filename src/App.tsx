@@ -25,9 +25,10 @@ export const FileContext = createContext<{
 }>({ files: [], setFiles: () => {} });
 Modal.setAppElement("head");
 
-function App() {
-  const [files, setFiles] = useState<File[]>([]);
-
+const App: React.FunctionComponent<{ initialFiles: File[] }> = ({
+  initialFiles,
+}) => {
+  const [files, setFiles] = useState<File[]>(initialFiles);
   return (
     <FileContext.Provider value={{ files, setFiles }}>
       <DndProvider
@@ -42,6 +43,6 @@ function App() {
       </DndProvider>
     </FileContext.Provider>
   );
-}
+};
 
 export default App;

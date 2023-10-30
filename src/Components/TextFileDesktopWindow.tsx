@@ -283,7 +283,6 @@ function getSaveFileClickHandler({
         ...otherFiles,
         {
           ...fileToChange,
-          isOpen: false,
           content: newContent,
         } as TextFile,
       ]);
@@ -300,6 +299,7 @@ const TextFileDesktopWindow: React.FunctionComponent<TextFileWindowProps> = ({
   fileName,
   windowLocation,
   content,
+  isEditable,
 }) => {
   const { files, setFiles } = useContext(FileContext);
   const [fileMenuIsOpen, setFileMenuIsOpen] = useState(false);
@@ -372,6 +372,7 @@ const TextFileDesktopWindow: React.FunctionComponent<TextFileWindowProps> = ({
         onChange={(event) => {
           setTempTextContent(event.target.value);
         }}
+        readOnly={!isEditable}
       />
       <Modal
         isOpen={fileMenuIsOpen}

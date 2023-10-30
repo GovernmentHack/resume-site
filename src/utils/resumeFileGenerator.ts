@@ -1,10 +1,61 @@
 import { File, Folder, TextFile } from "../utils/types";
 import { v4 as uuidv4 } from "uuid";
-import { promises as fs } from "fs";
 import { DragTypes, FileIcon } from "./constants";
 import { XYCoord } from "react-dnd";
+import axios from "axios";
 
-const BASE_DIR = "../resume";
+const BASE_DIR = "src/resume";
+const API_BASE_URL =
+  "https://api.github.com/repos/GovernmentHack/resume-site/contents/";
+
+type GithubFileDescriptor = {
+  name: string;
+  path: string;
+  download_url: string;
+  type: "file";
+};
+
+type GithubDirectoryDescriptor = {
+  name: string;
+  path: string;
+  download_url: null;
+  type: "dir";
+};
+
+type GithubContentApiResult = (
+  | GithubFileDescriptor
+  | GithubDirectoryDescriptor
+)[];
+
+async function getGithubDirectoryContents(
+  path: string,
+): Promise<GithubContentApiResult | null> {
+  try {
+    const result = await axios.get<GithubContentApiResult>(
+      `${API_BASE_URL}/${path}`,
+    );
+    if (result?.data?.length) {
+      return result.data;
+    }
+    return null;
+  } catch (error) {
+    console.error("Unable to fetch resume directory contents from Github :(");
+    return null;
+  }
+}
+
+async function getGithubRawFile(donloadUrl: string): Promise<string | null> {
+  try {
+    const result = await axios.get<string>(donloadUrl);
+    if (result?.data?.length) {
+      return result.data;
+    }
+    return null;
+  } catch (error) {
+    console.error("Unable to fetch resume file from Github :(");
+    return null;
+  }
+}
 
 function addFolder({
   files,
@@ -77,33 +128,39 @@ async function handleFolder({
   location: XYCoord;
   directory: string | null;
 }) {
-  const rootDirFiles = await fs.readdir(directoryPath);
-  for (const filePath of rootDirFiles) {
-    const path = `${rootDirFiles}/${filePath}`;
-    const isDirectory: boolean = (await fs.lstat(path)).isDirectory();
-    if (isDirectory) {
+  const rootDirFiles = await getGithubDirectoryContents(directoryPath);
+  if (!rootDirFiles) {
+    return;
+  }
+  let locationAdjustment = 56;
+  for (const file of rootDirFiles) {
+    if (file.type === "dir") {
       const newFolder = addFolder({
         files,
-        folderName: filePath,
+        folderName: file.name,
         location,
         directory,
       });
       await handleFolder({
-        directoryPath: path,
+        directoryPath: file.path,
         files,
-        location: { x: location.x + 56, y: location.y },
+        location: { x: location.x + locationAdjustment, y: location.y },
         directory: newFolder.fileId,
       });
     } else {
-      const content = await fs.readFile(path, { encoding: "utf8" });
+      const content = await getGithubRawFile(file.download_url);
+      if (!content) {
+        return;
+      }
       addTextFile({
         files,
-        fileName: filePath,
-        location: { x: location.x, y: location.y + 56 },
+        fileName: file.name,
+        location: { x: location.x, y: location.y + locationAdjustment },
         directory,
         content,
       });
     }
+    locationAdjustment += 56;
   }
 }
 

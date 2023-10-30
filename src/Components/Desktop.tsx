@@ -10,7 +10,7 @@ import { FileContext } from "../App";
 import DesktopIcon from "./DesktopIcon";
 import Modal from "react-modal";
 import { v4 as uuidv4 } from "uuid";
-import TextFileDesktopWindow from "./DesktopWindow";
+import TextFileDesktopWindow from "./TextFileDesktopWindow";
 import { File, FileDragItem, Folder, TextFile } from "../utils/types";
 import { DisabledMenuItem } from "./ContextMenuComponents/DisabledMenuItem";
 import { ContextMenuButton } from "./ContextMenuComponents/ContextMenuButton";
@@ -215,9 +215,12 @@ const Desktop: React.FunctionComponent = () => {
         files,
       })}
     >
-      {files.map((file) => (
-        <DesktopIcon {...file} key={file.fileId} />
-      ))}
+      {files.map(
+        (file) =>
+          file.directory === null && (
+            <DesktopIcon {...file} key={file.fileId} />
+          ),
+      )}
       {files.map(
         (file) =>
           file.isOpen &&
