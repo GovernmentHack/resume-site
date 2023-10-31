@@ -254,7 +254,7 @@ function getCloseClickHandler({
         {
           ...fileToChange,
           isOpen: false,
-        },
+        } as TextFile,
       ]);
     }
   };

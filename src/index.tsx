@@ -23,6 +23,6 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <App initialFiles={[]} />
+    <App />
   </React.StrictMode>,
 );

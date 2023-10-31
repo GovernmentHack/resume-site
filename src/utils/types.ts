@@ -6,6 +6,21 @@ export type FileDragItem = {
   type: (typeof DragTypes)[keyof typeof DragTypes];
 };
 
+export type Shortcut = {
+  fileName: string;
+  fileId: string;
+  location: XYCoord;
+  windowLocation: null;
+  isHighlighted: boolean;
+  textIsEditing: boolean;
+  isOpen: null;
+  content: () => void;
+  isEditable: boolean;
+  type: typeof FileTypes.shortcut;
+  icon: typeof FileIcon.executable;
+  directory: string | null;
+};
+
 export type TextFile = {
   fileName: string;
   fileId: string;
@@ -36,4 +51,4 @@ export type Folder = {
   directory: string | null;
 };
 
-export type File = TextFile | Folder;
+export type File = TextFile | Folder | Shortcut;

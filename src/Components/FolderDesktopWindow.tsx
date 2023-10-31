@@ -286,7 +286,7 @@ function getCloseClickHandler({
         {
           ...fileToChange,
           isOpen: false,
-        },
+        } as Folder,
       ]);
     }
   };
@@ -329,7 +329,7 @@ const FolderDesktopWindow: React.FunctionComponent<FolderWindowProps> = ({
     { canDrop: boolean; isOver: boolean; dropLocation: XYCoord | null }
   >(
     () => ({
-      accept: [DragTypes.textFile, DragTypes.folder],
+      accept: [DragTypes.textFile, DragTypes.folder, DragTypes.shortcut],
       collect: (monitor: DropTargetMonitor<unknown, unknown>) => ({
         isOver: monitor.isOver(),
         canDrop: monitor.canDrop(),

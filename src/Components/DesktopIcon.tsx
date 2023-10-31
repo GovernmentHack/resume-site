@@ -30,6 +30,9 @@ const IconText = styled.span`
   line-height: 12px;
   text-align: center;
   text-rendering: optimizeLegibility;
+  text-overflow: ellipsis;
+  white-space: wrap;
+  overflow: hidden;
 `;
 
 const IconTextEditable = styled.input`
@@ -88,13 +91,17 @@ function getIconDoubleClickHandler({
     const fileToChange = files.find((file) => file.fileId === fileId);
     const otherFiles = files.filter((file) => file.fileId !== fileId);
     if (fileToChange) {
-      setFiles([
-        ...otherFiles,
-        {
-          ...fileToChange,
-          isOpen: true,
-        },
-      ]);
+      if (fileToChange.type === "shortcut") {
+        fileToChange.content();
+      } else {
+        setFiles([
+          ...otherFiles,
+          {
+            ...fileToChange,
+            isOpen: true,
+          },
+        ]);
+      }
     }
   };
 }
@@ -155,6 +162,13 @@ function getIconTextSaveHandler({
       }
     }
   };
+}
+
+function getFilenameText(text: string): string {
+  if (text.length > 36) {
+    return `${text.substring(0, 33)}...`;
+  }
+  return text;
 }
 
 type DesktopIconProps = File;
@@ -234,7 +248,7 @@ const DesktopIcon: React.FunctionComponent<DesktopIconProps> = ({
           onClick={getIconTextClickHandler({ fileId, files, setFiles })}
           {...disableDragging}
         >
-          {fileName}
+          {getFilenameText(fileName)}
         </IconText>
       )}
     </IconContainer>

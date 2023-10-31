@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import StartBar from "./Components/StartBar";
 import Desktop from "./Components/Desktop";
@@ -6,7 +6,10 @@ import Modal from "react-modal";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { TouchBackend } from "react-dnd-touch-backend";
 import { DndProvider } from "react-dnd";
-import { File } from "./utils/types";
+import { File, Shortcut } from "./utils/types";
+import { FileTypes, FileIcon } from "./utils/constants";
+import { v4 as uuidv4 } from "uuid";
+import { getResumeFiles } from "./utils/resumeFileGenerator";
 
 const DesktopBackground = styled.div`
   background-color: teal;
@@ -19,16 +22,46 @@ function isTouchDevice() {
   return "ontouchstart" in window || navigator.maxTouchPoints > 0;
 }
 
+const getResumeShortcut = ({
+  files,
+  setFiles,
+}: {
+  files: File[];
+  setFiles: React.Dispatch<React.SetStateAction<File[]>>;
+}): Shortcut => {
+  return {
+    fileName: "Populate Grant's Resume",
+    fileId: uuidv4(),
+    location: { x: 4, y: 4 },
+    windowLocation: null,
+    isHighlighted: false,
+    textIsEditing: false,
+    isOpen: null,
+    content: () => {
+      setTimeout(async () => {
+        const resumeFiles = await getResumeFiles();
+        setFiles([...files, ...resumeFiles]);
+      }, 0);
+    },
+    isEditable: false,
+    type: FileTypes.shortcut,
+    icon: FileIcon.executable,
+    directory: null,
+  } as Shortcut;
+};
+
 export const FileContext = createContext<{
   files: File[];
   setFiles: React.Dispatch<React.SetStateAction<File[]>>;
 }>({ files: [], setFiles: () => {} });
 Modal.setAppElement("head");
 
-const App: React.FunctionComponent<{ initialFiles: File[] }> = ({
-  initialFiles,
-}) => {
-  const [files, setFiles] = useState<File[]>(initialFiles);
+const App: React.FunctionComponent = () => {
+  const [files, setFiles] = useState<File[]>([]);
+  useEffect(() => {
+    setFiles([...files, getResumeShortcut({ files, setFiles })]);
+  }, []);
+
   return (
     <FileContext.Provider value={{ files, setFiles }}>
       <DndProvider

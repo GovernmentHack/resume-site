@@ -154,7 +154,12 @@ const Desktop: React.FunctionComponent = () => {
     { canDrop: boolean; isOver: boolean; dropLocation: XYCoord | null }
   >(
     () => ({
-      accept: [DragTypes.textFile, DragTypes.folder, DragTypes.window],
+      accept: [
+        DragTypes.textFile,
+        DragTypes.folder,
+        DragTypes.window,
+        DragTypes.shortcut,
+      ],
       collect: (monitor: DropTargetMonitor<unknown, unknown>) => ({
         isOver: monitor.isOver(),
         canDrop: monitor.canDrop(),
@@ -168,26 +173,30 @@ const Desktop: React.FunctionComponent = () => {
         const fileToChange = files.find((file) => file.fileId === item.fileId);
         const otherFiles = files.filter((file) => file.fileId !== item.fileId);
         if (fileToChange && endLocation) {
-          setFiles([
-            ...otherFiles,
-            {
-              ...fileToChange,
-              ...(item.type === "window"
-                ? {
-                    windowLocation: {
-                      x: endLocation.x,
-                      y: endLocation.y,
-                    },
-                  }
-                : {
-                    location: {
-                      x: endLocation.x - DRAG_OFFSET_FIX,
-                      y: endLocation.y,
-                    },
-                    directory: null,
-                  }),
-            },
-          ]);
+          if (item.type === "window") {
+            setFiles([
+              ...otherFiles,
+              {
+                ...fileToChange,
+                windowLocation: {
+                  x: endLocation.x,
+                  y: endLocation.y,
+                },
+              } as File,
+            ]);
+          } else {
+            setFiles([
+              ...otherFiles,
+              {
+                ...fileToChange,
+                location: {
+                  x: endLocation.x - DRAG_OFFSET_FIX,
+                  y: endLocation.y,
+                },
+                directory: null,
+              } as File,
+            ]);
+          }
         }
       },
     }),

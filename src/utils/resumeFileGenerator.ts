@@ -76,7 +76,7 @@ function addFolder({
     location,
     windowLocation: { x: 24, y: 24 },
     isHighlighted: false,
-    textIsEditing: true,
+    textIsEditing: false,
     isOpen: false,
     isEditable: false,
     content: null,
@@ -107,7 +107,7 @@ function addTextFile({
     location,
     windowLocation: { x: 24, y: 24 },
     isHighlighted: false,
-    textIsEditing: true,
+    textIsEditing: false,
     isOpen: false,
     isEditable: false,
     content,
@@ -138,13 +138,13 @@ async function handleFolder({
       const newFolder = addFolder({
         files,
         folderName: file.name,
-        location,
+        location: { x: location.x + locationAdjustment, y: location.y },
         directory,
       });
       await handleFolder({
         directoryPath: file.path,
         files,
-        location: { x: location.x + locationAdjustment, y: location.y },
+        location: { x: location.x + locationAdjustment + 64, y: location.y },
         directory: newFolder.fileId,
       });
     } else {
@@ -155,12 +155,15 @@ async function handleFolder({
       addTextFile({
         files,
         fileName: file.name,
-        location: { x: location.x, y: location.y + locationAdjustment },
+        location: {
+          x: location.x + locationAdjustment,
+          y: location.y + locationAdjustment,
+        },
         directory,
         content,
       });
     }
-    locationAdjustment += 56;
+    locationAdjustment += 64;
   }
 }
 
@@ -168,7 +171,7 @@ export async function getResumeFiles(): Promise<File[]> {
   const files: File[] = [];
   await handleFolder({
     directoryPath: BASE_DIR,
-    location: { x: 4, y: 4 },
+    location: { x: 8, y: 64 },
     directory: null,
     files,
   });
