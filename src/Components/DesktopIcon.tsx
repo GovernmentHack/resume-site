@@ -167,6 +167,7 @@ const DesktopIcon: React.FunctionComponent<DesktopIconProps> = ({
   type,
   isHighlighted,
   textIsEditing,
+  directory,
 }) => {
   const { files, setFiles } = useContext(FileContext);
   const [tempFileName, setTempFileName] = useState(fileName);
@@ -228,6 +229,7 @@ const DesktopIcon: React.FunctionComponent<DesktopIconProps> = ({
             boxShadow: isHighlighted
               ? "inset 0 0 0 1000px rgba(1, 1, 122,.5)"
               : undefined,
+            color: directory ? "black" : undefined,
           }}
           onClick={getIconTextClickHandler({ fileId, files, setFiles })}
           {...disableDragging}

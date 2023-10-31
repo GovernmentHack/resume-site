@@ -132,7 +132,7 @@ async function handleFolder({
   if (!rootDirFiles) {
     return;
   }
-  let locationAdjustment = 56;
+  let locationAdjustment = location.x;
   for (const file of rootDirFiles) {
     if (file.type === "dir") {
       const newFolder = addFolder({

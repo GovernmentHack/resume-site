@@ -15,6 +15,7 @@ import { File, FileDragItem, Folder, TextFile } from "../utils/types";
 import { DisabledMenuItem } from "./ContextMenuComponents/DisabledMenuItem";
 import { ContextMenuButton } from "./ContextMenuComponents/ContextMenuButton";
 import { ContextMenuDivider } from "./ContextMenuComponents/ContextMenuDivider";
+import FolderDesktopWindow from "./FolderDesktopWindow";
 
 const DRAG_OFFSET_FIX = 17;
 
@@ -183,6 +184,7 @@ const Desktop: React.FunctionComponent = () => {
                       x: endLocation.x - DRAG_OFFSET_FIX,
                       y: endLocation.y,
                     },
+                    directory: null,
                   }),
             },
           ]);
@@ -228,6 +230,13 @@ const Desktop: React.FunctionComponent = () => {
             <TextFileDesktopWindow {...file} key={`${file.fileId}-window`} />
           ),
       )}
+      {files.map(
+        (file) =>
+          file.isOpen &&
+          file.type === "folder" && (
+            <FolderDesktopWindow {...file} key={`${file.fileId}-window`} />
+          ),
+      )}
       <Modal
         isOpen={desktopContextMenuIsOpen}
         onRequestClose={() => setDesktopContextMenuIsOpen(false)}
@@ -266,7 +275,7 @@ const Desktop: React.FunctionComponent = () => {
           onMouseEnter={() => setDesktopNewContextMenuIsOpen(true)}
           onMouseLeave={() => setDesktopNewContextMenuIsOpen(false)}
           style={{
-            backgroundColor: desktopContextNewMenuIsOpen ? "teal" : undefined,
+            backgroundColor: desktopContextNewMenuIsOpen ? "navy" : undefined,
             color: desktopContextNewMenuIsOpen ? "white" : undefined,
           }}
           onClick={(event) => event.stopPropagation()}
