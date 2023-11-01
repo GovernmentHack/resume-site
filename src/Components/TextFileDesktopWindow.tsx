@@ -12,6 +12,7 @@ import Modal from "react-modal";
 import { ContextMenuButton } from "./ContextMenuComponents/ContextMenuButton";
 import { ContextMenuDivider } from "./ContextMenuComponents/ContextMenuDivider";
 import { DisabledMenuItem } from "./ContextMenuComponents/DisabledMenuItem";
+import { getWindowFocusClickHandler } from "../utils/windowFocusClickHandler";
 
 type TextFileWindowProps = TextFile;
 
@@ -33,7 +34,6 @@ const WindowContainer = styled.div`
   border-top: 2px solid #dfdfdf;
   border-right: 2px solid #7f7f7f;
   border-bottom: 2px solid #7f7f7f;
-  z-index: 100;
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -298,6 +298,7 @@ const TextFileDesktopWindow: React.FunctionComponent<TextFileWindowProps> = ({
   fileId,
   fileName,
   windowLocation,
+  windowIsFocused,
   content,
   isEditable,
 }) => {
@@ -331,9 +332,14 @@ const TextFileDesktopWindow: React.FunctionComponent<TextFileWindowProps> = ({
         left: windowLocation.x,
         top: windowLocation.y,
         opacity: isDragging ? 0 : 1,
-        zIndex: 0,
+        zIndex: windowIsFocused ? 1 : 0,
       }}
-      onClick={() => setFileMenuIsOpen(false)}
+      onDragStart={getWindowFocusClickHandler({ files, fileId, setFiles })}
+      onClick={(event) => {
+        setFileMenuIsOpen(false);
+        getWindowFocusClickHandler({ files, fileId, setFiles })();
+        event.stopPropagation();
+      }}
     >
       <WindowHeader>
         <NotepadIcon />

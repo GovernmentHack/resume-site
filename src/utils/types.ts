@@ -11,6 +11,7 @@ export type Shortcut = {
   fileId: string;
   location: XYCoord;
   windowLocation: null;
+  windowsIsFocused: null;
   isHighlighted: boolean;
   textIsEditing: boolean;
   isOpen: null;
@@ -32,6 +33,7 @@ export type TextFile = {
   fileId: string;
   location: XYCoord;
   windowLocation: XYCoord;
+  windowIsFocused: boolean;
   isHighlighted: boolean;
   textIsEditing: boolean;
   isOpen: boolean;
@@ -47,6 +49,7 @@ export type Folder = {
   fileId: string;
   location: XYCoord;
   windowLocation: XYCoord;
+  windowIsFocused: boolean;
   isHighlighted: boolean;
   textIsEditing: boolean;
   isOpen: boolean;

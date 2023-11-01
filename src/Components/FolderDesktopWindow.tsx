@@ -20,6 +20,7 @@ import { ContextMenuDivider } from "./ContextMenuComponents/ContextMenuDivider";
 import { DisabledMenuItem } from "./ContextMenuComponents/DisabledMenuItem";
 import { ContextMenuVerticalDivider } from "./ContextMenuComponents/ContextMenuVerticalDivider";
 import DesktopIcon from "./DesktopIcon";
+import { getWindowFocusClickHandler } from "../utils/windowFocusClickHandler";
 
 type FolderWindowProps = Folder;
 
@@ -41,7 +42,6 @@ const WindowContainer = styled.div`
   border-top: 2px solid #dfdfdf;
   border-right: 2px solid #7f7f7f;
   border-bottom: 2px solid #7f7f7f;
-  z-index: 100;
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -313,6 +313,7 @@ const FolderDesktopWindow: React.FunctionComponent<FolderWindowProps> = ({
   fileId,
   fileName,
   windowLocation,
+  windowIsFocused,
 }) => {
   const { files, setFiles } = useContext(FileContext);
   const [fileMenuIsOpen, setFileMenuIsOpen] = useState(false);
@@ -386,9 +387,14 @@ const FolderDesktopWindow: React.FunctionComponent<FolderWindowProps> = ({
         left: windowLocation.x,
         top: windowLocation.y,
         opacity: isDragging ? 0 : 1,
-        zIndex: 0,
+        zIndex: windowIsFocused ? 1 : 0,
       }}
-      onClick={() => setFileMenuIsOpen(false)}
+      onDragStart={getWindowFocusClickHandler({ files, fileId, setFiles })}
+      onClick={(event) => {
+        setFileMenuIsOpen(false);
+        getWindowFocusClickHandler({ files, fileId, setFiles })();
+        event.stopPropagation();
+      }}
     >
       <WindowHeader>
         <FolderExplorerIcon />
