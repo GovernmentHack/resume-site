@@ -18,6 +18,7 @@ import { ContextMenuDivider } from "./ContextMenuComponents/ContextMenuDivider";
 import FolderDesktopWindow from "./FolderDesktopWindow";
 
 const DRAG_OFFSET_FIX = 17;
+const INITIAL_WINDOW_LOCATION = { x: 24, y: 24 };
 
 const DesktopDiv = styled.div`
   height: 100%;
@@ -43,6 +44,23 @@ function getModalStyle(location: { x: number; y: number }): Modal.Styles {
   return getContextMenuModalStyle(location);
 }
 
+function getWindowLocation(files: File[]): XYCoord {
+  return files.reduce<XYCoord>((proposedLocation, currentFile) => {
+    if (currentFile.type === "shortcut") {
+      return proposedLocation;
+    }
+    const diffX = Math.abs(proposedLocation.x - currentFile.windowLocation.x);
+    const diffY = Math.abs(proposedLocation.y - currentFile.windowLocation.y);
+    if (diffX > 8 || diffY > 8) {
+      return proposedLocation;
+    }
+    return {
+      x: proposedLocation.x + 10,
+      y: proposedLocation.y + 10,
+    };
+  }, INITIAL_WINDOW_LOCATION);
+}
+
 function getNewFolderClickHandler({
   setFiles,
   files,
@@ -56,6 +74,7 @@ function getNewFolderClickHandler({
 }): React.MouseEventHandler<HTMLDivElement> {
   return (event) => {
     event.stopPropagation();
+    const windowLocation = getWindowLocation(files);
     setFiles([
       ...files,
       {
@@ -64,7 +83,7 @@ function getNewFolderClickHandler({
         fileName: "New Folder",
         type: DragTypes.folder,
         location,
-        windowLocation: { x: 24, y: 24 },
+        windowLocation,
         isHighlighted: false,
         textIsEditing: true,
         isOpen: false,
@@ -88,6 +107,7 @@ function getNewTextFileClickHandler({
 }): React.MouseEventHandler<HTMLDivElement> {
   return (event) => {
     event.stopPropagation();
+    const windowLocation = getWindowLocation(files);
     setFiles([
       ...files,
       {
@@ -96,7 +116,7 @@ function getNewTextFileClickHandler({
         fileName: "New Text Document",
         type: DragTypes.textFile,
         location,
-        windowLocation: { x: 24, y: 24 },
+        windowLocation,
         isHighlighted: false,
         textIsEditing: true,
         isOpen: false,
