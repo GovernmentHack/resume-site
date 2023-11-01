@@ -22,25 +22,29 @@ function isTouchDevice() {
   return "ontouchstart" in window || navigator.maxTouchPoints > 0;
 }
 
-const getResumeShortcut = ({
-  files,
-  setFiles,
-}: {
-  files: File[];
-  setFiles: React.Dispatch<React.SetStateAction<File[]>>;
-}): Shortcut => {
+const getResumeShortcut = (): Shortcut => {
+  const selfId = uuidv4();
   return {
     fileName: "Populate Grant's Resume",
-    fileId: uuidv4(),
+    fileId: selfId,
     location: { x: 4, y: 4 },
     windowLocation: null,
     isHighlighted: false,
     textIsEditing: false,
     isOpen: null,
-    content: () => {
+    content: ({
+      files,
+      setFiles,
+    }: {
+      files: File[];
+      setFiles: React.Dispatch<React.SetStateAction<File[]>>;
+    }) => {
+      // Remove the shortcut now so as to not allow accidental double clicking
+      const allOtherFiles = files.filter((file) => file.fileId !== selfId);
+      setFiles([...allOtherFiles]);
       setTimeout(async () => {
         const resumeFiles = await getResumeFiles();
-        setFiles([...files, ...resumeFiles]);
+        setFiles([...allOtherFiles, ...resumeFiles]);
       }, 0);
     },
     isEditable: false,
@@ -59,7 +63,7 @@ Modal.setAppElement("head");
 const App: React.FunctionComponent = () => {
   const [files, setFiles] = useState<File[]>([]);
   useEffect(() => {
-    setFiles([...files, getResumeShortcut({ files, setFiles })]);
+    setFiles([...files, getResumeShortcut()]);
   }, []);
 
   return (

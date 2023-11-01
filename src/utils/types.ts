@@ -14,7 +14,13 @@ export type Shortcut = {
   isHighlighted: boolean;
   textIsEditing: boolean;
   isOpen: null;
-  content: () => void;
+  content: ({
+    files,
+    setFiles,
+  }: {
+    files: File[];
+    setFiles: React.Dispatch<React.SetStateAction<File[]>>;
+  }) => void;
   isEditable: boolean;
   type: typeof FileTypes.shortcut;
   icon: typeof FileIcon.executable;

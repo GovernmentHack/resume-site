@@ -92,7 +92,7 @@ function getIconDoubleClickHandler({
     const otherFiles = files.filter((file) => file.fileId !== fileId);
     if (fileToChange) {
       if (fileToChange.type === "shortcut") {
-        fileToChange.content();
+        fileToChange.content({ files, setFiles });
       } else {
         setFiles([
           ...otherFiles,

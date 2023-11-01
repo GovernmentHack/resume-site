@@ -7,6 +7,7 @@ import axios from "axios";
 const BASE_DIR = "src/resume";
 const API_BASE_URL =
   "https://api.github.com/repos/GovernmentHack/resume-site/contents/";
+const OFFSET = 64;
 
 type GithubFileDescriptor = {
   name: string;
@@ -138,13 +139,16 @@ async function handleFolder({
       const newFolder = addFolder({
         files,
         folderName: file.name,
-        location: { x: location.x + locationAdjustment, y: location.y },
+        location: {
+          x: location.x + locationAdjustment + OFFSET,
+          y: location.y,
+        },
         directory,
       });
       await handleFolder({
         directoryPath: file.path,
         files,
-        location: { x: location.x + locationAdjustment + 64, y: location.y },
+        location: { x: location.x, y: location.y },
         directory: newFolder.fileId,
       });
     } else {
@@ -163,7 +167,7 @@ async function handleFolder({
         content,
       });
     }
-    locationAdjustment += 64;
+    locationAdjustment += OFFSET;
   }
 }
 
@@ -171,7 +175,7 @@ export async function getResumeFiles(): Promise<File[]> {
   const files: File[] = [];
   await handleFolder({
     directoryPath: BASE_DIR,
-    location: { x: 8, y: 64 },
+    location: { x: 8, y: 88 },
     directory: null,
     files,
   });
