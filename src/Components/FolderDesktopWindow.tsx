@@ -25,6 +25,10 @@ import { getWindowFocusClickHandler } from "../utils/windowFocusClickHandler";
 type FolderWindowProps = Folder;
 
 const WindowContainer = styled.div`
+  position: absolute;
+`;
+
+const DropContainer = styled.div`
   padding-right: 2px;
   padding-left: 2px;
   padding-bottom: 2px;
@@ -32,19 +36,18 @@ const WindowContainer = styled.div`
   margin-right: 2px;
   margin-left: 2px;
   text-rendering: optimizeLegibility;
-  height: 80vh;
-  min-width: 256px;
-  width: 50vw;
-  cursor: default;
   background-color: silver;
   font-family: ms-sans-serif;
   border-left: 2px solid #dfdfdf;
   border-top: 2px solid #dfdfdf;
   border-right: 2px solid #7f7f7f;
   border-bottom: 2px solid #7f7f7f;
-  position: absolute;
   display: flex;
   flex-direction: column;
+  cursor: default;
+  height: 80vh;
+  min-width: 256px;
+  width: 50vw;
 `;
 
 const WindowHeader = styled.div`
@@ -362,15 +365,18 @@ const FolderDesktopWindow: React.FunctionComponent<FolderWindowProps> = ({
         const fileToChange = files.find((file) => file.fileId === item.fileId);
         const otherFiles = files.filter((file) => file.fileId !== item.fileId);
         if (fileToChange && endLocation) {
-          console.log("updating location!", item);
+          const relativeLocation = {
+            x: endLocation.x - windowLocation.x,
+            y: endLocation.y - windowLocation.y,
+          };
+          if (relativeLocation.y < 81 || relativeLocation.x < 2) {
+            return;
+          }
           setFiles([
             ...otherFiles,
             {
               ...fileToChange,
-              location: {
-                x: endLocation.x - windowLocation.x,
-                y: endLocation.y - windowLocation.y,
-              },
+              location: relativeLocation,
               directory: fileId,
             },
           ]);
@@ -396,109 +402,111 @@ const FolderDesktopWindow: React.FunctionComponent<FolderWindowProps> = ({
         event.stopPropagation();
       }}
     >
-      <WindowHeader>
-        <FolderExplorerIcon />
-        <HeaderText>{`Exploring - C:\\${fileName}`}</HeaderText>
-        <Spacer />
-        <CloseIcon
-          onClick={getCloseClickHandler({ fileId, files, setFiles })}
-        />
-      </WindowHeader>
-      <Toolbar {...disableDragging}>
-        <ContextMenuVerticalDivider />
-        <ToolbarTextDisabled>
-          <div>
-            <u>F</u>ile
-          </div>
-        </ToolbarTextDisabled>
-        <ToolbarTextDisabled>
-          <div>
-            <u>E</u>dit
-          </div>
-        </ToolbarTextDisabled>
-        <ToolbarTextDisabled>
-          <div>
-            <u>V</u>iew
-          </div>
-        </ToolbarTextDisabled>
-        <ToolbarTextDisabled>
-          <div>
-            <u>G</u>o
-          </div>
-        </ToolbarTextDisabled>
-        <ToolbarTextDisabled>
-          <div>
-            F<u>a</u>vorites
-          </div>
-        </ToolbarTextDisabled>
-        <ToolbarTextDisabled>
-          <div>
-            <u>T</u>ools
-          </div>
-        </ToolbarTextDisabled>
-        <ToolbarTextDisabled>
-          <div>
-            <u>H</u>elp
-          </div>
-        </ToolbarTextDisabled>
-      </Toolbar>
-      <Toolbar {...disableDragging}>
-        <ContextMenuVerticalDivider />
-        <ToolbarText>Address</ToolbarText>
-        <AddressBar>
+      <DropContainer ref={drop}>
+        <WindowHeader>
           <FolderExplorerIcon />
-          <div>{`${fileName}`}</div>
-        </AddressBar>
-      </Toolbar>
-      <ContentArea ref={drop}>
-        {files.map(
-          (file) =>
-            file.directory === fileId && (
-              <DesktopIcon {...file} key={file.fileId} />
-            ),
-        )}
-      </ContentArea>
-      <Modal
-        isOpen={fileMenuIsOpen}
-        onRequestClose={() => setFileMenuIsOpen(false)}
-        style={getModalStyle({
-          x: windowLocation.x + 8,
-          y: windowLocation.y + 52,
-        })}
-      >
-        <DisabledMenuItem>
-          <div>
-            <u>N</u>ew
-          </div>
-          <div>Ctrl+N</div>
-        </DisabledMenuItem>
-        <DisabledMenuItem>
-          <div>
-            <u>O</u>pen
-          </div>
-          <div>Ctrl+O</div>
-        </DisabledMenuItem>
-        <ContextMenuButton>
-          <div>
-            <u>S</u>ave
-          </div>
-          <div>Ctrl+S</div>
-        </ContextMenuButton>
-        <DisabledMenuItem>
-          <div>
-            Save <u>A</u>s
-          </div>
-          <div>Ctrl+Shift+S</div>
-        </DisabledMenuItem>
-        <ContextMenuDivider />
-        <ContextMenuButton
-          onClick={getCloseClickHandler({ fileId, files, setFiles })}
+          <HeaderText>{`Exploring - C:\\${fileName}`}</HeaderText>
+          <Spacer />
+          <CloseIcon
+            onClick={getCloseClickHandler({ fileId, files, setFiles })}
+          />
+        </WindowHeader>
+        <Toolbar {...disableDragging}>
+          <ContextMenuVerticalDivider />
+          <ToolbarTextDisabled>
+            <div>
+              <u>F</u>ile
+            </div>
+          </ToolbarTextDisabled>
+          <ToolbarTextDisabled>
+            <div>
+              <u>E</u>dit
+            </div>
+          </ToolbarTextDisabled>
+          <ToolbarTextDisabled>
+            <div>
+              <u>V</u>iew
+            </div>
+          </ToolbarTextDisabled>
+          <ToolbarTextDisabled>
+            <div>
+              <u>G</u>o
+            </div>
+          </ToolbarTextDisabled>
+          <ToolbarTextDisabled>
+            <div>
+              F<u>a</u>vorites
+            </div>
+          </ToolbarTextDisabled>
+          <ToolbarTextDisabled>
+            <div>
+              <u>T</u>ools
+            </div>
+          </ToolbarTextDisabled>
+          <ToolbarTextDisabled>
+            <div>
+              <u>H</u>elp
+            </div>
+          </ToolbarTextDisabled>
+        </Toolbar>
+        <Toolbar {...disableDragging}>
+          <ContextMenuVerticalDivider />
+          <ToolbarText>Address</ToolbarText>
+          <AddressBar>
+            <FolderExplorerIcon />
+            <div>{`${fileName}`}</div>
+          </AddressBar>
+        </Toolbar>
+        <ContentArea>
+          {files.map(
+            (file) =>
+              file.directory === fileId && (
+                <DesktopIcon {...file} key={file.fileId} />
+              ),
+          )}
+        </ContentArea>
+        <Modal
+          isOpen={fileMenuIsOpen}
+          onRequestClose={() => setFileMenuIsOpen(false)}
+          style={getModalStyle({
+            x: windowLocation.x + 8,
+            y: windowLocation.y + 52,
+          })}
         >
-          <div>
-            E<u>x</u>it
-          </div>
-        </ContextMenuButton>
-      </Modal>
+          <DisabledMenuItem>
+            <div>
+              <u>N</u>ew
+            </div>
+            <div>Ctrl+N</div>
+          </DisabledMenuItem>
+          <DisabledMenuItem>
+            <div>
+              <u>O</u>pen
+            </div>
+            <div>Ctrl+O</div>
+          </DisabledMenuItem>
+          <ContextMenuButton>
+            <div>
+              <u>S</u>ave
+            </div>
+            <div>Ctrl+S</div>
+          </ContextMenuButton>
+          <DisabledMenuItem>
+            <div>
+              Save <u>A</u>s
+            </div>
+            <div>Ctrl+Shift+S</div>
+          </DisabledMenuItem>
+          <ContextMenuDivider />
+          <ContextMenuButton
+            onClick={getCloseClickHandler({ fileId, files, setFiles })}
+          >
+            <div>
+              E<u>x</u>it
+            </div>
+          </ContextMenuButton>
+        </Modal>
+      </DropContainer>
     </WindowContainer>
   );
 };
