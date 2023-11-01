@@ -65,6 +65,7 @@ const Toolbar = styled.div`
   height: 28px;
   align-items: center;
   flex: 0 0 auto;
+  overflow: hidden;
 `;
 
 const ToolbarText = styled.div`
