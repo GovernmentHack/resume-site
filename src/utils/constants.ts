@@ -16,7 +16,7 @@ export const FileTypes = {
 } as const;
 
 export const FileIcon = {
-  closedFolder: "directory_closed_cool-0.png",
+  closedFolder: "directory_closed_cool-2.png",
   textFile: "notepad_file-0.png",
   executable: "executable_gear-0.png",
 } as const;
