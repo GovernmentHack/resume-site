@@ -61,6 +61,7 @@ export const getContextMenuModalStyle = (location: XYCoord) => {
       backgroundColor: "unset",
       width: "164px",
       bottom: "auto",
+      zIndex: 10000,
     },
   };
 };

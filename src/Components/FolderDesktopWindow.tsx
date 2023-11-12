@@ -21,11 +21,14 @@ import { DisabledMenuItem } from "./ContextMenuComponents/DisabledMenuItem";
 import { ContextMenuVerticalDivider } from "./ContextMenuComponents/ContextMenuVerticalDivider";
 import DesktopIcon from "./DesktopIcon";
 import { getWindowFocusClickHandler } from "../utils/windowFocusClickHandler";
+import { getWindowClickHandler } from "../utils/getWindowClickHandler";
+import { WindowContextModal } from "./WindowContextMenu";
 
 type FolderWindowProps = Folder;
 
 const WindowContainer = styled.div`
   position: absolute;
+  z-index: 100;
 `;
 
 const DropContainer = styled.div`
@@ -163,6 +166,7 @@ const ContentArea = styled.div`
   box-shadow: none;
   resize: none;
   outline: none;
+  z-index: 100;
 
   &::-webkit-scrollbar {
     width: 16px;
@@ -320,6 +324,10 @@ const FolderDesktopWindow: React.FunctionComponent<FolderWindowProps> = ({
 }) => {
   const { files, setFiles } = useContext(FileContext);
   const [fileMenuIsOpen, setFileMenuIsOpen] = useState(false);
+  const [windowContextMenuIsOpen, setWindowContextMenuIsOpen] =
+    React.useState(false);
+  const [windowContextMenuLocation, setWindowContextMenuLocation] =
+    React.useState({ x: 0, y: 0 });
   const [{ isDragging }, drag] = useDrag<
     FileDragItem,
     unknown,
@@ -339,7 +347,6 @@ const FolderDesktopWindow: React.FunctionComponent<FolderWindowProps> = ({
       type: DragTypes.window,
     },
   }));
-
   const [, drop] = useDrop<
     FileDragItem,
     unknown,
@@ -457,13 +464,32 @@ const FolderDesktopWindow: React.FunctionComponent<FolderWindowProps> = ({
             <div>{`${fileName}`}</div>
           </AddressBar>
         </Toolbar>
-        <ContentArea>
+        <ContentArea
+          onContextMenu={getWindowClickHandler({
+            setWindowContextMenuIsOpen,
+            setWindowContextMenuLocation,
+            setFiles,
+            files,
+          })}
+          onClick={getWindowClickHandler({
+            setWindowContextMenuIsOpen,
+            setWindowContextMenuLocation,
+            setFiles,
+            files,
+          })}
+        >
           {files.map(
             (file) =>
               file.directory === fileId && (
                 <DesktopIcon {...file} key={file.fileId} />
               ),
           )}
+          <WindowContextModal
+            windowContextMenuIsOpen={windowContextMenuIsOpen}
+            windowContextMenuLocation={windowContextMenuLocation}
+            setWindowContextMenuIsOpen={setWindowContextMenuIsOpen}
+            fileId={fileId}
+          />
         </ContentArea>
         <Modal
           isOpen={fileMenuIsOpen}

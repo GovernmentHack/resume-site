@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import { DragTypes, FileIcon } from "./constants";
 import { XYCoord } from "react-dnd";
 import axios from "axios";
-import { getWindowLocation } from "../Components/Desktop";
+import { generateNewWindowLocation } from "./generateNewWindowLocation";
 
 const BASE_DIR = "src/resume";
 const API_BASE_URL =
@@ -108,7 +108,7 @@ function addTextFile({
     fileName,
     type: DragTypes.textFile,
     location,
-    windowLocation: getWindowLocation(files),
+    windowLocation: generateNewWindowLocation(files),
     windowIsFocused: false,
     isHighlighted: false,
     textIsEditing: false,
