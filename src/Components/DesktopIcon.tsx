@@ -80,10 +80,12 @@ function getIconClickHandler({
 function getIconDoubleClickHandler({
   files,
   setFiles,
+  setLoading,
   fileId,
 }: {
   files: File[];
   setFiles: React.Dispatch<React.SetStateAction<File[]>>;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   fileId: string;
 }): React.MouseEventHandler<HTMLDivElement> {
   return (event) => {
@@ -93,7 +95,7 @@ function getIconDoubleClickHandler({
     if (fileToChange) {
       // "run" a shortcut instead of opening it
       if (fileToChange.type === "shortcut") {
-        fileToChange.content({ files, setFiles });
+        fileToChange.content({ files, setFiles, setLoading });
       } else {
         const otherFilesWindowClosed = otherFiles.map((file) => {
           if (
@@ -197,7 +199,7 @@ const DesktopIcon: React.FunctionComponent<DesktopIconProps> = ({
   textIsEditing,
   directory,
 }) => {
-  const { files, setFiles } = useContext(FileContext);
+  const { files, setFiles, setLoading } = useContext(FileContext);
   const [tempFileName, setTempFileName] = useState(fileName);
   const [{ isDragging }, drag] = useDrag<
     FileDragItem,
@@ -227,7 +229,7 @@ const DesktopIcon: React.FunctionComponent<DesktopIconProps> = ({
       ref={drag}
       style={{ opacity: isDragging ? 0 : 1, left: location.x, top: location.y }}
       onClick={getIconClickHandler({ fileId, files, setFiles })}
-      onDoubleClick={getIconDoubleClickHandler({ fileId, files, setFiles })}
+      onDoubleClick={getIconDoubleClickHandler({ fileId, files, setFiles, setLoading })}
     >
       <IconImage
         style={{

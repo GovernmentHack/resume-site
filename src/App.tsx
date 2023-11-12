@@ -35,16 +35,20 @@ const getResumeShortcut = (): Shortcut => {
     content: ({
       files,
       setFiles,
+      setLoading,
     }: {
       files: File[];
       setFiles: React.Dispatch<React.SetStateAction<File[]>>;
+      setLoading: React.Dispatch<React.SetStateAction<boolean>>;
     }) => {
       // Remove the shortcut now so as to not allow accidental double clicking
       const allOtherFiles = files.filter((file) => file.fileId !== selfId);
       setFiles([...allOtherFiles]);
       setTimeout(async () => {
+        setLoading(true);
         const resumeFiles = await getResumeFiles();
         setFiles([...allOtherFiles, ...resumeFiles]);
+        setLoading(false);
       }, 0);
     },
     isEditable: false,
@@ -54,26 +58,31 @@ const getResumeShortcut = (): Shortcut => {
   } as Shortcut;
 };
 
+// Cursor styling from http://www.rw-designer.com/cursor-detail/151730
+
 export const FileContext = createContext<{
   files: File[];
   setFiles: React.Dispatch<React.SetStateAction<File[]>>;
-}>({ files: [], setFiles: () => {} });
+  loading: boolean;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}>({ files: [], setFiles: () => {}, loading: false, setLoading: () => {} });
 Modal.setAppElement("head");
 
 const App: React.FunctionComponent = () => {
   const [files, setFiles] = useState<File[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   useEffect(() => {
     setFiles([...files, getResumeShortcut()]);
   }, []);
 
   return (
-    <FileContext.Provider value={{ files, setFiles }}>
+    <FileContext.Provider value={{ files, setFiles, loading, setLoading }}>
       <DndProvider
         backend={isTouchDevice() ? TouchBackend : HTML5Backend}
         context={window}
         options={{ enableMouseEvents: true }}
       >
-        <DesktopBackground>
+        <DesktopBackground style={loading ? { cursor: "url(icons/loading.cur), auto" } : {}}>
           <Desktop />
           <StartBar />
         </DesktopBackground>

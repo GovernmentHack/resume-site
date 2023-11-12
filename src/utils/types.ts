@@ -18,9 +18,11 @@ export type Shortcut = {
   content: ({
     files,
     setFiles,
+    setLoading,
   }: {
     files: File[];
     setFiles: React.Dispatch<React.SetStateAction<File[]>>;
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   }) => void;
   isEditable: boolean;
   type: typeof FileTypes.shortcut;

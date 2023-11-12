@@ -44,7 +44,7 @@ function getModalStyle(location: { x: number; y: number }): Modal.Styles {
   return getContextMenuModalStyle(location);
 }
 
-function getWindowLocation(files: File[]): XYCoord {
+export function getWindowLocation(files: File[]): XYCoord {
   return files.reduce<XYCoord>((proposedLocation, currentFile) => {
     if (currentFile.type === "shortcut") {
       return proposedLocation;
