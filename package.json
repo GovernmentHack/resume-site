@@ -7,7 +7,7 @@
     "start": "webpack-dev-server --open --mode development --hot --no-devtool --no-hot",
     "build": "webpack --mode production",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "echo grant.apodaca.pro > ./dist/CNAME && gh-pages -d dist"
   },
   "eslintConfig": {
     "extends": [
