@@ -6,6 +6,7 @@
   "scripts": {
     "start": "webpack-dev-server --open --mode development --hot --no-devtool --no-hot",
     "build": "webpack --mode production",
+    "lint:fix": "eslint 'src/**/*.{ts,tsx}' --fix",
     "predeploy": "npm run build",
     "deploy": "echo grant.apodaca.pro > ./dist/CNAME && gh-pages -d dist"
   },
@@ -51,7 +52,7 @@
     "@typescript-eslint/parser": "6.9.0",
     "copy-webpack-plugin": "11.0.0",
     "css-loader": "^6.8.1",
-    "eslint": "8.28.0",
+    "eslint": "^8.57.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-jest": "27.4.3",

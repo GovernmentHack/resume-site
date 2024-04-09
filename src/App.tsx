@@ -82,7 +82,9 @@ const App: React.FunctionComponent = () => {
         context={window}
         options={{ enableMouseEvents: true }}
       >
-        <DesktopBackground style={loading ? { cursor: "url(icons/loading.cur), auto" } : {}}>
+        <DesktopBackground
+          style={loading ? { cursor: "url(icons/loading.cur), auto" } : {}}
+        >
           <Desktop />
           <StartBar />
         </DesktopBackground>

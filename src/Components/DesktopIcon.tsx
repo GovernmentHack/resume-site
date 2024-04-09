@@ -229,7 +229,12 @@ const DesktopIcon: React.FunctionComponent<DesktopIconProps> = ({
       ref={drag}
       style={{ opacity: isDragging ? 0 : 1, left: location.x, top: location.y }}
       onClick={getIconClickHandler({ fileId, files, setFiles })}
-      onDoubleClick={getIconDoubleClickHandler({ fileId, files, setFiles, setLoading })}
+      onDoubleClick={getIconDoubleClickHandler({
+        fileId,
+        files,
+        setFiles,
+        setLoading,
+      })}
     >
       <IconImage
         style={{

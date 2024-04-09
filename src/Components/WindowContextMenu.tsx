@@ -3,7 +3,11 @@ import Modal from "react-modal";
 import { ContextMenuButton } from "./ContextMenuComponents/ContextMenuButton";
 import { ContextMenuDivider } from "./ContextMenuComponents/ContextMenuDivider";
 import { DisabledMenuItem } from "./ContextMenuComponents/DisabledMenuItem";
-import { DragTypes, FileIcon, getContextMenuModalStyle } from "../utils/constants";
+import {
+  DragTypes,
+  FileIcon,
+  getContextMenuModalStyle,
+} from "../utils/constants";
 import { XYCoord } from "react-dnd";
 import styled from "styled-components";
 import { generateNewWindowLocation } from "../utils/generateNewWindowLocation";
@@ -69,7 +73,7 @@ function getNewTextFileClickHandler({
   files,
   closeModals,
   location,
-  directory
+  directory,
 }: newItemClickHandlerProps): React.MouseEventHandler<HTMLDivElement> {
   return (event) => {
     event.stopPropagation();
@@ -106,15 +110,16 @@ type WindowContextModalProps = {
   fileId: newItemClickHandlerProps["directory"];
 };
 
-export const WindowContextModal: React.FunctionComponent<WindowContextModalProps> = ({
+export const WindowContextModal: React.FunctionComponent<
+  WindowContextModalProps
+> = ({
   windowContextMenuIsOpen,
   windowContextMenuLocation,
   setWindowContextMenuIsOpen,
   fileId,
 }) => {
   const { files, setFiles } = useContext(FileContext);
-  const [windowNewMenuIsOpen, setWindowNewMenuIsOpen] =
-    React.useState(false);
+  const [windowNewMenuIsOpen, setWindowNewMenuIsOpen] = React.useState(false);
   return (
     <Modal
       isOpen={windowContextMenuIsOpen}
@@ -216,5 +221,5 @@ export const WindowContextModal: React.FunctionComponent<WindowContextModalProps
       </ContextMenuButton>
       <ContextMenuDivider />
     </Modal>
-  )
-}
+  );
+};
