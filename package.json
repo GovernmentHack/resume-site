@@ -61,6 +61,7 @@
     "eslint-plugin-prettier": "5.0.0",
     "gh-pages": "6.0.0",
     "html-webpack-plugin": "5.5.3",
+    "jsdom": "^24.0.0",
     "prettier": "3.0.3",
     "style-loader": "^3.3.3",
     "styled-components": "6.1.0",

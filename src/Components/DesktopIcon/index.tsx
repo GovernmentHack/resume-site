@@ -12,6 +12,7 @@ import {
   IconImage,
   IconTextEditable,
   IconText,
+  ICON_HIGHLIGHTED_BOX_SHADOW,
 } from "./ComponentStyles";
 
 function getFilenameText(text: string): string {
@@ -60,6 +61,7 @@ const DesktopIcon: React.FunctionComponent<DesktopIconProps> = ({
 
   return (
     <IconContainer
+      data-testid={`${fileId}_file_icon`}
       ref={drag}
       style={{ opacity: isDragging ? 0 : 1, left: location.x, top: location.y }}
       onClick={getIconClickHandler({ fileId, files, setFiles })}
@@ -71,15 +73,15 @@ const DesktopIcon: React.FunctionComponent<DesktopIconProps> = ({
       })}
     >
       <IconImage
+        data-testid={`${fileId}_file_icon_image`}
         style={{
           backgroundImage: `url(icons/${icon})`,
-          boxShadow: isHighlighted
-            ? "inset 0 0 0 1000px rgba(1, 1, 122,.5)"
-            : undefined,
+          boxShadow: isHighlighted ? ICON_HIGHLIGHTED_BOX_SHADOW : undefined,
         }}
       />
       {textIsEditing ? (
         <IconTextEditable
+          data-testid={`${fileId}_file_icon_editable_text`}
           value={tempFileName}
           onChange={(event) => {
             setTempFileName(event.target.value);
@@ -94,10 +96,9 @@ const DesktopIcon: React.FunctionComponent<DesktopIconProps> = ({
         />
       ) : (
         <IconText
+          data-testid={`${fileId}_file_icon_text`}
           style={{
-            boxShadow: isHighlighted
-              ? "inset 0 0 0 1000px rgba(1, 1, 122,.5)"
-              : undefined,
+            boxShadow: isHighlighted ? ICON_HIGHLIGHTED_BOX_SHADOW : undefined,
             color: directory ? "black" : undefined,
           }}
           onClick={getIconTextClickHandler({ fileId, files, setFiles })}
