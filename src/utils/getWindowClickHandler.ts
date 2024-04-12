@@ -1,5 +1,5 @@
 import React from "react";
-import { File } from "./types";
+import { DesktopFile } from "./types";
 
 export const getWindowClickHandler: ({
   setWindowContextMenuIsOpen,
@@ -11,8 +11,8 @@ export const getWindowClickHandler: ({
   setWindowContextMenuLocation: React.Dispatch<
     React.SetStateAction<{ x: number; y: number }>
   >;
-  files: File[];
-  setFiles: React.Dispatch<React.SetStateAction<File[]>>;
+  files: DesktopFile[];
+  setFiles: React.Dispatch<React.SetStateAction<DesktopFile[]>>;
 }) => React.MouseEventHandler<HTMLDivElement> = ({
   setWindowContextMenuIsOpen,
   setWindowContextMenuLocation,

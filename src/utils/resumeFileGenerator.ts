@@ -1,4 +1,4 @@
-import { File, Folder, TextFile } from "../utils/types";
+import { DesktopFile, Folder, TextFile } from "../utils/types";
 import { v4 as uuidv4 } from "uuid";
 import { DragTypes, FileIcon } from "./constants";
 import { XYCoord } from "react-dnd";
@@ -65,7 +65,7 @@ function addFolder({
   location,
   directory,
 }: {
-  files: File[];
+  files: DesktopFile[];
   folderName: string;
   location: XYCoord;
   directory: string | null;
@@ -96,7 +96,7 @@ function addTextFile({
   directory,
   content,
 }: {
-  files: File[];
+  files: DesktopFile[];
   fileName: string;
   location: XYCoord;
   directory: string | null;
@@ -128,7 +128,7 @@ async function handleFolder({
   directory,
 }: {
   directoryPath: string;
-  files: File[];
+  files: DesktopFile[];
   location: XYCoord;
   directory: string | null;
 }) {
@@ -174,8 +174,8 @@ async function handleFolder({
   }
 }
 
-export async function getResumeFiles(): Promise<File[]> {
-  const files: File[] = [];
+export async function getResumeFiles(): Promise<DesktopFile[]> {
+  const files: DesktopFile[] = [];
   await handleFolder({
     directoryPath: BASE_DIR,
     location: { x: 8, y: 88 },

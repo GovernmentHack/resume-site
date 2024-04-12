@@ -1,12 +1,12 @@
-import { File } from "../../utils/types";
+import { DesktopFile } from "../../utils/types";
 
 export function getIconTextClickHandler({
   files,
   setFiles,
   fileId,
 }: {
-  files: File[];
-  setFiles: React.Dispatch<React.SetStateAction<File[]>>;
+  files: DesktopFile[];
+  setFiles: React.Dispatch<React.SetStateAction<DesktopFile[]>>;
   fileId: string;
 }): React.MouseEventHandler<HTMLDivElement> {
   return (event) => {

@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { FileContext } from "../App";
 import styled from "styled-components";
-import { FileDragItem, File, TextFile } from "../utils/types";
+import { FileDragItem, DesktopFile, TextFile } from "../utils/types";
 import { DragSourceMonitor, useDrag } from "react-dnd";
 import {
   DragTypes,
@@ -240,8 +240,8 @@ function getCloseClickHandler({
   setFiles,
   fileId,
 }: {
-  files: File[];
-  setFiles: React.Dispatch<React.SetStateAction<File[]>>;
+  files: DesktopFile[];
+  setFiles: React.Dispatch<React.SetStateAction<DesktopFile[]>>;
   fileId: string;
 }): React.MouseEventHandler<any> {
   return (event) => {
@@ -267,8 +267,8 @@ function getSaveFileClickHandler({
   closeMenu,
   newContent,
 }: {
-  files: File[];
-  setFiles: React.Dispatch<React.SetStateAction<File[]>>;
+  files: DesktopFile[];
+  setFiles: React.Dispatch<React.SetStateAction<DesktopFile[]>>;
   fileId: string;
   closeMenu: () => void;
   newContent: string;

@@ -1,8 +1,8 @@
 import { XYCoord } from "react-dnd";
-import { File } from "./types";
+import { DesktopFile } from "./types";
 import { INITIAL_WINDOW_LOCATION } from "../Components/Desktop";
 
-export function generateNewWindowLocation(files: File[]): XYCoord {
+export function generateNewWindowLocation(files: DesktopFile[]): XYCoord {
   return files.reduce<XYCoord>((proposedLocation, currentFile) => {
     if (currentFile.type === "shortcut") {
       return proposedLocation;

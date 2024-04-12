@@ -11,7 +11,7 @@ import {
 import { XYCoord } from "react-dnd";
 import styled from "styled-components";
 import { generateNewWindowLocation } from "../utils/generateNewWindowLocation";
-import { Folder, TextFile, File } from "../utils/types";
+import { Folder, TextFile, DesktopFile } from "../utils/types";
 import { v4 as uuidv4 } from "uuid";
 import { FileContext } from "../App";
 
@@ -32,8 +32,8 @@ const NewTextDocumentIcon = styled.div`
 `;
 
 type newItemClickHandlerProps = {
-  setFiles: React.Dispatch<React.SetStateAction<File[]>>;
-  files: File[];
+  setFiles: React.Dispatch<React.SetStateAction<DesktopFile[]>>;
+  files: DesktopFile[];
   closeModals: () => void;
   location: XYCoord;
   directory: string | null;

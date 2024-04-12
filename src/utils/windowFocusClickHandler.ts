@@ -1,17 +1,19 @@
-import { File, Folder } from "./types";
+import { DesktopFile, Folder } from "./types";
 
 export function getWindowFocusClickHandler({
   files,
   setFiles,
   fileId,
 }: {
-  files: File[];
-  setFiles: React.Dispatch<React.SetStateAction<File[]>>;
+  files: DesktopFile[];
+  setFiles: React.Dispatch<React.SetStateAction<DesktopFile[]>>;
   fileId: string;
 }) {
   return () => {
     const fileToChange = files.find((file) => file.fileId === fileId);
-    const otherFiles: File[] = files.filter((file) => file.fileId !== fileId);
+    const otherFiles: DesktopFile[] = files.filter(
+      (file) => file.fileId !== fileId,
+    );
     if (
       fileToChange &&
       fileToChange.type !== "shortcut" &&

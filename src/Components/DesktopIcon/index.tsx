@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { DragSourceMonitor, useDrag } from "react-dnd";
 import { FileContext } from "../../App";
-import { File, FileDragItem } from "../../utils/types";
+import { DesktopFile, FileDragItem } from "../../utils/types";
 import { disableDragging } from "../../utils/constants";
 import { getIconClickHandler } from "./getIconClickHandler";
 import { getIconDoubleClickHandler } from "./getIconDoubleClickHandler";
@@ -21,7 +21,7 @@ function getFilenameText(text: string): string {
   return text;
 }
 
-type DesktopIconProps = File;
+type DesktopIconProps = DesktopFile;
 
 const DesktopIcon: React.FunctionComponent<DesktopIconProps> = ({
   icon,

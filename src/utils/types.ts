@@ -2,7 +2,7 @@ import { XYCoord } from "react-dnd";
 import { FileIcon, FileTypes, DragTypes } from "./constants";
 
 export type FileDragItem = {
-  fileId: File["fileId"];
+  fileId: DesktopFile["fileId"];
   type: (typeof DragTypes)[keyof typeof DragTypes];
 };
 
@@ -20,8 +20,8 @@ export type Shortcut = {
     setFiles,
     setLoading,
   }: {
-    files: File[];
-    setFiles: React.Dispatch<React.SetStateAction<File[]>>;
+    files: DesktopFile[];
+    setFiles: React.Dispatch<React.SetStateAction<DesktopFile[]>>;
     setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   }) => void;
   isEditable: boolean;
@@ -62,4 +62,4 @@ export type Folder = {
   directory: string | null;
 };
 
-export type File = TextFile | Folder | Shortcut;
+export type DesktopFile = TextFile | Folder | Shortcut;

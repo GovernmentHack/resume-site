@@ -6,7 +6,7 @@ import Modal from "react-modal";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { TouchBackend } from "react-dnd-touch-backend";
 import { DndProvider } from "react-dnd";
-import { File, Shortcut } from "./utils/types";
+import { DesktopFile, Shortcut } from "./utils/types";
 import { FileTypes, FileIcon } from "./utils/constants";
 import { v4 as uuidv4 } from "uuid";
 import { getResumeFiles } from "./utils/resumeFileGenerator";
@@ -37,8 +37,8 @@ const getResumeShortcut = (): Shortcut => {
       setFiles,
       setLoading,
     }: {
-      files: File[];
-      setFiles: React.Dispatch<React.SetStateAction<File[]>>;
+      files: DesktopFile[];
+      setFiles: React.Dispatch<React.SetStateAction<DesktopFile[]>>;
       setLoading: React.Dispatch<React.SetStateAction<boolean>>;
     }) => {
       // Remove the shortcut now so as to not allow accidental double clicking
@@ -61,15 +61,15 @@ const getResumeShortcut = (): Shortcut => {
 // Cursor styling from http://www.rw-designer.com/cursor-detail/151730
 
 export const FileContext = createContext<{
-  files: File[];
-  setFiles: React.Dispatch<React.SetStateAction<File[]>>;
+  files: DesktopFile[];
+  setFiles: React.Dispatch<React.SetStateAction<DesktopFile[]>>;
   loading: boolean;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }>({ files: [], setFiles: () => {}, loading: false, setLoading: () => {} });
 Modal.setAppElement("head");
 
 const App: React.FunctionComponent = () => {
-  const [files, setFiles] = useState<File[]>([]);
+  const [files, setFiles] = useState<DesktopFile[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   useEffect(() => {
     setFiles([...files, getResumeShortcut()]);

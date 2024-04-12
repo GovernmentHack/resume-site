@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { FileContext } from "../App";
 import styled from "styled-components";
-import { FileDragItem, File, Folder } from "../utils/types";
+import { FileDragItem, DesktopFile, Folder } from "../utils/types";
 import {
   DragSourceMonitor,
   DropTargetMonitor,
@@ -292,8 +292,8 @@ function getCloseClickHandler({
   setFiles,
   fileId,
 }: {
-  files: File[];
-  setFiles: React.Dispatch<React.SetStateAction<File[]>>;
+  files: DesktopFile[];
+  setFiles: React.Dispatch<React.SetStateAction<DesktopFile[]>>;
   fileId: string;
 }): React.MouseEventHandler<any> {
   return (event) => {

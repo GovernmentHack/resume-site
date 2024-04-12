@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { FileContext } from "../App";
 import DesktopIcon from "./DesktopIcon";
 import TextFileDesktopWindow from "./TextFileDesktopWindow";
-import { File, FileDragItem } from "../utils/types";
+import { DesktopFile, FileDragItem } from "../utils/types";
 import FolderDesktopWindow from "./FolderDesktopWindow";
 import { getWindowClickHandler } from "../utils/getWindowClickHandler";
 import { WindowContextModal } from "./WindowContextMenu";
@@ -53,7 +53,7 @@ const Desktop: React.FunctionComponent = () => {
                   x: endLocation.x,
                   y: endLocation.y,
                 },
-              } as File,
+              } as DesktopFile,
             ]);
           } else {
             setFiles([
@@ -65,7 +65,7 @@ const Desktop: React.FunctionComponent = () => {
                   y: endLocation.y,
                 },
                 directory: null,
-              } as File,
+              } as DesktopFile,
             ]);
           }
         }
