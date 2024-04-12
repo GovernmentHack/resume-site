@@ -7,12 +7,12 @@ const mockEvent = {
   stopPropagation: vi.fn(),
 } as unknown as React.MouseEvent<HTMLDivElement, MouseEvent>;
 
-describe("getIconClickHandler", () => {
+describe("getIconClickHandler returns a function that...", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it("returns a function that toggles the selected file's highlighted state", () => {
+  it("toggles the selected file's highlighted state", () => {
     const clickHandler = getIconClickHandler({
       files: [
         {
@@ -37,7 +37,7 @@ describe("getIconClickHandler", () => {
     );
   });
 
-  it("returns a function that ignores other files when changing file based on provided fileId", () => {
+  it("ignores other files when changing file based on provided fileId", () => {
     const clickHandler = getIconClickHandler({
       files: [
         {
@@ -74,7 +74,7 @@ describe("getIconClickHandler", () => {
     );
   });
 
-  it("returns a function that noops if the provided file ID is not found in the files", () => {
+  it("noops if the provided file ID is not found in the files", () => {
     const clickHandler = getIconClickHandler({
       files: [
         {
