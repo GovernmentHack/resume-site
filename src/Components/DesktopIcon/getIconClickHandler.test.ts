@@ -12,6 +12,22 @@ describe("getIconClickHandler returns a function that...", () => {
     vi.clearAllMocks();
   });
 
+  it("halts the event propigation", () => {
+    const clickHandler = getIconClickHandler({
+      files: [
+        {
+          fileId: "some_id",
+          isHighlighted: false,
+        } as unknown as DesktopFile,
+      ],
+      setFiles: mockSetFiles,
+      fileId: "some_id",
+    });
+
+    clickHandler(mockEvent);
+
+    expect(mockEvent.stopPropagation).toBeCalledTimes(1);
+  });
   it("toggles the selected file's highlighted state", () => {
     const clickHandler = getIconClickHandler({
       files: [
