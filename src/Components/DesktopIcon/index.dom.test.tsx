@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+import { vi } from "vitest";
 import { render } from "@testing-library/react";
 import DesktopIcon from ".";
 import React from "react";
