@@ -81,6 +81,7 @@ const Desktop: React.FunctionComponent = () => {
 
   return (
     <DesktopDiv
+      data-testid="desktop"
       ref={drop}
       onClick={getWindowClickHandler({
         setWindowContextMenuIsOpen: setDesktopContextMenuIsOpen,

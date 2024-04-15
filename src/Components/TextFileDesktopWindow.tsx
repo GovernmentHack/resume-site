@@ -327,6 +327,7 @@ const TextFileDesktopWindow: React.FunctionComponent<TextFileWindowProps> = ({
 
   return (
     <WindowContainer
+      data-testid={`${fileId}_textfile_window_container`}
       ref={drag}
       style={{
         left: windowLocation.x,

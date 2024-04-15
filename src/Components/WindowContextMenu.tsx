@@ -156,6 +156,7 @@ export const WindowContextModal: React.FunctionComponent<
       </DisabledMenuItem>
       <ContextMenuDivider />
       <ContextMenuButton
+        data-testid="window_context_menu_new_button"
         onMouseEnter={() => setWindowNewMenuIsOpen(true)}
         onMouseLeave={() => setWindowNewMenuIsOpen(false)}
         style={{

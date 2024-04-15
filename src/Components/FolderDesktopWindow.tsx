@@ -395,6 +395,7 @@ const FolderDesktopWindow: React.FunctionComponent<FolderWindowProps> = ({
 
   return (
     <WindowContainer
+      data-testid={`${fileId}_folder_window_container`}
       ref={drag}
       style={{
         left: windowLocation.x,
