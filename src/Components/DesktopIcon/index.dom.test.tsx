@@ -2,9 +2,12 @@ import { describe, it, expect, vi } from "vitest";
 import { render } from "@testing-library/react";
 import DesktopIcon from ".";
 import React from "react";
-import { FileIcon, FileTypes } from "../../utils/constants";
-import type { Folder, Shortcut, TextFile } from "../../utils/types";
 import { ICON_HIGHLIGHTED_BOX_SHADOW } from "./ComponentStyles";
+import {
+  getMockFolder,
+  getMockShortcut,
+  getMockTextFile,
+} from "../../utils/testUtils";
 
 const mocks = vi.hoisted(() => {
   return {
@@ -13,69 +16,11 @@ const mocks = vi.hoisted(() => {
   };
 });
 
-const mockTextFile: TextFile = {
-  fileName: "some text file",
-  fileId: "text_file_id",
-  location: {
-    x: 1,
-    y: 1,
-  },
-  windowLocation: {
-    x: 1,
-    y: 1,
-  },
-  windowIsFocused: false,
-  isHighlighted: false,
-  textIsEditing: false,
-  isOpen: false,
-  content:
-    "this is a really long string since this is the content for a text file",
-  isEditable: true,
-  type: FileTypes.textFile,
-  icon: FileIcon.textFile,
-  directory: null,
-};
+const mockTextFile = getMockTextFile();
 
-const mockFolder: Folder = {
-  fileName: "some folder",
-  fileId: "folder_file_id",
-  location: {
-    x: 1,
-    y: 1,
-  },
-  windowLocation: {
-    x: 1,
-    y: 1,
-  },
-  windowIsFocused: false,
-  isHighlighted: false,
-  textIsEditing: false,
-  isOpen: false,
-  content: null,
-  isEditable: true,
-  type: FileTypes.folder,
-  icon: FileIcon.closedFolder,
-  directory: null,
-};
+const mockFolder = getMockFolder();
 
-const mockShortcut: Shortcut = {
-  fileName: "some shortcut",
-  fileId: "shortcut_file_id",
-  location: {
-    x: 1,
-    y: 1,
-  },
-  windowLocation: null,
-  windowsIsFocused: null,
-  isHighlighted: false,
-  textIsEditing: false,
-  isOpen: null,
-  content: mocks.shortcutContent,
-  isEditable: true,
-  type: FileTypes.shortcut,
-  icon: FileIcon.executable,
-  directory: null,
-};
+const mockShortcut = getMockShortcut(mocks.shortcutContent);
 
 vi.mock("react-dnd", () => {
   return {
