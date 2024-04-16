@@ -4,11 +4,11 @@ import { DragTypes } from "../utils/constants";
 import styled from "styled-components";
 import { FileContext } from "../App";
 import DesktopIcon from "./DesktopIcon";
-import TextFileDesktopWindow from "./TextFileDesktopWindow";
+import TextFileWindow from "./TextFileWindow";
 import { DesktopFile, FileDragItem } from "../utils/types";
-import FolderDesktopWindow from "./FolderDesktopWindow";
+import FolderWindow from "./FolderWindow";
 import { getWindowClickHandler } from "../utils/getWindowClickHandler";
-import { WindowContextModal } from "./WindowContextMenu";
+import { ContextMenu } from "./ContextMenu";
 
 const DRAG_OFFSET_FIX = 17;
 export const INITIAL_WINDOW_LOCATION = { x: 24, y: 24 };
@@ -106,17 +106,17 @@ const Desktop: React.FunctionComponent = () => {
         (file) =>
           file.isOpen &&
           file.type === "textFile" && (
-            <TextFileDesktopWindow {...file} key={`${file.fileId}-window`} />
+            <TextFileWindow {...file} key={`${file.fileId}-window`} />
           ),
       )}
       {files.map(
         (file) =>
           file.isOpen &&
           file.type === "folder" && (
-            <FolderDesktopWindow {...file} key={`${file.fileId}-window`} />
+            <FolderWindow {...file} key={`${file.fileId}-window`} />
           ),
       )}
-      <WindowContextModal
+      <ContextMenu
         windowContextMenuIsOpen={desktopContextMenuIsOpen}
         windowContextMenuLocation={desktopContextMenuLocation}
         setWindowContextMenuIsOpen={setDesktopContextMenuIsOpen}

@@ -1,19 +1,19 @@
 import React, { useContext } from "react";
 import Modal from "react-modal";
-import { ContextMenuButton } from "./ContextMenuComponents/ContextMenuButton";
-import { ContextMenuDivider } from "./ContextMenuComponents/ContextMenuDivider";
-import { DisabledMenuItem } from "./ContextMenuComponents/DisabledMenuItem";
+import { ContextMenuButton } from "./ContextMenuButton";
+import { ContextMenuDivider } from "./ContextMenuDivider";
+import { DisabledMenuItem } from "./DisabledMenuItem";
 import {
   DragTypes,
   FileIcon,
   getContextMenuModalStyle,
-} from "../utils/constants";
+} from "../../utils/constants";
 import { XYCoord } from "react-dnd";
 import styled from "styled-components";
-import { generateNewWindowLocation } from "../utils/generateNewWindowLocation";
-import { Folder, TextFile, DesktopFile } from "../utils/types";
+import { generateNewWindowLocation } from "../../utils/generateNewWindowLocation";
+import { Folder, TextFile, DesktopFile } from "../../utils/types";
 import { v4 as uuidv4 } from "uuid";
-import { FileContext } from "../App";
+import { FileContext } from "../../App";
 
 const NewFolderButtonIcon = styled.div`
   background-image: url(icons/directory_closed_cool-1.png);
@@ -103,16 +103,14 @@ function getModalStyle(location: { x: number; y: number }): Modal.Styles {
   return getContextMenuModalStyle(location);
 }
 
-type WindowContextModalProps = {
+type ContextMenuProps = {
   windowContextMenuIsOpen: boolean;
   windowContextMenuLocation: XYCoord;
   setWindowContextMenuIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   fileId: newItemClickHandlerProps["directory"];
 };
 
-export const WindowContextModal: React.FunctionComponent<
-  WindowContextModalProps
-> = ({
+export const ContextMenu: React.FunctionComponent<ContextMenuProps> = ({
   windowContextMenuIsOpen,
   windowContextMenuLocation,
   setWindowContextMenuIsOpen,

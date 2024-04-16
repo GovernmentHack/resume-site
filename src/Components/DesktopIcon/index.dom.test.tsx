@@ -1,8 +1,7 @@
 import { vi } from "vitest";
 import { render } from "@testing-library/react";
-import DesktopIcon from ".";
+import DesktopIcon, { ICON_HIGHLIGHTED_BOX_SHADOW } from ".";
 import React from "react";
-import { ICON_HIGHLIGHTED_BOX_SHADOW } from "./ComponentStyles";
 import {
   getMockFolder,
   getMockShortcut,

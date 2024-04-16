@@ -7,13 +7,13 @@ import { getIconClickHandler } from "./getIconClickHandler";
 import { getIconDoubleClickHandler } from "./getIconDoubleClickHandler";
 import { getIconTextClickHandler } from "./getIconTextClickHandler";
 import { getIconTextSaveHandler } from "./getIconTextSaveHandler";
-import {
-  IconContainer,
-  IconImage,
-  IconTextEditable,
-  IconText,
-  ICON_HIGHLIGHTED_BOX_SHADOW,
-} from "./ComponentStyles";
+import { IconTextEditable } from "./IconTextEditable";
+import { IconText } from "./IconText";
+import { IconImage } from "./IconImage";
+import { IconContainer } from "./IconContainer";
+
+export const ICON_HIGHLIGHTED_BOX_SHADOW =
+  "inset 0 0 0 1000px rgba(1, 1, 122,.5)";
 
 function getFilenameText(text: string): string {
   if (text.length > 36) {
