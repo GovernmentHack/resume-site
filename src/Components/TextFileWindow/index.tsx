@@ -5,12 +5,12 @@ import { DragSourceMonitor, useDrag } from "react-dnd";
 import {
   DragTypes,
   disableDragging,
-  getContextMenuModalStyle,
 } from "../../utils/constants";
+import { getContextMenuModalStyle } from "../../utils/getContextMenuModalStyle";
 import Modal from "react-modal";
-import { ContextMenuButton } from "../ContextMenu/ContextMenuButton";
-import { ContextMenuDivider } from "../ContextMenu/ContextMenuDivider";
-import { DisabledMenuItem } from "../ContextMenu/DisabledMenuItem";
+import { ContextMenuButton } from "../shared/ContextMenuButton";
+import { ContextMenuDivider } from "../shared/ContextMenuDivider";
+import { DisabledMenuItem } from "../shared/DisabledMenuItem";
 import { getWindowFocusClickHandler } from "../../utils/windowFocusClickHandler";
 import { WindowContainer } from "../shared/WindowContainer";
 import { Toolbar } from "./Toolbar";

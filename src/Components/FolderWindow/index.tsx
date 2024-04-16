@@ -8,11 +8,12 @@ import {
   useDrag,
   useDrop,
 } from "react-dnd";
-import { DragTypes, getContextMenuModalStyle } from "../../utils/constants";
+import { DragTypes } from "../../utils/constants";
+import { getContextMenuModalStyle } from "../../utils/getContextMenuModalStyle";
 import Modal from "react-modal";
-import { ContextMenuButton } from "../ContextMenu/ContextMenuButton";
-import { ContextMenuDivider } from "../ContextMenu/ContextMenuDivider";
-import { DisabledMenuItem } from "../ContextMenu/DisabledMenuItem";
+import { ContextMenuButton } from "../shared/ContextMenuButton";
+import { ContextMenuDivider } from "../shared/ContextMenuDivider";
+import { DisabledMenuItem } from "../shared/DisabledMenuItem";
 import DesktopIcon from "../DesktopIcon";
 import { getWindowFocusClickHandler } from "../../utils/windowFocusClickHandler";
 import { getWindowClickHandler } from "../../utils/getWindowClickHandler";

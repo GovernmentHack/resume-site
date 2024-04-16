@@ -2,7 +2,7 @@ import React from "react";
 import { disableDragging } from "../../utils/constants";
 import { ToolbarTextDisabled } from "../shared/ToolbarTextDisabled";
 import { ToolbarContainer } from "../shared/ToolbarContainer";
-import { ContextMenuVerticalDivider } from "../ContextMenu/ContextMenuVerticalDivider";
+import { ContextMenuVerticalDivider } from "../shared/ContextMenuVerticalDivider";
 
 export const Toolbar: React.FunctionComponent = () => {
   return (

@@ -1,113 +1,18 @@
-import React, { useContext } from "react";
+import React from "react";
 import Modal from "react-modal";
-import { ContextMenuButton } from "./ContextMenuButton";
-import { ContextMenuDivider } from "./ContextMenuDivider";
-import { DisabledMenuItem } from "./DisabledMenuItem";
-import {
-  DragTypes,
-  FileIcon,
-  getContextMenuModalStyle,
-} from "../../utils/constants";
+import { ContextMenuButton } from "../shared/ContextMenuButton";
+import { ContextMenuDivider } from "../shared/ContextMenuDivider";
+import { DisabledMenuItem } from "../shared/DisabledMenuItem";
+import { getContextMenuModalStyle } from "../../utils/getContextMenuModalStyle";
 import { XYCoord } from "react-dnd";
-import styled from "styled-components";
-import { generateNewWindowLocation } from "../../utils/generateNewWindowLocation";
-import { Folder, TextFile, DesktopFile } from "../../utils/types";
-import { v4 as uuidv4 } from "uuid";
-import { FileContext } from "../../App";
-
-const NewFolderButtonIcon = styled.div`
-  background-image: url(icons/directory_closed_cool-1.png);
-  background-repeat: no-repeat;
-  height: 18px;
-  width: 18px;
-  padding-right: 2px;
-`;
-
-const NewTextDocumentIcon = styled.div`
-  background-image: url(icons/notepad_file-1.png);
-  background-repeat: no-repeat;
-  height: 18px;
-  width: 18px;
-  padding-right: 2px;
-`;
-
-type newItemClickHandlerProps = {
-  setFiles: React.Dispatch<React.SetStateAction<DesktopFile[]>>;
-  files: DesktopFile[];
-  closeModals: () => void;
-  location: XYCoord;
-  directory: string | null;
-};
-
-function getNewFolderClickHandler({
-  setFiles,
-  files,
-  closeModals,
-  location,
-  directory,
-}: newItemClickHandlerProps): React.MouseEventHandler<HTMLDivElement> {
-  return (event) => {
-    event.stopPropagation();
-    const windowLocation = generateNewWindowLocation(files);
-    setFiles([
-      ...files,
-      {
-        fileId: uuidv4(),
-        icon: FileIcon.closedFolder,
-        fileName: "New Folder",
-        type: DragTypes.folder,
-        location,
-        windowLocation,
-        isHighlighted: false,
-        textIsEditing: true,
-        isOpen: false,
-        directory,
-      } as Folder,
-    ]);
-    closeModals();
-  };
-}
-
-function getNewTextFileClickHandler({
-  setFiles,
-  files,
-  closeModals,
-  location,
-  directory,
-}: newItemClickHandlerProps): React.MouseEventHandler<HTMLDivElement> {
-  return (event) => {
-    event.stopPropagation();
-    const windowLocation = generateNewWindowLocation(files);
-    setFiles([
-      ...files,
-      {
-        fileId: uuidv4(),
-        icon: FileIcon.textFile,
-        fileName: "New Text Document",
-        type: DragTypes.textFile,
-        location,
-        windowLocation,
-        isHighlighted: false,
-        textIsEditing: true,
-        isOpen: false,
-        isEditable: true,
-        content: "",
-        directory,
-      } as TextFile,
-    ]);
-    closeModals();
-  };
-}
-
-function getModalStyle(location: { x: number; y: number }): Modal.Styles {
-  return getContextMenuModalStyle(location);
-}
+import { NewMenuButton } from "./NewMenuButton";
+import { DesktopFile } from "../../utils/types";
 
 type ContextMenuProps = {
   windowContextMenuIsOpen: boolean;
   windowContextMenuLocation: XYCoord;
   setWindowContextMenuIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  fileId: newItemClickHandlerProps["directory"];
+  fileId: DesktopFile["directory"];
 };
 
 export const ContextMenu: React.FunctionComponent<ContextMenuProps> = ({
@@ -116,13 +21,11 @@ export const ContextMenu: React.FunctionComponent<ContextMenuProps> = ({
   setWindowContextMenuIsOpen,
   fileId,
 }) => {
-  const { files, setFiles } = useContext(FileContext);
-  const [windowNewMenuIsOpen, setWindowNewMenuIsOpen] = React.useState(false);
   return (
     <Modal
       isOpen={windowContextMenuIsOpen}
       onRequestClose={() => setWindowContextMenuIsOpen(false)}
-      style={getModalStyle(windowContextMenuLocation)}
+      style={getContextMenuModalStyle(windowContextMenuLocation)}
     >
       <DisabledMenuItem>
         <div>
@@ -153,71 +56,11 @@ export const ContextMenu: React.FunctionComponent<ContextMenuProps> = ({
         </div>
       </DisabledMenuItem>
       <ContextMenuDivider />
-      <ContextMenuButton
-        data-testid="window_context_menu_new_button"
-        onMouseEnter={() => setWindowNewMenuIsOpen(true)}
-        onMouseLeave={() => setWindowNewMenuIsOpen(false)}
-        style={{
-          backgroundColor: windowNewMenuIsOpen ? "navy" : undefined,
-          color: windowNewMenuIsOpen ? "white" : undefined,
-        }}
-        onClick={(event) => event.stopPropagation()}
-      >
-        <div>
-          Ne<u>w</u>
-        </div>
-        <div>▶</div>
-        <Modal
-          isOpen={windowNewMenuIsOpen}
-          onRequestClose={() => setWindowNewMenuIsOpen(false)}
-          style={getModalStyle({
-            x: windowContextMenuLocation.x + 164,
-            y: windowContextMenuLocation.y + 118,
-          })}
-        >
-          <ContextMenuButton
-            style={{
-              justifyContent: "flex-start",
-              paddingLeft: "2px",
-            }}
-            onClick={getNewFolderClickHandler({
-              setFiles,
-              files,
-              location: windowContextMenuLocation,
-              closeModals: () => {
-                setWindowNewMenuIsOpen(false);
-                setWindowContextMenuIsOpen(false);
-              },
-              directory: fileId,
-            })}
-          >
-            <NewFolderButtonIcon />
-            <div>
-              <u>F</u>older
-            </div>
-          </ContextMenuButton>
-          <ContextMenuDivider />
-          <ContextMenuButton
-            style={{
-              justifyContent: "flex-start",
-              paddingLeft: "2px",
-            }}
-            onClick={getNewTextFileClickHandler({
-              setFiles,
-              files,
-              location: windowContextMenuLocation,
-              closeModals: () => {
-                setWindowNewMenuIsOpen(false);
-                setWindowContextMenuIsOpen(false);
-              },
-              directory: fileId,
-            })}
-          >
-            <NewTextDocumentIcon />
-            <div>Text Document</div>
-          </ContextMenuButton>
-        </Modal>
-      </ContextMenuButton>
+      <NewMenuButton
+        fileId={fileId}
+        windowContextMenuLocation={windowContextMenuLocation}
+        setWindowContextMenuIsOpen={setWindowContextMenuIsOpen}
+      />
       <ContextMenuDivider />
     </Modal>
   );
