@@ -6,7 +6,7 @@ import { DisabledMenuItem } from "../shared/DisabledMenuItem";
 import { getContextMenuModalStyle } from "../../utils/getContextMenuModalStyle";
 import { XYCoord } from "react-dnd";
 import { NewMenuButton } from "./NewMenuButton";
-import { DesktopFile } from "../../utils/types";
+import { DesktopFile } from "../../types";
 
 type ContextMenuProps = {
   windowContextMenuIsOpen: boolean;

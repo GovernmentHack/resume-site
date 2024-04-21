@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { FileContext } from "../../App";
-import { FileDragItem, Folder } from "../../utils/types";
+import { FileDragItem, Folder } from "../../types";
 import {
   DragSourceMonitor,
   DropTargetMonitor,
@@ -8,7 +8,7 @@ import {
   useDrag,
   useDrop,
 } from "react-dnd";
-import { DragTypes } from "../../utils/constants";
+import { DRAG_TYPE } from "../../utils/constants";
 import { getContextMenuModalStyle } from "../../utils/getContextMenuModalStyle";
 import Modal from "react-modal";
 import { ContextMenuButton } from "../shared/ContextMenuButton";
@@ -49,7 +49,7 @@ const FolderWindow: React.FunctionComponent<FolderWindowProps> = ({
     unknown,
     { isDragging: boolean }
   >(() => ({
-    type: DragTypes.window,
+    type: DRAG_TYPE.window,
     collect: (monitor: DragSourceMonitor<unknown, unknown>) => {
       return {
         isDragging: monitor.isDragging(),
@@ -60,7 +60,7 @@ const FolderWindow: React.FunctionComponent<FolderWindowProps> = ({
     },
     item: {
       fileId,
-      type: DragTypes.window,
+      type: DRAG_TYPE.window,
     },
   }));
   const [, drop] = useDrop<
@@ -69,7 +69,7 @@ const FolderWindow: React.FunctionComponent<FolderWindowProps> = ({
     { canDrop: boolean; isOver: boolean; dropLocation: XYCoord | null }
   >(
     () => ({
-      accept: [DragTypes.textFile, DragTypes.folder, DragTypes.shortcut],
+      accept: [DRAG_TYPE.textFile, DRAG_TYPE.folder, DRAG_TYPE.shortcut],
       collect: (monitor: DropTargetMonitor<unknown, unknown>) => ({
         isOver: monitor.isOver(),
         canDrop: monitor.canDrop(),

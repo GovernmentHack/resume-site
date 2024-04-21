@@ -1,4 +1,4 @@
-import { DesktopFile } from "../../utils/types";
+import { DesktopFile } from "../../types";
 
 export function getIconDoubleClickHandler({
   files,

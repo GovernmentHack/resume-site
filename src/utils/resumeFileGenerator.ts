@@ -1,6 +1,6 @@
-import { DesktopFile, Folder, TextFile } from "../utils/types";
+import { DesktopFile, Folder, TextFile } from "../types";
 import { v4 as uuidv4 } from "uuid";
-import { DragTypes, FileIcon } from "./constants";
+import { DRAG_TYPE, FILE_ICON } from "./constants";
 import { XYCoord } from "react-dnd";
 import axios from "axios";
 import { generateNewWindowLocation } from "./generateNewWindowLocation";
@@ -72,9 +72,9 @@ function addFolder({
 }): Folder {
   const newFolder: Folder = {
     fileId: uuidv4(),
-    icon: FileIcon.closedFolder,
+    icon: FILE_ICON.closedFolder,
     fileName: folderName,
-    type: DragTypes.folder,
+    type: DRAG_TYPE.folder,
     location,
     windowLocation: { x: 24, y: 24 },
     windowIsFocused: false,
@@ -104,9 +104,9 @@ function addTextFile({
 }): TextFile {
   const newTextFile: TextFile = {
     fileId: uuidv4(),
-    icon: FileIcon.textFile,
+    icon: FILE_ICON.textFile,
     fileName,
-    type: DragTypes.textFile,
+    type: DRAG_TYPE.textFile,
     location,
     windowLocation: generateNewWindowLocation(files),
     windowIsFocused: false,

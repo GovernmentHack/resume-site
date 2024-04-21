@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { DragSourceMonitor, useDrag } from "react-dnd";
 import { FileContext } from "../../App";
-import { DesktopFile, FileDragItem } from "../../utils/types";
+import { DesktopFile, FileDragItem } from "../../types";
 import { disableDragging } from "../../utils/constants";
 import { getIconClickHandler } from "./getIconClickHandler";
 import { getIconDoubleClickHandler } from "./getIconDoubleClickHandler";

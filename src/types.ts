@@ -1,9 +1,11 @@
 import { XYCoord } from "react-dnd";
-import { FileIcon, FileTypes, DragTypes } from "./constants";
+import { FILE_ICON, FILE_TYPE } from "./utils/constants";
+
+export type DragType = "textFile" | "folder" | "window" | "shortcut";
 
 export type FileDragItem = {
   fileId: DesktopFile["fileId"];
-  type: (typeof DragTypes)[keyof typeof DragTypes];
+  type: DragType;
 };
 
 export type Shortcut = {
@@ -25,8 +27,8 @@ export type Shortcut = {
     setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   }) => void;
   isEditable: boolean;
-  type: typeof FileTypes.shortcut;
-  icon: typeof FileIcon.executable;
+  type: typeof FILE_TYPE.shortcut;
+  icon: typeof FILE_ICON.executable;
   directory: string | null;
 };
 
@@ -41,8 +43,8 @@ export type TextFile = {
   isOpen: boolean;
   content: string;
   isEditable: boolean;
-  type: typeof FileTypes.textFile;
-  icon: typeof FileIcon.textFile;
+  type: typeof FILE_TYPE.textFile;
+  icon: typeof FILE_ICON.textFile;
   directory: string | null;
 };
 
@@ -57,8 +59,8 @@ export type Folder = {
   isOpen: boolean;
   content: null;
   isEditable: boolean;
-  type: typeof FileTypes.folder;
-  icon: typeof FileIcon.closedFolder;
+  type: typeof FILE_TYPE.folder;
+  icon: typeof FILE_ICON.closedFolder;
   directory: string | null;
 };
 

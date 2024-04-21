@@ -6,8 +6,8 @@ import Modal from "react-modal";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { TouchBackend } from "react-dnd-touch-backend";
 import { DndProvider } from "react-dnd";
-import { DesktopFile, Shortcut } from "./utils/types";
-import { FileTypes, FileIcon } from "./utils/constants";
+import { DesktopFile, Shortcut } from "./types";
+import { FILE_TYPE, FILE_ICON } from "./utils/constants";
 import { v4 as uuidv4 } from "uuid";
 import { getResumeFiles } from "./utils/resumeFileGenerator";
 
@@ -52,8 +52,8 @@ const getResumeShortcut = (): Shortcut => {
       }, 0);
     },
     isEditable: false,
-    type: FileTypes.shortcut,
-    icon: FileIcon.executable,
+    type: FILE_TYPE.shortcut,
+    icon: FILE_ICON.executable,
     directory: null,
   } as Shortcut;
 };

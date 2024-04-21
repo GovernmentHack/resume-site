@@ -7,9 +7,9 @@ import { NewTextDocumentIcon } from "../shared/icons/NewTextDocumentIcon";
 import { FileContext } from "../../App";
 import { getContextMenuModalStyle } from "../../utils/getContextMenuModalStyle";
 import { XYCoord } from "react-dnd";
-import { DesktopFile } from "../../utils/types";
+import { DesktopFile } from "../../types";
 import { getNewButtonClickHandler } from "./getNewButtonClickHandler";
-import { FileTypes } from "../../utils/constants";
+import { FILE_TYPE } from "../../utils/constants";
 
 type NewButtonProps = {
   windowContextMenuLocation: XYCoord;
@@ -26,7 +26,7 @@ export const NewMenuButton: React.FunctionComponent<NewButtonProps> = ({
   const [windowNewMenuIsOpen, setWindowNewMenuIsOpen] = React.useState(false);
   return (
     <ContextMenuButton
-      data-testid="window_context_menu_new_button"
+      data-testid="context_menu_new_button"
       onMouseEnter={() => setWindowNewMenuIsOpen(true)}
       onMouseLeave={() => setWindowNewMenuIsOpen(false)}
       style={{
@@ -48,6 +48,7 @@ export const NewMenuButton: React.FunctionComponent<NewButtonProps> = ({
         })}
       >
         <ContextMenuButton
+          data-testid="context_menu_new_folder_button"
           style={{
             justifyContent: "flex-start",
             paddingLeft: "2px",
@@ -61,7 +62,7 @@ export const NewMenuButton: React.FunctionComponent<NewButtonProps> = ({
               setWindowContextMenuIsOpen(false);
             },
             directory: fileId,
-            type: FileTypes.folder,
+            type: FILE_TYPE.folder,
           })}
         >
           <NewFolderButtonIcon />
@@ -71,6 +72,7 @@ export const NewMenuButton: React.FunctionComponent<NewButtonProps> = ({
         </ContextMenuButton>
         <ContextMenuDivider />
         <ContextMenuButton
+          data-testid="context_menu_new_textfile_button"
           style={{
             justifyContent: "flex-start",
             paddingLeft: "2px",
@@ -84,7 +86,7 @@ export const NewMenuButton: React.FunctionComponent<NewButtonProps> = ({
               setWindowContextMenuIsOpen(false);
             },
             directory: fileId,
-            type: FileTypes.textFile,
+            type: FILE_TYPE.textFile,
           })}
         >
           <NewTextDocumentIcon />

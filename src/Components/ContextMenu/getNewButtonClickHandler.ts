@@ -1,7 +1,7 @@
 import React from "react";
-import { DragTypes, FileIcon, FileTypes } from "../../utils/constants";
+import { FILE_ICON, FILE_TYPE } from "../../utils/constants";
 import { generateNewWindowLocation } from "../../utils/generateNewWindowLocation";
-import { DesktopFile, Folder, TextFile } from "../../utils/types";
+import { DesktopFile, Folder, TextFile } from "../../types";
 import { v4 as uuidv4 } from "uuid";
 
 export type newItemClickHandlerProps = {
@@ -49,12 +49,12 @@ function createNewFile({
   type,
 }: CreateNewFileParams): DesktopFile | undefined {
   switch (type) {
-    case FileTypes.textFile:
+    case FILE_TYPE.textFile:
       return {
         fileId: uuidv4(),
-        icon: FileIcon.textFile,
+        icon: FILE_ICON.textFile,
         fileName: "New Text Document",
-        type: DragTypes.textFile,
+        type: FILE_TYPE.textFile,
         location,
         windowLocation,
         windowIsFocused: false,
@@ -65,12 +65,12 @@ function createNewFile({
         content: "",
         directory,
       } as TextFile;
-    case FileTypes.folder:
+    case FILE_TYPE.folder:
       return {
         fileId: uuidv4(),
-        icon: FileIcon.closedFolder,
+        icon: FILE_ICON.closedFolder,
         fileName: "New Folder",
-        type: DragTypes.folder,
+        type: FILE_TYPE.folder,
         location,
         windowLocation,
         isHighlighted: false,

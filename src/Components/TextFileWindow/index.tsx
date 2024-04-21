@@ -1,9 +1,9 @@
 import React, { useContext, useState } from "react";
 import { FileContext } from "../../App";
-import { FileDragItem, TextFile } from "../../utils/types";
+import { FileDragItem, TextFile } from "../../types";
 import { DragSourceMonitor, useDrag } from "react-dnd";
 import {
-  DragTypes,
+  DRAG_TYPE,
   disableDragging,
 } from "../../utils/constants";
 import { getContextMenuModalStyle } from "../../utils/getContextMenuModalStyle";
@@ -42,7 +42,7 @@ const TextFileDesktopWindow: React.FunctionComponent<TextFileWindowProps> = ({
     unknown,
     { isDragging: boolean }
   >(() => ({
-    type: DragTypes.window,
+    type: DRAG_TYPE.window,
     collect: (monitor: DragSourceMonitor<unknown, unknown>) => {
       return {
         isDragging: monitor.isDragging(),
@@ -53,7 +53,7 @@ const TextFileDesktopWindow: React.FunctionComponent<TextFileWindowProps> = ({
     },
     item: {
       fileId,
-      type: DragTypes.window,
+      type: DRAG_TYPE.window,
     },
   }));
 

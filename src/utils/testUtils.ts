@@ -1,5 +1,5 @@
-import { FileTypes, FileIcon } from "./constants";
-import { TextFile, Folder, Shortcut } from "./types";
+import { FILE_TYPE, FILE_ICON } from "./constants";
+import { TextFile, Folder, Shortcut } from "../types";
 
 export function getMockTextFile(): TextFile {
   return {
@@ -20,8 +20,8 @@ export function getMockTextFile(): TextFile {
     content:
       "this is a really long string since this is the content for a text file",
     isEditable: true,
-    type: FileTypes.textFile,
-    icon: FileIcon.textFile,
+    type: FILE_TYPE.textFile,
+    icon: FILE_ICON.textFile,
     directory: null,
   };
 }
@@ -44,8 +44,8 @@ export function getMockFolder(): Folder {
     isOpen: false,
     content: null,
     isEditable: true,
-    type: FileTypes.folder,
-    icon: FileIcon.closedFolder,
+    type: FILE_TYPE.folder,
+    icon: FILE_ICON.closedFolder,
     directory: null,
   };
 }
@@ -65,8 +65,8 @@ export function getMockShortcut(content: Shortcut["content"]): Shortcut {
     isOpen: null,
     content: content,
     isEditable: true,
-    type: FileTypes.shortcut,
-    icon: FileIcon.executable,
+    type: FILE_TYPE.shortcut,
+    icon: FILE_ICON.executable,
     directory: null,
   };
 }

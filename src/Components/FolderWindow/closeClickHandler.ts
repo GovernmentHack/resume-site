@@ -1,5 +1,5 @@
 import React from "react";
-import { DesktopFile, Folder } from "../../utils/types";
+import { DesktopFile, Folder } from "../../types";
 
 export function getCloseClickHandler({
   files,

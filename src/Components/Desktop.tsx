@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
 import { DropTargetMonitor, XYCoord, useDrop } from "react-dnd";
-import { DragTypes } from "../utils/constants";
+import { DRAG_TYPE } from "../utils/constants";
 import styled from "styled-components";
 import { FileContext } from "../App";
 import DesktopIcon from "./DesktopIcon";
 import TextFileWindow from "./TextFileWindow";
-import { DesktopFile, FileDragItem } from "../utils/types";
+import { DesktopFile, FileDragItem } from "../types";
 import FolderWindow from "./FolderWindow";
 import { getWindowClickHandler } from "../utils/getWindowClickHandler";
 import { ContextMenu } from "./ContextMenu";
@@ -26,10 +26,10 @@ const Desktop: React.FunctionComponent = () => {
   >(
     () => ({
       accept: [
-        DragTypes.textFile,
-        DragTypes.folder,
-        DragTypes.window,
-        DragTypes.shortcut,
+        DRAG_TYPE.textFile,
+        DRAG_TYPE.folder,
+        DRAG_TYPE.window,
+        DRAG_TYPE.shortcut,
       ],
       collect: (monitor: DropTargetMonitor<unknown, unknown>) => ({
         isOver: monitor.isOver(),

@@ -1,5 +1,5 @@
 import React from "react";
-import { DesktopFile, TextFile } from "../../utils/types";
+import { DesktopFile, TextFile } from "../../types";
 
 export function getSaveFileClickHandler({
   files,

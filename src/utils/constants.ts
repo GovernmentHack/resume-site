@@ -1,19 +1,19 @@
 import { DragEventHandler, TouchEventHandler } from "react";
 
-export const DragTypes = {
+export const DRAG_TYPE = {
   textFile: "textFile",
   folder: "folder",
   window: "window",
   shortcut: "shortcut",
 } as const;
 
-export const FileTypes = {
+export const FILE_TYPE = {
   textFile: "textFile",
   folder: "folder",
   shortcut: "shortcut",
 } as const;
 
-export const FileIcon = {
+export const FILE_ICON = {
   closedFolder: "directory_closed_cool-2.png",
   textFile: "notepad_file-0.png",
   executable: "executable_gear-0.png",

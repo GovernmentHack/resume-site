@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { DesktopFile } from "../../utils/types";
+import { DesktopFile } from "../../types";
 import { getIconDoubleClickHandler } from "./getIconDoubleClickHandler";
 
 const mockSetFiles = vi.fn();
