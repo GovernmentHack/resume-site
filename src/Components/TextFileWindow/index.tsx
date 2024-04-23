@@ -2,10 +2,7 @@ import React, { useContext, useState } from "react";
 import { FileContext } from "../../App";
 import { FileDragItem, TextFile } from "../../types";
 import { DragSourceMonitor, useDrag } from "react-dnd";
-import {
-  DRAG_TYPE,
-  disableDragging,
-} from "../../utils/constants";
+import { DRAG_TYPE, disableDragging } from "../../utils/constants";
 import { getContextMenuModalStyle } from "../../utils/getContextMenuModalStyle";
 import Modal from "react-modal";
 import { ContextMenuButton } from "../shared/ContextMenuButton";
@@ -15,10 +12,10 @@ import { getWindowFocusClickHandler } from "../../utils/windowFocusClickHandler"
 import { WindowContainer } from "../shared/WindowContainer";
 import { Toolbar } from "./Toolbar";
 import { TextBox } from "./TextBox";
-import { getCloseClickHandler } from "./getCloseClickHandler";
 import { getSaveFileClickHandler } from "./getSaveFileClickHandler";
 import { Header } from "../shared/Header";
 import { NotepadIcon } from "../shared/icons/NotepadIcon";
+import { getCloseClickHandler } from "../shared/closeClickHandler";
 
 type TextFileWindowProps = TextFile;
 
@@ -57,6 +54,8 @@ const TextFileDesktopWindow: React.FunctionComponent<TextFileWindowProps> = ({
     },
   }));
 
+  const closeClickHandler = getCloseClickHandler({ fileId, files, setFiles });
+
   return (
     <WindowContainer
       data-testid={`${fileId}_textfile_window_container`}
@@ -78,7 +77,7 @@ const TextFileDesktopWindow: React.FunctionComponent<TextFileWindowProps> = ({
       <Header
         headerText={`${fileName} - Notepad`}
         Icon={NotepadIcon}
-        onCloseClick={getCloseClickHandler({ fileId, files, setFiles })}
+        onCloseClick={closeClickHandler}
       />
       <Toolbar
         onFileClick={(event) => {
@@ -136,9 +135,7 @@ const TextFileDesktopWindow: React.FunctionComponent<TextFileWindowProps> = ({
           <div>Ctrl+Shift+S</div>
         </DisabledMenuItem>
         <ContextMenuDivider />
-        <ContextMenuButton
-          onClick={getCloseClickHandler({ fileId, files, setFiles })}
-        >
+        <ContextMenuButton onClick={closeClickHandler}>
           <div>
             E<u>x</u>it
           </div>

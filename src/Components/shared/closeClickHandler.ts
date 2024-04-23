@@ -1,5 +1,5 @@
 import React from "react";
-import { DesktopFile, TextFile } from "../../types";
+import { DesktopFile } from "../../types";
 
 export function getCloseClickHandler({
   files,
@@ -20,7 +20,7 @@ export function getCloseClickHandler({
         {
           ...fileToChange,
           isOpen: false,
-        } as TextFile,
+        } as DesktopFile,
       ]);
     }
   };

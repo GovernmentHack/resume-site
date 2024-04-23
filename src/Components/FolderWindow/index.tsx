@@ -20,11 +20,11 @@ import { getWindowClickHandler } from "../../utils/getWindowClickHandler";
 import { ContextMenu } from "../ContextMenu";
 import { ContentArea } from "./ContentArea";
 import { WindowContainer } from "../shared/WindowContainer";
-import { getCloseClickHandler } from "./closeClickHandler";
 import { Header } from "../shared/Header";
 import { Toolbar } from "./Toolbar";
 import { AddressBar } from "./AddressBar";
 import { FolderExplorerIcon } from "../shared/icons/FolderExplorerIcon";
+import { getCloseClickHandler } from "../shared/closeClickHandler";
 
 type FolderWindowProps = Pick<
   Folder,

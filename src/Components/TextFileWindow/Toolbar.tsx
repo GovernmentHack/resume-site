@@ -20,11 +20,25 @@ export const Toolbar: React.FunctionComponent<ToolbarProps> = ({
         $fileMenuIsOpen={fileMenuIsOpen}
         onClick={onFileClick}
       >
-        File
+        <div>
+          <u>F</u>ile
+        </div>
       </ToolbarText>
-      <ToolbarTextDisabled>Edit</ToolbarTextDisabled>
-      <ToolbarTextDisabled>Search</ToolbarTextDisabled>
-      <ToolbarTextDisabled>Help</ToolbarTextDisabled>
+      <ToolbarTextDisabled>
+        <div>
+          <u>E</u>dit
+        </div>
+      </ToolbarTextDisabled>
+      <ToolbarTextDisabled>
+        <div>
+          <u>S</u>earch
+        </div>
+      </ToolbarTextDisabled>
+      <ToolbarTextDisabled>
+        <div>
+          <u>H</u>elp
+        </div>
+      </ToolbarTextDisabled>
     </ToolbarContainer>
   );
 };
