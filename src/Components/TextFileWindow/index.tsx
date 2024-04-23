@@ -17,7 +17,15 @@ import { Header } from "../shared/Header";
 import { NotepadIcon } from "../shared/icons/NotepadIcon";
 import { getCloseClickHandler } from "../shared/closeClickHandler";
 
-type TextFileWindowProps = TextFile;
+type TextFileWindowProps = Pick<
+  TextFile,
+  | "fileId"
+  | "fileName"
+  | "windowLocation"
+  | "windowIsFocused"
+  | "content"
+  | "isEditable"
+>;
 
 function getModalStyle(location: { x: number; y: number }): Modal.Styles {
   return getContextMenuModalStyle(location);
