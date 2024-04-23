@@ -26,7 +26,10 @@ import { Toolbar } from "./Toolbar";
 import { AddressBar } from "./AddressBar";
 import { FolderExplorerIcon } from "../shared/icons/FolderExplorerIcon";
 
-type FolderWindowProps = Folder;
+type FolderWindowProps = Pick<
+  Folder,
+  "fileId" | "fileName" | "windowIsFocused" | "windowLocation"
+>;
 
 function getModalStyle(location: { x: number; y: number }): Modal.Styles {
   return getContextMenuModalStyle(location);
@@ -109,6 +112,8 @@ const FolderWindow: React.FunctionComponent<FolderWindowProps> = ({
     [files],
   );
 
+  const closeClickHandler = getCloseClickHandler({ fileId, files, setFiles });
+
   return (
     <div
       data-testid={`${fileId}_folder_window_container`}
@@ -131,9 +136,15 @@ const FolderWindow: React.FunctionComponent<FolderWindowProps> = ({
         <Header
           Icon={FolderExplorerIcon}
           headerText={`Exploring - C:\\${fileName}`}
-          onCloseClick={getCloseClickHandler({ fileId, files, setFiles })}
+          onCloseClick={closeClickHandler}
         />
-        <Toolbar />
+        <Toolbar
+          onFileClick={(event) => {
+            event.stopPropagation();
+            setFileMenuIsOpen(true);
+          }}
+          fileMenuIsOpen={fileMenuIsOpen}
+        />
         <AddressBar fileName={fileName} />
         <ContentArea
           onContextMenu={getWindowClickHandler({
@@ -182,12 +193,12 @@ const FolderWindow: React.FunctionComponent<FolderWindowProps> = ({
             </div>
             <div>Ctrl+O</div>
           </DisabledMenuItem>
-          <ContextMenuButton>
+          <DisabledMenuItem>
             <div>
               <u>S</u>ave
             </div>
             <div>Ctrl+S</div>
-          </ContextMenuButton>
+          </DisabledMenuItem>
           <DisabledMenuItem>
             <div>
               Save <u>A</u>s
@@ -195,9 +206,7 @@ const FolderWindow: React.FunctionComponent<FolderWindowProps> = ({
             <div>Ctrl+Shift+S</div>
           </DisabledMenuItem>
           <ContextMenuDivider />
-          <ContextMenuButton
-            onClick={getCloseClickHandler({ fileId, files, setFiles })}
-          >
+          <ContextMenuButton onClick={closeClickHandler}>
             <div>
               E<u>x</u>it
             </div>

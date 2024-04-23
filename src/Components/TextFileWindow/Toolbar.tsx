@@ -16,18 +16,9 @@ export const Toolbar: React.FunctionComponent<ToolbarProps> = ({
   return (
     <ToolbarContainer {...disableDragging}>
       <ToolbarText
-        hoverStyling
+        $hoverStyling
+        $fileMenuIsOpen={fileMenuIsOpen}
         onClick={onFileClick}
-        style={
-          fileMenuIsOpen
-            ? {
-                borderRight: "2px solid #dfdfdf",
-                borderBottom: "2px solid #dfdfdf",
-                borderLeft: "2px solid #7f7f7f",
-                borderTop: "2px solid #7f7f7f",
-              }
-            : {}
-        }
       >
         File
       </ToolbarText>

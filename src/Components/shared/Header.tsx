@@ -26,7 +26,7 @@ export const Header: React.FunctionComponent<HeaderProps> = ({
   Icon,
 }) => {
   return (
-    <ToolbarContainer header>
+    <ToolbarContainer $header>
       <Icon />
       <HeaderText>{headerText}</HeaderText>
       <Spacer />

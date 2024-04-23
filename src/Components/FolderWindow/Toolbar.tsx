@@ -3,16 +3,25 @@ import { disableDragging } from "../../utils/constants";
 import { ToolbarTextDisabled } from "../shared/ToolbarTextDisabled";
 import { ToolbarContainer } from "../shared/ToolbarContainer";
 import { ContextMenuVerticalDivider } from "../shared/ContextMenuVerticalDivider";
+import { ToolbarText } from "../shared/ToolbarText";
 
-export const Toolbar: React.FunctionComponent = () => {
+export const Toolbar: React.FunctionComponent<{
+  onFileClick: React.MouseEventHandler<HTMLDivElement>;
+  fileMenuIsOpen: boolean;
+}> = ({ onFileClick, fileMenuIsOpen }) => {
   return (
     <ToolbarContainer {...disableDragging}>
       <ContextMenuVerticalDivider />
-      <ToolbarTextDisabled>
+      <ToolbarText
+        data-testid={"folder_window_file_toolbar_button"}
+        $hoverStyling
+        $fileMenuIsOpen={fileMenuIsOpen}
+        onClick={onFileClick}
+      >
         <div>
           <u>F</u>ile
         </div>
-      </ToolbarTextDisabled>
+      </ToolbarText>
       <ToolbarTextDisabled>
         <div>
           <u>E</u>dit

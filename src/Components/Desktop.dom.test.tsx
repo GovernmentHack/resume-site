@@ -195,8 +195,8 @@ describe("Desktop", () => {
     );
 
     const desktop = getByTestId("desktop");
-    fireEvent.contextMenu(desktop, {});
+    fireEvent.contextMenu(desktop);
 
-    expect(getByTestId("window_context_menu_new_button")).toBeDefined();
+    expect(getByTestId("context_menu_new_button")).toBeDefined();
   });
 });

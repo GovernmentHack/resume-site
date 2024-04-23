@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-export const ToolbarContainer = styled.div<{ header?: boolean }>`
-  background-color: ${(props) => (Boolean(props.header) ? "navy" : "silver")};
+export const ToolbarContainer = styled.div<{ $header?: boolean }>`
+  background-color: ${(props) => (Boolean(props.$header) ? "navy" : "silver")};
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
