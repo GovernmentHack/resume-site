@@ -3,7 +3,7 @@ import { render, fireEvent } from "@testing-library/react";
 import React from "react";
 import { FileContext } from "../../App";
 import FolderWindow from ".";
-import { getMockFolder, getMockTextFile } from "../../utils/testUtils";
+import { getMockFolder, getMockTextFile } from "../../testUtils";
 
 const mockFolder = getMockFolder();
 const mockFile = getMockTextFile();

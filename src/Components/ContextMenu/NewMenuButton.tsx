@@ -5,11 +5,11 @@ import { ContextMenuDivider } from "../shared/ContextMenuDivider";
 import { NewFolderButtonIcon } from "../shared/icons/NewFolderButtonIcon";
 import { NewTextDocumentIcon } from "../shared/icons/NewTextDocumentIcon";
 import { FileContext } from "../../App";
-import { getContextMenuModalStyle } from "../../utils/getContextMenuModalStyle";
+import { getContextMenuModalStyle } from "../shared/handlers/getContextMenuModalStyle";
 import { XYCoord } from "react-dnd";
 import { DesktopFile } from "../../types";
 import { getNewButtonClickHandler } from "./getNewButtonClickHandler";
-import { FILE_TYPE } from "../../utils/constants";
+import { FILE_TYPE } from "../shared/constants";
 
 type NewButtonProps = {
   windowContextMenuLocation: XYCoord;

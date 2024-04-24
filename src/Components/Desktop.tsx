@@ -1,16 +1,16 @@
 import React, { useContext } from "react";
 import { DropTargetMonitor, XYCoord, useDrop } from "react-dnd";
-import { DRAG_TYPE } from "../utils/constants";
+import { DRAG_TYPE } from "./shared/constants";
 import styled from "styled-components";
 import { FileContext } from "../App";
 import DesktopIcon from "./DesktopIcon";
 import TextFileWindow from "./TextFileWindow";
 import { DesktopFile, FileDragItem } from "../types";
 import FolderWindow from "./FolderWindow";
-import { getWindowClickHandler } from "../utils/getWindowClickHandler";
+import { getWindowClickHandler } from "./shared/handlers/getWindowClickHandler";
 import { ContextMenu } from "./ContextMenu";
 
-const DRAG_OFFSET_FIX = 17;
+export const DRAG_OFFSET_FIX = 17;
 export const INITIAL_WINDOW_LOCATION = { x: 24, y: 24 };
 
 const DesktopDiv = styled.div`
@@ -36,9 +36,6 @@ const Desktop: React.FunctionComponent = () => {
         canDrop: monitor.canDrop(),
         dropLocation: monitor.getClientOffset(),
       }),
-      hover: (item, monitor) => {
-        // console.log(monitor.canDrop());
-      },
       drop: (item, monitor) => {
         const endLocation = monitor.getSourceClientOffset();
         const fileToChange = files.find((file) => file.fileId === item.fileId);

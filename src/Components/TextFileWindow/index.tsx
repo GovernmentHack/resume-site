@@ -2,20 +2,20 @@ import React, { useContext, useState } from "react";
 import { FileContext } from "../../App";
 import { FileDragItem, TextFile } from "../../types";
 import { DragSourceMonitor, useDrag } from "react-dnd";
-import { DRAG_TYPE, disableDragging } from "../../utils/constants";
-import { getContextMenuModalStyle } from "../../utils/getContextMenuModalStyle";
+import { DRAG_TYPE, disableDragging } from "../shared/constants";
+import { getContextMenuModalStyle } from "../shared/handlers/getContextMenuModalStyle";
 import Modal from "react-modal";
 import { ContextMenuButton } from "../shared/ContextMenuButton";
 import { ContextMenuDivider } from "../shared/ContextMenuDivider";
 import { DisabledMenuItem } from "../shared/DisabledMenuItem";
-import { getWindowFocusClickHandler } from "../../utils/windowFocusClickHandler";
+import { getWindowFocusClickHandler } from "../shared/handlers/windowFocusClickHandler";
 import { WindowContainer } from "../shared/WindowContainer";
 import { Toolbar } from "./Toolbar";
 import { TextBox } from "./TextBox";
 import { getSaveFileClickHandler } from "./getSaveFileClickHandler";
 import { Header } from "../shared/Header";
 import { NotepadIcon } from "../shared/icons/NotepadIcon";
-import { getCloseClickHandler } from "../shared/closeClickHandler";
+import { getCloseClickHandler } from "../shared/handlers/closeClickHandler";
 
 type TextFileWindowProps = Pick<
   TextFile,

@@ -1,5 +1,5 @@
 import { XYCoord } from "react-dnd";
-import { FILE_ICON, FILE_TYPE } from "./utils/constants";
+import { FILE_ICON, FILE_TYPE } from "./Components/shared/constants";
 
 export type DragType = "textFile" | "folder" | "window" | "shortcut";
 

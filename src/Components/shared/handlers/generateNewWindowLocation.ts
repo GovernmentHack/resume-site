@@ -1,6 +1,6 @@
 import { XYCoord } from "react-dnd";
-import { DesktopFile } from "../types";
-import { INITIAL_WINDOW_LOCATION } from "../Components/Desktop";
+import { DesktopFile } from "../../../types";
+import { INITIAL_WINDOW_LOCATION } from "../../Desktop";
 
 export function generateNewWindowLocation(files: DesktopFile[]): XYCoord {
   return files.reduce<XYCoord>((proposedLocation, currentFile) => {

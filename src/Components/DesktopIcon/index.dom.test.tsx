@@ -6,7 +6,8 @@ import {
   getMockFolder,
   getMockShortcut,
   getMockTextFile,
-} from "../../utils/testUtils";
+} from "../../testUtils";
+import { FileContext } from "../../App";
 
 const mocks = vi.hoisted(() => {
   return {
@@ -45,6 +46,31 @@ describe("DesktopIcon", () => {
     it("should render for a shortcut", () => {
       const { getByTestId } = render(<DesktopIcon {...mockShortcut} />);
       expect(getByTestId(`${mockShortcut.fileId}_file_icon`)).toBeDefined();
+    });
+
+    it("with the drag and drop config", () => {
+      const mockSetFiles = vi.fn();
+      render(
+        <FileContext.Provider
+          value={{
+            files: [mockShortcut],
+            setFiles: mockSetFiles,
+            loading: false,
+            setLoading: vi.fn(),
+          }}
+        >
+          <DesktopIcon {...mockTextFile} />
+        </FileContext.Provider>,
+      );
+
+      const dndFactory = mocks.useDrag.mock.lastCall[0];
+      const dndHandlers = dndFactory();
+
+      expect(dndHandlers.options).toEqual({ dropEffect: "move" });
+      expect(dndHandlers.item).toEqual({
+        fileId: mockTextFile.fileId,
+        type: mockTextFile.type,
+      });
     });
 
     it("make invisible when dragging", () => {

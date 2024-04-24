@@ -3,7 +3,8 @@ import { render, fireEvent } from "@testing-library/react";
 import React from "react";
 import { FileContext } from "../../App";
 import TextFileDesktopWindow from ".";
-import { getMockTextFile } from "../../utils/testUtils";
+import { getMockTextFile } from "../../testUtils";
+import { DRAG_TYPE } from "../shared/constants";
 
 const mockTextFile = getMockTextFile();
 
@@ -105,5 +106,38 @@ describe("TextFileWindow", () => {
     fireEvent.click(getByTestId("textfile_window_file_toolbar_button"));
 
     expect(getByText("Ctrl+N")).toBeDefined();
+  });
+
+  it("renders with the drag and drop config", () => {
+    const mockSetFiles = vi.fn();
+    render(
+      <FileContext.Provider
+        value={{
+          files: [mockTextFile],
+          setFiles: mockSetFiles,
+          loading: false,
+          setLoading: vi.fn(),
+        }}
+      >
+        <TextFileDesktopWindow
+          fileId={mockTextFile.fileId}
+          fileName={mockTextFile.fileName}
+          windowLocation={mockTextFile.windowLocation}
+          windowIsFocused={mockTextFile.windowIsFocused}
+          content={mockTextFile.content}
+          isEditable={mockTextFile.isEditable}
+        />
+      </FileContext.Provider>,
+    );
+
+    const dndFactory = mocks.useDrag.mock.lastCall[0];
+    const dndHandlers = dndFactory();
+
+    expect(dndHandlers.type).toEqual(DRAG_TYPE.window);
+    expect(dndHandlers.options).toEqual({ dropEffect: "move" });
+    expect(dndHandlers.item).toEqual({
+      fileId: mockTextFile.fileId,
+      type: DRAG_TYPE.window,
+    });
   });
 });

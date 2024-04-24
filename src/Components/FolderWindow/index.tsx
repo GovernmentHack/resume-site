@@ -8,15 +8,15 @@ import {
   useDrag,
   useDrop,
 } from "react-dnd";
-import { DRAG_TYPE } from "../../utils/constants";
-import { getContextMenuModalStyle } from "../../utils/getContextMenuModalStyle";
+import { DRAG_TYPE } from "../shared/constants";
+import { getContextMenuModalStyle } from "../shared/handlers/getContextMenuModalStyle";
 import Modal from "react-modal";
 import { ContextMenuButton } from "../shared/ContextMenuButton";
 import { ContextMenuDivider } from "../shared/ContextMenuDivider";
 import { DisabledMenuItem } from "../shared/DisabledMenuItem";
 import DesktopIcon from "../DesktopIcon";
-import { getWindowFocusClickHandler } from "../../utils/windowFocusClickHandler";
-import { getWindowClickHandler } from "../../utils/getWindowClickHandler";
+import { getWindowFocusClickHandler } from "../shared/handlers/windowFocusClickHandler";
+import { getWindowClickHandler } from "../shared/handlers/getWindowClickHandler";
 import { ContextMenu } from "../ContextMenu";
 import { ContentArea } from "./ContentArea";
 import { WindowContainer } from "../shared/WindowContainer";
@@ -24,7 +24,7 @@ import { Header } from "../shared/Header";
 import { Toolbar } from "./Toolbar";
 import { AddressBar } from "./AddressBar";
 import { FolderExplorerIcon } from "../shared/icons/FolderExplorerIcon";
-import { getCloseClickHandler } from "../shared/closeClickHandler";
+import { getCloseClickHandler } from "../shared/handlers/closeClickHandler";
 
 type FolderWindowProps = Pick<
   Folder,

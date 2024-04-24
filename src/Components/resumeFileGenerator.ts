@@ -1,9 +1,9 @@
 import { DesktopFile, Folder, TextFile } from "../types";
 import { v4 as uuidv4 } from "uuid";
-import { DRAG_TYPE, FILE_ICON } from "./constants";
+import { DRAG_TYPE, FILE_ICON } from "./shared/constants";
 import { XYCoord } from "react-dnd";
 import axios from "axios";
-import { generateNewWindowLocation } from "./generateNewWindowLocation";
+import { generateNewWindowLocation } from "./shared/handlers/generateNewWindowLocation";
 
 const BASE_DIR = "src/resume";
 const API_BASE_URL =

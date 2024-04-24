@@ -1,5 +1,5 @@
 import React from "react";
-import { DesktopFile } from "../types";
+import { DesktopFile } from "../../../types";
 
 export const getWindowClickHandler: ({
   setWindowContextMenuIsOpen,

@@ -5,9 +5,9 @@ import {
   getMockTextFile,
   getMockFolder,
   getMockShortcut,
-} from "../utils/testUtils";
+} from "../testUtils";
 import { FileContext } from "../App";
-import Desktop from "./Desktop";
+import Desktop, { DRAG_OFFSET_FIX } from "./Desktop";
 
 const mocks = vi.hoisted(() => {
   return {
@@ -101,6 +101,57 @@ describe("Desktop", () => {
         </FileContext.Provider>,
       );
       expect(getByTestId("desktop")).toBeDefined();
+    });
+
+    it("with the drag and drop config", () => {
+      const mockSetFiles = vi.fn();
+      render(
+        <FileContext.Provider
+          value={{
+            files: [mockShortcut],
+            setFiles: mockSetFiles,
+            loading: false,
+            setLoading: vi.fn(),
+          }}
+        >
+          <Desktop />
+        </FileContext.Provider>,
+      );
+
+      const dndFactory = mocks.useDrop.mock.lastCall[0];
+      const dndHandlers = dndFactory();
+
+      dndHandlers.drop(
+        { type: "window", fileId: mockShortcut.fileId },
+        { getSourceClientOffset: vi.fn().mockReturnValue({ x: 42, y: 41 }) },
+      );
+
+      expect(mockSetFiles).toBeCalledWith(
+        expect.arrayContaining([
+          expect.objectContaining({
+            windowLocation: {
+              x: 42,
+              y: 41,
+            },
+          }),
+        ]),
+      );
+
+      dndHandlers.drop(
+        { type: "no_window", fileId: mockShortcut.fileId },
+        { getSourceClientOffset: vi.fn().mockReturnValue({ x: 42, y: 41 }) },
+      );
+
+      expect(mockSetFiles).toBeCalledWith(
+        expect.arrayContaining([
+          expect.objectContaining({
+            location: {
+              x: 42 - DRAG_OFFSET_FIX,
+              y: 41,
+            },
+          }),
+        ]),
+      );
     });
   });
 

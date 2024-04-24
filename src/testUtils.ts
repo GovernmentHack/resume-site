@@ -1,5 +1,5 @@
-import { FILE_TYPE, FILE_ICON } from "./constants";
-import { TextFile, Folder, Shortcut } from "../types";
+import { FILE_TYPE, FILE_ICON } from "./Components/shared/constants";
+import { TextFile, Folder, Shortcut } from "./types";
 
 export function getMockTextFile(): TextFile {
   return {

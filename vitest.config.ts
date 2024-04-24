@@ -1,4 +1,4 @@
-import { defineConfig } from "vitest/config";
+import { defineConfig, configDefaults } from "vitest/config";
 
 export default defineConfig({
   test: {
@@ -9,7 +9,13 @@ export default defineConfig({
       ["**/*.test.{ts,tsx}", "node"],
     ],
     coverage: {
-      exclude: ["src/index.tsx"],
+      ...configDefaults.coverage,
+      exclude: [
+        ...(configDefaults.coverage.exclude as NonNullable<
+          typeof configDefaults.coverage.exclude
+        >),
+        "src/index.tsx",
+      ],
     },
   },
 });

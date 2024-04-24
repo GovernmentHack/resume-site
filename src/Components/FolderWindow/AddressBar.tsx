@@ -1,5 +1,5 @@
 import React from "react";
-import { disableDragging } from "../../utils/constants";
+import { disableDragging } from "../shared/constants";
 import { ContextMenuVerticalDivider } from "../shared/ContextMenuVerticalDivider";
 import { FolderExplorerIcon } from "../shared/icons/FolderExplorerIcon";
 import { ToolbarContainer } from "../shared/ToolbarContainer";

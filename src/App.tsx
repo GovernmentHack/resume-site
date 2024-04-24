@@ -7,9 +7,9 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { TouchBackend } from "react-dnd-touch-backend";
 import { DndProvider } from "react-dnd";
 import { DesktopFile, Shortcut } from "./types";
-import { FILE_TYPE, FILE_ICON } from "./utils/constants";
+import { FILE_TYPE, FILE_ICON } from "./Components/shared/constants";
 import { v4 as uuidv4 } from "uuid";
-import { getResumeFiles } from "./utils/resumeFileGenerator";
+import { getResumeFiles } from "./Components/resumeFileGenerator";
 
 const DesktopBackground = styled.div`
   background-color: teal;

@@ -1,6 +1,6 @@
 import React from "react";
-import { FILE_ICON, FILE_TYPE } from "../../utils/constants";
-import { generateNewWindowLocation } from "../../utils/generateNewWindowLocation";
+import { FILE_ICON, FILE_TYPE } from "../shared/constants";
+import { generateNewWindowLocation } from "../shared/handlers/generateNewWindowLocation";
 import { DesktopFile, Folder, TextFile } from "../../types";
 import { v4 as uuidv4 } from "uuid";
 

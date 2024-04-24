@@ -1,7 +1,7 @@
 import { vi } from "vitest";
 import { getNewButtonClickHandler } from "./getNewButtonClickHandler";
 import { DesktopFile } from "../../types";
-import { FILE_TYPE } from "../../utils/constants";
+import { FILE_TYPE } from "../shared/constants";
 
 const mockEvent = {
   stopPropagation: vi.fn(),

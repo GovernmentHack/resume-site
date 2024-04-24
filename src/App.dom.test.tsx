@@ -2,7 +2,7 @@ import { vi } from "vitest";
 import { act, fireEvent, render } from "@testing-library/react";
 import React, { ReactNode } from "react";
 import App from "./App";
-import * as resumeFileGeneratorModule from "./utils/resumeFileGenerator";
+import * as resumeFileGeneratorModule from "./Components/resumeFileGenerator";
 
 const mocks = vi.hoisted(() => {
   return {

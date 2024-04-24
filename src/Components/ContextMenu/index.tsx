@@ -3,7 +3,7 @@ import Modal from "react-modal";
 import { ContextMenuButton } from "../shared/ContextMenuButton";
 import { ContextMenuDivider } from "../shared/ContextMenuDivider";
 import { DisabledMenuItem } from "../shared/DisabledMenuItem";
-import { getContextMenuModalStyle } from "../../utils/getContextMenuModalStyle";
+import { getContextMenuModalStyle } from "../shared/handlers/getContextMenuModalStyle";
 import { XYCoord } from "react-dnd";
 import { NewMenuButton } from "./NewMenuButton";
 import { DesktopFile } from "../../types";

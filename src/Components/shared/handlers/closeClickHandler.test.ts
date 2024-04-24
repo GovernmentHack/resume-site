@@ -1,6 +1,6 @@
 import { vi } from "vitest";
 import { getCloseClickHandler } from "./closeClickHandler";
-import { getMockFolder } from "../../utils/testUtils";
+import { getMockFolder } from "../../../testUtils";
 
 const mockSetFiles = vi.fn();
 const mockFolder = getMockFolder();

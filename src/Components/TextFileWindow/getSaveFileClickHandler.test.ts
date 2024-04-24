@@ -1,5 +1,5 @@
 import { vi } from "vitest";
-import { getMockTextFile } from "../../utils/testUtils";
+import { getMockTextFile } from "../../testUtils";
 import { getSaveFileClickHandler } from "./getSaveFileClickHandler";
 
 const mockSetFiles = vi.fn();
