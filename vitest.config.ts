@@ -8,5 +8,8 @@ export default defineConfig({
       ["**/*.dom.test.{ts,tsx}", "jsdom"],
       ["**/*.test.{ts,tsx}", "node"],
     ],
+    coverage: {
+      exclude: ["src/index.tsx"],
+    },
   },
 });
