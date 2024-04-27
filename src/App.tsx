@@ -58,6 +58,29 @@ const getResumeShortcut = (): Shortcut => {
   } as Shortcut;
 };
 
+const getLinkedInShortcut = (): Shortcut => {
+  const selfId = uuidv4();
+  return {
+    fileName: "Grant's Linkedin Profile",
+    fileId: selfId,
+    location: { x: 64, y: 4 },
+    windowLocation: null,
+    isHighlighted: false,
+    textIsEditing: false,
+    isOpen: null,
+    content: ({ files: _, setFiles: __, setLoading: ___ }) => {
+      // open the Linkedin Url in another window
+      window
+        .open("https://www.linkedin.com/in/grant-apodaca/", "_blank")
+        ?.focus();
+    },
+    isEditable: false,
+    type: FILE_TYPE.shortcut,
+    icon: FILE_ICON.internetPage,
+    directory: null,
+  } as Shortcut;
+};
+
 // Cursor styling from http://www.rw-designer.com/cursor-detail/151730
 
 export const FileContext = createContext<{
@@ -72,7 +95,7 @@ const App: React.FunctionComponent = () => {
   const [files, setFiles] = useState<DesktopFile[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   useEffect(() => {
-    setFiles([...files, getResumeShortcut()]);
+    setFiles([...files, getResumeShortcut(), getLinkedInShortcut()]);
   }, []);
 
   return (

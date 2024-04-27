@@ -17,6 +17,7 @@ export const FILE_ICON = {
   closedFolder: "directory_closed_cool-2.png",
   textFile: "notepad_file-0.png",
   executable: "executable_gear-0.png",
+  internetPage: "html-3.png",
 } as const;
 
 /** React props to spread to disable dragging interface. Useful for child components you don't want to trigger a drag event */

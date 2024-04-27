@@ -28,7 +28,7 @@ export type Shortcut = {
   }) => void;
   isEditable: boolean;
   type: typeof FILE_TYPE.shortcut;
-  icon: typeof FILE_ICON.executable;
+  icon: typeof FILE_ICON.executable | typeof FILE_ICON.internetPage;
   directory: string | null;
 };
 

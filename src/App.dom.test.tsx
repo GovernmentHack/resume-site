@@ -12,7 +12,7 @@ const mocks = vi.hoisted(() => {
     DndProvider: vi.fn(),
     HTML5Backend: "mock_HTML5Backend",
     TouchBackend: "mock_TouchBackend",
-    v4: vi.fn().mockReturnValue("mock_id"),
+    v4: vi.fn(),
   };
 });
 
@@ -56,6 +56,10 @@ describe("App", () => {
     mocks.DndProvider.mockImplementation(
       ({ children }: { children: ReactNode }) => <div>{children}</div>,
     );
+    mocks.v4
+      .mockReturnValueOnce("mock_id")
+      .mockReturnValueOnce("mock_other_id");
+    window.open = vi.fn().mockReturnValue(window);
   });
 
   it("renders down to the desktop", () => {
@@ -75,6 +79,22 @@ describe("App", () => {
     });
 
     expect(mockGetResumeFiles).toBeCalledTimes(1);
+  });
+
+  it("renders the LinkedIn shortcut, which opens a new tab to my LinkedIn profile", () => {
+    const { getByTestId } = render(<App />);
+
+    expect(getByTestId("mock_other_id_file_icon")).toBeDefined();
+
+    act(() => {
+      fireEvent.doubleClick(getByTestId("mock_other_id_file_icon"));
+      vi.runAllTimers();
+    });
+
+    expect(window.open).toBeCalledWith(
+      "https://www.linkedin.com/in/grant-apodaca/",
+      "_blank",
+    );
   });
 
   describe("initiates the DnDContext", () => {
