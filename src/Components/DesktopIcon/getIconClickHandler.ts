@@ -14,8 +14,12 @@ export function getIconClickHandler({
     const fileToChange = files.find((file) => file.fileId === fileId);
     const otherFiles = files.filter((file) => file.fileId !== fileId);
     if (fileToChange) {
+      const unhighlightedFiles = otherFiles.map((file) => ({
+        ...file,
+        isHighlighted: false,
+      }));
       setFiles([
-        ...otherFiles,
+        ...unhighlightedFiles,
         {
           ...fileToChange,
           isHighlighted: !fileToChange.isHighlighted,

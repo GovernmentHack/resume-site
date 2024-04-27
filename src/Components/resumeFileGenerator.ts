@@ -37,7 +37,6 @@ async function getGithubDirectoryContents(
       `${API_BASE_URL}/${path}`,
     );
     if (result?.data?.length) {
-      console.log(result.data);
       return result.data;
     }
     return null;

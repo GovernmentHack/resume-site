@@ -53,7 +53,7 @@ describe("getIconClickHandler returns a function that...", () => {
     );
   });
 
-  it("ignores other files when changing file based on provided fileId", () => {
+  it("unhighlights other files when changing file based on provided fileId", () => {
     const clickHandler = getIconClickHandler({
       files: [
         {
@@ -62,7 +62,7 @@ describe("getIconClickHandler returns a function that...", () => {
         } as unknown as DesktopFile,
         {
           fileId: "some_other_id",
-          isHighlighted: false,
+          isHighlighted: true,
         } as unknown as DesktopFile,
         {
           fileId: "some_third_id",
