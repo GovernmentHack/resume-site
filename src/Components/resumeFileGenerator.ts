@@ -1,13 +1,13 @@
 import { DesktopFile, Folder, TextFile } from "../types";
 import { v4 as uuidv4 } from "uuid";
-import { DRAG_TYPE, FILE_ICON } from "./shared/constants";
+import { FILE_ICON, FILE_TYPE } from "./shared/constants";
 import { XYCoord } from "react-dnd";
 import axios from "axios";
 import { generateNewWindowLocation } from "./shared/handlers/generateNewWindowLocation";
 
 const BASE_DIR = "src/resume";
 const API_BASE_URL =
-  "https://api.github.com/repos/GovernmentHack/resume-site/contents/";
+  "https://api.github.com/repos/GovernmentHack/resume-site/contents";
 const OFFSET = 64;
 
 type GithubFileDescriptor = {
@@ -37,6 +37,7 @@ async function getGithubDirectoryContents(
       `${API_BASE_URL}/${path}`,
     );
     if (result?.data?.length) {
+      console.log(result.data);
       return result.data;
     }
     return null;
@@ -46,9 +47,9 @@ async function getGithubDirectoryContents(
   }
 }
 
-async function getGithubRawFile(donloadUrl: string): Promise<string | null> {
+async function getGithubRawFile(downloadUrl: string): Promise<string | null> {
   try {
-    const result = await axios.get<string>(donloadUrl);
+    const result = await axios.get<string>(downloadUrl);
     if (result?.data?.length) {
       return result.data;
     }
@@ -74,7 +75,7 @@ function addFolder({
     fileId: uuidv4(),
     icon: FILE_ICON.closedFolder,
     fileName: folderName,
-    type: DRAG_TYPE.folder,
+    type: FILE_TYPE.folder,
     location,
     windowLocation: { x: 24, y: 24 },
     windowIsFocused: false,
@@ -106,7 +107,7 @@ function addTextFile({
     fileId: uuidv4(),
     icon: FILE_ICON.textFile,
     fileName,
-    type: DRAG_TYPE.textFile,
+    type: FILE_TYPE.textFile,
     location,
     windowLocation: generateNewWindowLocation(files),
     windowIsFocused: false,
