@@ -15,6 +15,8 @@ export default defineConfig({
           typeof configDefaults.coverage.exclude
         >),
         "src/index.tsx",
+        "src/testUtils.ts",
+        "src/shared/constants.ts",
       ],
     },
   },

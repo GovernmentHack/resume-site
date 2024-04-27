@@ -1,4 +1,4 @@
-import { DesktopFile, Folder } from "../../../types";
+import { DesktopFile } from "../../../types";
 
 export function getWindowFocusClickHandler({
   files,
@@ -36,7 +36,7 @@ export function getWindowFocusClickHandler({
         {
           ...fileToChange,
           windowIsFocused: true,
-        } as Folder,
+        } as DesktopFile,
       ]);
     }
   };
