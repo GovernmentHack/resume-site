@@ -25,6 +25,7 @@ import { Toolbar } from "./Toolbar";
 import { AddressBar } from "./AddressBar";
 import { FolderExplorerIcon } from "../shared/icons/FolderExplorerIcon";
 import { getCloseClickHandler } from "../shared/handlers/closeClickHandler";
+import { getFolderDropHandler } from "../shared/handlers/folderDropHandler";
 
 type FolderWindowProps = Pick<
   Folder,
@@ -81,33 +82,12 @@ const FolderWindow: React.FunctionComponent<FolderWindowProps> = ({
       hover: (item, monitor) => {
         // console.log(monitor.canDrop());
       },
-      drop: (item, monitor) => {
-        const endLocation = monitor.getSourceClientOffset();
-        console.log("Dropping item", item);
-        if (item.fileId === fileId) {
-          console.log("No recursive folders :(", item);
-          return;
-        }
-        const fileToChange = files.find((file) => file.fileId === item.fileId);
-        const otherFiles = files.filter((file) => file.fileId !== item.fileId);
-        if (fileToChange && endLocation) {
-          const relativeLocation = {
-            x: endLocation.x - windowLocation.x,
-            y: endLocation.y - windowLocation.y,
-          };
-          if (relativeLocation.y < 81 || relativeLocation.x < 2) {
-            return;
-          }
-          setFiles([
-            ...otherFiles,
-            {
-              ...fileToChange,
-              location: relativeLocation,
-              directory: fileId,
-            },
-          ]);
-        }
-      },
+      drop: getFolderDropHandler({
+        files,
+        setFiles,
+        targetFileId: fileId,
+        windowLocation,
+      }),
     }),
     [files],
   );

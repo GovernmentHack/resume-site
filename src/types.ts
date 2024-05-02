@@ -1,7 +1,7 @@
 import { XYCoord } from "react-dnd";
 import { FILE_ICON, FILE_TYPE } from "./Components/shared/constants";
 
-export type DragType = "textFile" | "folder" | "window" | "shortcut";
+export type DragType = keyof typeof FILE_TYPE | "window";
 
 export type FileDragItem = {
   fileId: DesktopFile["fileId"];

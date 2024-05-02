@@ -1,8 +1,14 @@
 import React, { useContext, useState } from "react";
-import { DragSourceMonitor, useDrag } from "react-dnd";
+import {
+  DragSourceMonitor,
+  DropTargetMonitor,
+  XYCoord,
+  useDrag,
+  useDrop,
+} from "react-dnd";
 import { FileContext } from "../../App";
 import { DesktopFile, FileDragItem } from "../../types";
-import { disableDragging } from "../shared/constants";
+import { DRAG_TYPE, disableDragging } from "../shared/constants";
 import { getIconClickHandler } from "./getIconClickHandler";
 import { getIconDoubleClickHandler } from "./getIconDoubleClickHandler";
 import { getIconTextClickHandler } from "./getIconTextClickHandler";
@@ -11,9 +17,10 @@ import { IconTextEditable } from "./IconTextEditable";
 import { IconText } from "./IconText";
 import { IconImage } from "./IconImage";
 import { IconContainer } from "./IconContainer";
+import { getFolderDropHandler } from "../shared/handlers/folderDropHandler";
 
 export const ICON_HIGHLIGHTED_BOX_SHADOW =
-  "inset 0 0 0 1000px rgba(1, 1, 122,.5)";
+  "inset 0 0 0 10000px rgba(1, 1, 122,.5), 0px 0px 1px 4px rgba(1, 1, 122,.5)";
 
 function getFilenameText(text: string): string {
   if (text.length > 36) {
@@ -55,6 +62,29 @@ const DesktopIcon: React.FunctionComponent<DesktopIconProps> = ({
       type,
     },
   }));
+  const [{ isOver }, drop] = useDrop<
+    FileDragItem,
+    unknown,
+    { canDrop: boolean; isOver: boolean; dropLocation: XYCoord | null }
+  >(
+    () => ({
+      accept: [DRAG_TYPE.textFile, DRAG_TYPE.folder, DRAG_TYPE.shortcut],
+      collect: (monitor: DropTargetMonitor<unknown, unknown>) => ({
+        isOver: monitor.isOver(),
+        canDrop: monitor.canDrop(),
+        dropLocation: monitor.getClientOffset(),
+      }),
+      hover: (item, monitor) => {
+        // console.log(monitor.canDrop());
+      },
+      drop: getFolderDropHandler({
+        files,
+        setFiles,
+        targetFileId: fileId,
+      }),
+    }),
+    [files],
+  );
 
   return (
     <IconContainer
@@ -70,10 +100,12 @@ const DesktopIcon: React.FunctionComponent<DesktopIconProps> = ({
       })}
     >
       <IconImage
+        {...(type === "folder" ? { ref: drop } : {})}
         data-testid={`${fileId}_file_icon_image`}
         style={{
           backgroundImage: `url(icons/${icon})`,
-          boxShadow: isHighlighted ? ICON_HIGHLIGHTED_BOX_SHADOW : undefined,
+          boxShadow:
+            isHighlighted || isOver ? ICON_HIGHLIGHTED_BOX_SHADOW : undefined,
         }}
       />
       {textIsEditing ? (
