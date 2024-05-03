@@ -1,5 +1,8 @@
 import React from "react";
 import styled from "styled-components";
+import { WindowButton } from "./WindowButton";
+import { ContextMenuVerticalDivider } from "../shared/ContextMenuVerticalDivider";
+import { DesktopFile } from "../../types";
 
 const Bar = styled.div`
   background-color: silver;
@@ -7,7 +10,10 @@ const Bar = styled.div`
   border-bottom: 1px solid #4e4e4e;
   bottom: 0;
   box-shadow: inset 1px 0 #fff;
-  display: block;
+  display: flex;
+  justify-content: felx-start;
+  align-items: stretch;
+  row-gap: 2px;
   left: 0;
   padding: 2px;
   position: fixed;
@@ -39,6 +45,7 @@ const StartButton = styled.div`
   min-width: 45px;
   padding: 2px 6px 3px;
   vertical-align: middle;
+  flex: 0 0 auto;
 `;
 
 const StartButtonIcon = styled.div`
@@ -48,12 +55,20 @@ const StartButtonIcon = styled.div`
   width: 45px;
 `;
 
-const StartBar: React.FunctionComponent<{}> = () => {
+const StartBar: React.FunctionComponent<{ files: DesktopFile[] }> = ({
+  files,
+}) => {
   return (
     <Bar>
       <StartButton>
         <StartButtonIcon />
       </StartButton>
+      <ContextMenuVerticalDivider />
+      {files
+        .filter((file) => file.isOpen === true)
+        .map((file) => (
+          <WindowButton file={file} key={file.fileId} />
+        ))}
     </Bar>
   );
 };
