@@ -72,7 +72,10 @@ export const WindowButton: React.FunctionComponent<{
   file: TextFile | Folder;
 }> = ({ file }) => {
   return (
-    <WindowButtonContainer $windowIsFocused={file.windowIsFocused}>
+    <WindowButtonContainer
+      $windowIsFocused={file.windowIsFocused}
+      data-testid={`startbar-window-button-${file.fileId}`}
+    >
       {file.type === "folder" ? (
         <StartMenuFolderExplorerIcon />
       ) : (
