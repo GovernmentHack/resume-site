@@ -59,7 +59,7 @@ export function getMockShortcut(content: Shortcut["content"]): Shortcut {
       y: 1,
     },
     windowLocation: null,
-    windowsIsFocused: null,
+    windowIsFocused: null,
     isHighlighted: false,
     textIsEditing: false,
     isOpen: null,

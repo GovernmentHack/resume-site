@@ -13,7 +13,7 @@ export type Shortcut = {
   fileId: string;
   location: XYCoord;
   windowLocation: null;
-  windowsIsFocused: null;
+  windowIsFocused: null;
   isHighlighted: boolean;
   textIsEditing: boolean;
   isOpen: null;

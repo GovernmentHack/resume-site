@@ -15,6 +15,7 @@ export const INITIAL_WINDOW_LOCATION = { x: 24, y: 24 };
 
 const DesktopDiv = styled.div`
   height: 100%;
+  overflow: hidden;
 `;
 
 const Desktop: React.FunctionComponent = () => {

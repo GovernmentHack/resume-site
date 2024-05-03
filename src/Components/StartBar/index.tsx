@@ -4,6 +4,7 @@ import { WindowButton } from "./WindowButton";
 import { ContextMenuVerticalDivider } from "../shared/ContextMenuVerticalDivider";
 import { Folder, TextFile } from "../../types";
 import { FileContext } from "../../App";
+import { getWindowFocusClickHandler } from "../shared/handlers/windowFocusClickHandler";
 
 const Bar = styled.div`
   background-color: silver;
@@ -57,8 +58,10 @@ const StartButtonIcon = styled.div`
 `;
 
 const StartBar: React.FunctionComponent<{}> = () => {
-  const { files } = useContext(FileContext);
-  const openFiles = files.filter((file) => file.isOpen === true) as (
+  const { files, setFiles } = useContext(FileContext);
+  const sortedOpenFiles = files
+    .filter((file) => file.isOpen === true) // inherently casts type to TextFile | Folder, but TS isn't picking up on that
+    .sort((fileA, fileB) => fileA.fileId.localeCompare(fileB.fileId)) as (
     | TextFile
     | Folder
   )[];
@@ -68,8 +71,16 @@ const StartBar: React.FunctionComponent<{}> = () => {
         <StartButtonIcon />
       </StartButton>
       <ContextMenuVerticalDivider />
-      {openFiles.map((file) => (
-        <WindowButton file={file} key={file.fileId} />
+      {sortedOpenFiles.map((file) => (
+        <WindowButton
+          onClick={getWindowFocusClickHandler({
+            files,
+            setFiles,
+            fileId: file.fileId,
+          })}
+          file={file}
+          key={file.fileId}
+        />
       ))}
     </Bar>
   );

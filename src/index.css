@@ -6,3 +6,7 @@
   font-family: 'ms-sans-serif';
   src: local('ms-sans-serif'), url(./fonts/ms-sans-serif-1.ttf) format('woff');
 }
+
+html {
+  overflow: hidden;
+}

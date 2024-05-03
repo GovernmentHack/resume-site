@@ -16,6 +16,7 @@ const DesktopBackground = styled.div`
   height: 100vh;
   width: 100vw;
   margin: -8px;
+  overflow: hidden;
 `;
 
 function isTouchDevice() {

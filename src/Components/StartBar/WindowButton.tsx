@@ -70,11 +70,13 @@ export const StartMenuFolderExplorerIcon = styled(FolderExplorerIcon)`
 
 export const WindowButton: React.FunctionComponent<{
   file: TextFile | Folder;
-}> = ({ file }) => {
+  onClick: React.MouseEventHandler<HTMLDivElement>;
+}> = ({ file, onClick }) => {
   return (
     <WindowButtonContainer
       $windowIsFocused={file.windowIsFocused}
       data-testid={`startbar-window-button-${file.fileId}`}
+      onClick={onClick}
     >
       {file.type === "folder" ? (
         <StartMenuFolderExplorerIcon />
