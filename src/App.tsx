@@ -109,7 +109,7 @@ const App: React.FunctionComponent = () => {
           style={loading ? { cursor: "url(icons/loading.cur), auto" } : {}}
         >
           <Desktop />
-          <StartBar files={files} />
+          <StartBar />
         </DesktopBackground>
       </DndProvider>
     </FileContext.Provider>

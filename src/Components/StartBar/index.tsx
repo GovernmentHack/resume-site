@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { WindowButton } from "./WindowButton";
 import { ContextMenuVerticalDivider } from "../shared/ContextMenuVerticalDivider";
-import { DesktopFile } from "../../types";
+import { Folder, TextFile } from "../../types";
+import { FileContext } from "../../App";
 
 const Bar = styled.div`
   background-color: silver;
@@ -13,7 +14,7 @@ const Bar = styled.div`
   display: flex;
   justify-content: felx-start;
   align-items: stretch;
-  row-gap: 2px;
+  column-gap: 6px;
   left: 0;
   padding: 2px;
   position: fixed;
@@ -55,20 +56,21 @@ const StartButtonIcon = styled.div`
   width: 45px;
 `;
 
-const StartBar: React.FunctionComponent<{ files: DesktopFile[] }> = ({
-  files,
-}) => {
+const StartBar: React.FunctionComponent<{}> = () => {
+  const { files } = useContext(FileContext);
+  const openFiles = files.filter((file) => file.isOpen === true) as (
+    | TextFile
+    | Folder
+  )[];
   return (
     <Bar>
       <StartButton>
         <StartButtonIcon />
       </StartButton>
       <ContextMenuVerticalDivider />
-      {files
-        .filter((file) => file.isOpen === true)
-        .map((file) => (
-          <WindowButton file={file} key={file.fileId} />
-        ))}
+      {openFiles.map((file) => (
+        <WindowButton file={file} key={file.fileId} />
+      ))}
     </Bar>
   );
 };

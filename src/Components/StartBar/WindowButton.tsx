@@ -1,10 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import { DesktopFile } from "../../types";
+import { Folder, TextFile } from "../../types";
 import { NotepadIcon } from "../shared/icons/NotepadIcon";
 import { FolderExplorerIcon } from "../shared/icons/FolderExplorerIcon";
 
-const WindowButtonContainer = styled.div`
+const WindowButtonContainer = styled.div<{
+  $windowIsFocused?: boolean;
+}>`
   background-color: silver;
   border-top: 1px solid #fff;
   border-left: 1px solid #fff;
@@ -15,16 +17,26 @@ const WindowButtonContainer = styled.div`
     1px 0 #000,
     0 1px #000,
     1px 1px #000;
+  ${(props) =>
+    props.$windowIsFocused &&
+    `border-left: 1px solid gray;
+    border-top: 1px solid gray;
+    border-bottom: 1px solid #fff;
+    border-right: 1px solid #fff;
+    background-color: white;
+    box-shadow:
+      inset -1px -1px #dfdfdf,
+      -1px 0 #000,
+      0 -1px #000,
+      -1px -1px #000;
+`}
   color: #000000;
   display: flex;
   justify-content: felx-start;
   align-items: center;
-  row-gap: 2px;
-  margin-bottom: 2px;
-  margin-left: 2px;
-  margin-right: 6px;
+  column-gap: 2px;
   min-width: 45px;
-  padding: 2px 6px 3px;
+  padding: 2px 2px 3px 2px;
   vertical-align: middle;
   height: 14px;
   width: 164px;
@@ -57,10 +69,10 @@ export const StartMenuFolderExplorerIcon = styled(FolderExplorerIcon)`
 `;
 
 export const WindowButton: React.FunctionComponent<{
-  file: DesktopFile;
+  file: TextFile | Folder;
 }> = ({ file }) => {
   return (
-    <WindowButtonContainer>
+    <WindowButtonContainer $windowIsFocused={file.windowIsFocused}>
       {file.type === "folder" ? (
         <StartMenuFolderExplorerIcon />
       ) : (
