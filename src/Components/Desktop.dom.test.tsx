@@ -1,11 +1,7 @@
 import { vi } from "vitest";
 import { render, fireEvent } from "@testing-library/react";
 import React from "react";
-import {
-  getMockTextFile,
-  getMockFolder,
-  getMockShortcut,
-} from "../testUtils";
+import { getMockTextFile, getMockFolder, getMockShortcut } from "../testUtils";
 import { FileContext } from "../App";
 import Desktop, { DRAG_OFFSET_FIX } from "./Desktop";
 
@@ -33,7 +29,7 @@ vi.mock("react-dnd", () => {
 describe("Desktop", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    mocks.useDrop.mockReturnValue([{ isDragging: false }, React.createRef()]);
+    mocks.useDrop.mockReturnValue([{ isOver: false }, React.createRef()]);
     mocks.useDrag.mockReturnValue([{ isDragging: false }, React.createRef()]);
   });
 
@@ -118,7 +114,7 @@ describe("Desktop", () => {
         </FileContext.Provider>,
       );
 
-      const dndFactory = mocks.useDrop.mock.lastCall[0];
+      const dndFactory = mocks.useDrop.mock.calls[0][0];
       const dndHandlers = dndFactory();
 
       dndHandlers.drop(

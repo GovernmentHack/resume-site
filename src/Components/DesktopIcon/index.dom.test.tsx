@@ -12,6 +12,7 @@ import { FileContext } from "../../App";
 const mocks = vi.hoisted(() => {
   return {
     useDrag: vi.fn(),
+    useDrop: vi.fn(),
     shortcutContent: vi.fn(),
   };
 });
@@ -25,6 +26,7 @@ const mockShortcut = getMockShortcut(mocks.shortcutContent);
 vi.mock("react-dnd", () => {
   return {
     useDrag: mocks.useDrag,
+    useDrop: mocks.useDrop,
   };
 });
 
@@ -32,6 +34,7 @@ describe("DesktopIcon", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mocks.useDrag.mockReturnValue([{ isDragging: false }, React.createRef()]);
+    mocks.useDrop.mockReturnValue([{ isOver: false }, React.createRef()]);
   });
 
   describe("IconContainer", () => {

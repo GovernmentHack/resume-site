@@ -60,6 +60,7 @@ describe("App", () => {
       .mockReturnValueOnce("mock_id")
       .mockReturnValueOnce("mock_other_id");
     window.open = vi.fn().mockReturnValue(window);
+    window.focus = vi.fn().mockReturnValue(window);
   });
 
   it("renders down to the desktop", () => {
