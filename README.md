@@ -1,5 +1,7 @@
 # My Resume
 
+![Coverage report](./lines.svg)
+
 This is a portfolio website for my resume. I themed it like a windows 98 desktop because it sounded like a fun idea at the time.
 
 Current features include:
