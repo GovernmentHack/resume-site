@@ -37,11 +37,15 @@ describe("StarBar", () => {
     mocks.useDrag.mockReturnValue([{ isDragging: false }, React.createRef()]);
   });
 
-  it("renders only open start bar window buttons for files that have open windows", () => {
+  it("renders only open start bar window buttons for files that have open windows or that are minimized", () => {
     const { getByTestId } = render(
       <FileContext.Provider
         value={{
-          files: [mockTextFile, mockShortcut, { ...mockFolder, isOpen: true }],
+          files: [
+            { ...mockTextFile, isOpen: false, isMinimized: true },
+            mockShortcut,
+            { ...mockFolder, isOpen: true },
+          ],
           setFiles: vi.fn(),
           loading: false,
           setLoading: vi.fn(),
@@ -53,6 +57,9 @@ describe("StarBar", () => {
 
     expect(
       getByTestId(`startbar-window-button-${mockFolder.fileId}`),
+    ).toBeDefined();
+    expect(
+      getByTestId(`startbar-window-button-${mockTextFile.fileId}`),
     ).toBeDefined();
   });
 });

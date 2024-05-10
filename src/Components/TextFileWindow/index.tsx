@@ -16,6 +16,7 @@ import { getSaveFileClickHandler } from "./getSaveFileClickHandler";
 import { Header } from "../shared/Header";
 import { NotepadIcon } from "../shared/icons/NotepadIcon";
 import { getCloseClickHandler } from "../shared/handlers/closeClickHandler";
+import { getMinimizeClickHandler } from "../shared/handlers/minimizeClickHandler";
 
 type TextFileWindowProps = Pick<
   TextFile,
@@ -63,6 +64,11 @@ const TextFileDesktopWindow: React.FunctionComponent<TextFileWindowProps> = ({
   }));
 
   const closeClickHandler = getCloseClickHandler({ fileId, files, setFiles });
+  const closeMinimizeHandler = getMinimizeClickHandler({
+    fileId,
+    files,
+    setFiles,
+  });
 
   return (
     <WindowContainer
@@ -86,6 +92,7 @@ const TextFileDesktopWindow: React.FunctionComponent<TextFileWindowProps> = ({
         headerText={`${fileName} - Notepad`}
         Icon={NotepadIcon}
         onCloseClick={closeClickHandler}
+        onMinimizeClick={closeMinimizeHandler}
       />
       <Toolbar
         onFileClick={(event) => {

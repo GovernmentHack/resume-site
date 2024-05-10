@@ -2,6 +2,7 @@ import styled from "styled-components";
 import React, { ElementType } from "react";
 import { ToolbarContainer } from "./ToolbarContainer";
 import { CloseIcon } from "./icons/CloseIcon";
+import { MinimizeIcon } from "./icons/MinimizeIcon";
 
 const HeaderText = styled.div`
   font-weight: bold;
@@ -16,12 +17,14 @@ const Spacer = styled.div`
 
 type HeaderProps = {
   onCloseClick: React.MouseEventHandler<any>;
+  onMinimizeClick: React.MouseEventHandler<any>;
   headerText: string;
   Icon: ElementType;
 };
 
 export const Header: React.FunctionComponent<HeaderProps> = ({
   onCloseClick,
+  onMinimizeClick,
   headerText,
   Icon,
 }) => {
@@ -30,6 +33,7 @@ export const Header: React.FunctionComponent<HeaderProps> = ({
       <Icon />
       <HeaderText>{headerText}</HeaderText>
       <Spacer />
+      <MinimizeIcon onClick={onMinimizeClick} />
       <CloseIcon onClick={onCloseClick} />
     </ToolbarContainer>
   );

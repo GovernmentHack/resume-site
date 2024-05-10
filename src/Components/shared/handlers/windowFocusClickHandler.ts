@@ -35,6 +35,7 @@ export function getWindowFocusClickHandler({
         ...otherFilesWindowClosed,
         {
           ...fileToChange,
+          isOpen: true,
           windowIsFocused: true,
         } as DesktopFile,
       ]);

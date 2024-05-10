@@ -26,6 +26,7 @@ import { AddressBar } from "./AddressBar";
 import { FolderExplorerIcon } from "../shared/icons/FolderExplorerIcon";
 import { getCloseClickHandler } from "../shared/handlers/closeClickHandler";
 import { getFolderDropHandler } from "../shared/handlers/folderDropHandler";
+import { getMinimizeClickHandler } from "../shared/handlers/minimizeClickHandler";
 
 type FolderWindowProps = Pick<
   Folder,
@@ -93,6 +94,11 @@ const FolderWindow: React.FunctionComponent<FolderWindowProps> = ({
   );
 
   const closeClickHandler = getCloseClickHandler({ fileId, files, setFiles });
+  const closeMinimizeHandler = getMinimizeClickHandler({
+    fileId,
+    files,
+    setFiles,
+  });
 
   return (
     <div
@@ -117,6 +123,7 @@ const FolderWindow: React.FunctionComponent<FolderWindowProps> = ({
           Icon={FolderExplorerIcon}
           headerText={`Exploring - C:\\${fileName}`}
           onCloseClick={closeClickHandler}
+          onMinimizeClick={closeMinimizeHandler}
         />
         <Toolbar
           onFileClick={(event) => {

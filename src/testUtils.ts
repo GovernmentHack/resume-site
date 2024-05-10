@@ -17,6 +17,7 @@ export function getMockTextFile(): TextFile {
     isHighlighted: false,
     textIsEditing: false,
     isOpen: false,
+    isMinimized: false,
     content:
       "this is a really long string since this is the content for a text file",
     isEditable: true,
@@ -42,6 +43,7 @@ export function getMockFolder(): Folder {
     isHighlighted: false,
     textIsEditing: false,
     isOpen: false,
+    isMinimized: false,
     content: null,
     isEditable: true,
     type: FILE_TYPE.folder,
@@ -63,6 +65,7 @@ export function getMockShortcut(content: Shortcut["content"]): Shortcut {
     isHighlighted: false,
     textIsEditing: false,
     isOpen: null,
+    isMinimized: null,
     content: content,
     isEditable: true,
     type: FILE_TYPE.shortcut,

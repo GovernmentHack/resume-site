@@ -17,6 +17,7 @@ export type Shortcut = {
   isHighlighted: boolean;
   textIsEditing: boolean;
   isOpen: null;
+  isMinimized: null;
   content: ({
     files,
     setFiles,
@@ -41,6 +42,7 @@ export type TextFile = {
   isHighlighted: boolean;
   textIsEditing: boolean;
   isOpen: boolean;
+  isMinimized: boolean;
   content: string;
   isEditable: boolean;
   type: typeof FILE_TYPE.textFile;
@@ -57,6 +59,7 @@ export type Folder = {
   isHighlighted: boolean;
   textIsEditing: boolean;
   isOpen: boolean;
+  isMinimized: boolean;
   content: null;
   isEditable: boolean;
   type: typeof FILE_TYPE.folder;

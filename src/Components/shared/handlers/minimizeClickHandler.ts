@@ -1,14 +1,16 @@
 import React from "react";
 import { DesktopFile } from "../../../types";
 
-export function getCloseClickHandler({
+export function getMinimizeClickHandler({
   files,
   setFiles,
   fileId,
+  shouldToggle = false,
 }: {
   files: DesktopFile[];
   setFiles: React.Dispatch<React.SetStateAction<DesktopFile[]>>;
   fileId: string;
+  shouldToggle?: boolean;
 }): React.MouseEventHandler<any> {
   return (event) => {
     event.stopPropagation();
@@ -19,8 +21,9 @@ export function getCloseClickHandler({
         ...otherFiles,
         {
           ...fileToChange,
-          isOpen: false,
-          isMinimized: false,
+          isOpen: shouldToggle ? !fileToChange.isOpen : false,
+          isMinimized: true,
+          windowIsFocused: false,
         } as DesktopFile,
       ]);
     }

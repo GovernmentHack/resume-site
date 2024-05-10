@@ -37,6 +37,7 @@ export function getIconDoubleClickHandler({
           {
             ...fileToChange,
             isOpen: true,
+            isMinimized: false,
             windowIsFocused: true,
           },
         ]);

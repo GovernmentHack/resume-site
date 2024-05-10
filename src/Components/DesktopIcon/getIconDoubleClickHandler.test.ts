@@ -82,6 +82,7 @@ describe("getIconDoubleClickHandler returns a function that ...", () => {
     expect(mockSetFiles).toBeCalledWith(
       expect.arrayContaining([
         expect.objectContaining({
+          isMinimized: false,
           isOpen: true,
           fileId: "some_id",
           windowIsFocused: true,

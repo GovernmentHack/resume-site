@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { Folder, TextFile } from "../../types";
 import { NotepadIcon } from "../shared/icons/NotepadIcon";
 import { FolderExplorerIcon } from "../shared/icons/FolderExplorerIcon";
+import { FileContext } from "../../App";
+import { getWindowFocusClickHandler } from "../shared/handlers/windowFocusClickHandler";
+import { getMinimizeClickHandler } from "../shared/handlers/minimizeClickHandler";
 
 const WindowButtonContainer = styled.div<{
   $windowIsFocused?: boolean;
@@ -43,8 +46,14 @@ const WindowButtonContainer = styled.div<{
   flex: 0 1 auto;
 `;
 
-export const ButtonText = styled.span`
+export const ButtonText = styled.span<{
+  $windowIsFocused?: boolean;
+}>`
   color: black;
+  ${(props) =>
+    props.$windowIsFocused &&
+    `font-weight: bolder;
+  `}
   font-family: px_sans_nouveaux;
   font-size: 8px;
   letter-spacing: -0.025em;
@@ -70,20 +79,32 @@ export const StartMenuFolderExplorerIcon = styled(FolderExplorerIcon)`
 
 export const WindowButton: React.FunctionComponent<{
   file: TextFile | Folder;
-  onClick: React.MouseEventHandler<HTMLDivElement>;
-}> = ({ file, onClick }) => {
+}> = ({ file }) => {
+  const { files, setFiles } = useContext(FileContext);
+  const focusWindow = getWindowFocusClickHandler({
+    files,
+    setFiles,
+    fileId: file.fileId,
+  });
+  const toggleMinimize = getMinimizeClickHandler({
+    files,
+    setFiles,
+    fileId: file.fileId,
+  });
   return (
     <WindowButtonContainer
       $windowIsFocused={file.windowIsFocused}
       data-testid={`startbar-window-button-${file.fileId}`}
-      onClick={onClick}
+      onClick={file.windowIsFocused ? toggleMinimize : focusWindow}
     >
       {file.type === "folder" ? (
         <StartMenuFolderExplorerIcon />
       ) : (
         <StartMenuNotepadIcon />
       )}
-      <ButtonText>{file.fileName}</ButtonText>
+      <ButtonText $windowIsFocused={file.windowIsFocused}>
+        {file.fileName}
+      </ButtonText>
     </WindowButtonContainer>
   );
 };

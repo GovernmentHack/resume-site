@@ -3,13 +3,12 @@ import { render, fireEvent } from "@testing-library/react";
 import React from "react";
 import { getMockTextFile, getMockFolder } from "../../testUtils";
 import { WindowButton } from "./WindowButton";
-import { getWindowFocusClickHandler } from "../shared/handlers/windowFocusClickHandler";
+import { FileContext } from "../../App";
 
 const mockTextFile = getMockTextFile();
 
 const mockFolder = getMockFolder();
 
-const mockOnClick = vi.fn();
 const mockSetFiles = vi.fn();
 
 describe("WindowButton", () => {
@@ -19,7 +18,16 @@ describe("WindowButton", () => {
 
   it("renders proper icon for folders", () => {
     const { getByTestId } = render(
-      <WindowButton file={mockFolder} onClick={mockOnClick} />,
+      <FileContext.Provider
+        value={{
+          files: [mockTextFile, mockFolder],
+          setFiles: mockSetFiles,
+          loading: false,
+          setLoading: vi.fn(),
+        }}
+      >
+        <WindowButton file={mockFolder} />
+      </FileContext.Provider>,
     );
 
     const windowButton = getByTestId(
@@ -37,7 +45,16 @@ describe("WindowButton", () => {
 
   it("renders proper icon for textFiles", () => {
     const { getByTestId } = render(
-      <WindowButton file={mockTextFile} onClick={mockOnClick} />,
+      <FileContext.Provider
+        value={{
+          files: [mockTextFile, mockFolder],
+          setFiles: mockSetFiles,
+          loading: false,
+          setLoading: vi.fn(),
+        }}
+      >
+        <WindowButton file={mockTextFile} />
+      </FileContext.Provider>,
     );
 
     const windowButton = getByTestId(
@@ -53,14 +70,16 @@ describe("WindowButton", () => {
 
   it("sets the associated file as focused when clicked", () => {
     const { getByTestId } = render(
-      <WindowButton
-        file={mockTextFile}
-        onClick={getWindowFocusClickHandler({
-          files: [mockTextFile],
+      <FileContext.Provider
+        value={{
+          files: [mockTextFile, mockFolder],
           setFiles: mockSetFiles,
-          fileId: mockTextFile.fileId,
-        })}
-      />,
+          loading: false,
+          setLoading: vi.fn(),
+        }}
+      >
+        <WindowButton file={mockTextFile} />
+      </FileContext.Provider>,
     );
 
     const windowButton = getByTestId(
@@ -73,6 +92,7 @@ describe("WindowButton", () => {
       expect.arrayContaining([
         expect.objectContaining({
           fileId: mockTextFile.fileId,
+          isOpen: true,
           windowIsFocused: true,
         }),
       ]),

@@ -24,6 +24,7 @@ describe("windowFocusClickHandler", () => {
       expect.arrayContaining([
         expect.objectContaining({
           fileId: mockFolder.fileId,
+          isOpen: true,
           windowIsFocused: true,
         }),
       ]),
