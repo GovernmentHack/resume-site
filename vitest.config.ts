@@ -17,6 +17,7 @@ export default defineConfig({
         "src/index.tsx",
         "src/testUtils.ts",
         "src/shared/constants.ts",
+        "generate-badge.js",
       ],
     },
   },
