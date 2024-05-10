@@ -10,6 +10,7 @@
 /dist
 
 # misc
+/coverage
 .DS_Store
 .env.local
 .env.development.local
