@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useState } from "react";
 import styled from "styled-components";
 import StartBar from "./Components/StartBar";
 import Desktop from "./Components/Desktop";
@@ -6,7 +6,7 @@ import Modal from "react-modal";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { TouchBackend } from "react-dnd-touch-backend";
 import { DndProvider } from "react-dnd";
-import { DesktopFile, Shortcut } from "./types";
+import { DesktopFile, Shortcut, TextFile } from "./types";
 import { FILE_TYPE, FILE_ICON } from "./Components/shared/constants";
 import { v4 as uuidv4 } from "uuid";
 import { getResumeFiles } from "./Components/resumeFileGenerator";
@@ -22,6 +22,29 @@ const DesktopBackground = styled.div`
 function isTouchDevice() {
   return "ontouchstart" in window || navigator.maxTouchPoints > 0;
 }
+
+const getIntroduction = (): TextFile => {
+  return {
+    fileId: uuidv4(),
+    icon: FILE_ICON.textFile,
+    fileName: "READ ME",
+    type: FILE_TYPE.textFile,
+    location: { x: 184, y: 4 },
+    windowLocation: { x: 64, y: 64 },
+    windowIsFocused: false,
+    isHighlighted: false,
+    textIsEditing: false,
+    isOpen: false,
+    isMinimized: false,
+    isEditable: false,
+    content: `Welcome to my resume site! This is just a fun project I've been working on to showcase my professional experience. Its obviously missing most of what a Windows 98 desktop would have, but it does simulate the basics Windows 98 had with its draggable icons and windows. Please feel free to play around and explore!
+      
+And when you get bored, or are looking to actually see my resume, click the "Populate Grant's Resume" on the desktop to import my resume as explorable files and folders from my GitHub.
+      
+Enjoy!`,
+    directory: null,
+  };
+};
 
 const getResumeShortcut = (): Shortcut => {
   const selfId = uuidv4();
@@ -60,10 +83,9 @@ const getResumeShortcut = (): Shortcut => {
 };
 
 const getLinkedInShortcut = (): Shortcut => {
-  const selfId = uuidv4();
   return {
     fileName: "Grant's Linkedin Profile",
-    fileId: selfId,
+    fileId: uuidv4(),
     location: { x: 64, y: 4 },
     windowLocation: null,
     isHighlighted: false,
@@ -73,6 +95,28 @@ const getLinkedInShortcut = (): Shortcut => {
       // open the Linkedin Url in another window
       window
         .open("https://www.linkedin.com/in/grant-apodaca/", "_blank")
+        ?.focus();
+    },
+    isEditable: false,
+    type: FILE_TYPE.shortcut,
+    icon: FILE_ICON.internetPage,
+    directory: null,
+  } as Shortcut;
+};
+
+const getGitHubShortcut = (): Shortcut => {
+  return {
+    fileName: "This site's GitHub",
+    fileId: uuidv4(),
+    location: { x: 124, y: 4 },
+    windowLocation: null,
+    isHighlighted: false,
+    textIsEditing: false,
+    isOpen: null,
+    content: ({ files: _, setFiles: __, setLoading: ___ }) => {
+      // open the Linkedin Url in another window
+      window
+        .open("https://github.com/GovernmentHack/resume-site", "_blank")
         ?.focus();
     },
     isEditable: false,
@@ -93,11 +137,13 @@ export const FileContext = createContext<{
 Modal.setAppElement("head");
 
 const App: React.FunctionComponent = () => {
-  const [files, setFiles] = useState<DesktopFile[]>([]);
+  const [files, setFiles] = useState<DesktopFile[]>([
+    getResumeShortcut(),
+    getLinkedInShortcut(),
+    getGitHubShortcut(),
+    getIntroduction(),
+  ]);
   const [loading, setLoading] = useState<boolean>(false);
-  useEffect(() => {
-    setFiles([...files, getResumeShortcut(), getLinkedInShortcut()]);
-  }, []);
 
   return (
     <FileContext.Provider value={{ files, setFiles, loading, setLoading }}>
