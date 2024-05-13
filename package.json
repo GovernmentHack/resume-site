@@ -7,10 +7,11 @@
     "start": "webpack-dev-server --open --mode development --hot --no-devtool --no-hot",
     "test:unit:dev": "vitest --ui",
     "test:coverage": "vitest --coverage --coverage.reporter=json-summary --silent --run",
-    "generate-coverage-badge": "node generate-badge.js",
+    "coverage-badge:generate": "node generate-badge.js",
+    "coverage-badge:update": "npm run test:coverage && npm run coverage-badge:generate && (git commit lines.svg -m 'update test coverage badge' && git push) || echo 'No test coverage changes to update'",
     "build": "webpack --mode production",
     "lint:fix": "eslint 'src/**/*.{ts,tsx}' --fix",
-    "predeploy": "npm run build",
+    "predeploy": "npm run coverage-badge:update && npm run build",
     "deploy": "echo grant.apodaca.pro > ./dist/CNAME && gh-pages -d dist"
   },
   "eslintConfig": {
