@@ -39,7 +39,7 @@ const getIntroduction = (): TextFile => {
     isEditable: false,
     content: `Welcome to my resume site! This is just a fun project I've been working on to showcase my professional experience. Its obviously missing most of what a Windows 98 desktop would have, but it does simulate the basics Windows 98 had with its draggable icons and windows. Please feel free to play around and explore!
       
-And when you get bored, or are looking to actually see my resume, click the "Populate Grant's Resume" on the desktop to import my resume as explorable files and folders from my GitHub.
+And when you get bored, or are looking to actually see my resume, click the "Populate Grant's Resume" on the desktop. This will import my resume as explorable files and folders from my GitHub.
       
 Enjoy!`,
     directory: null,
