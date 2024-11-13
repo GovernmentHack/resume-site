@@ -1,5 +1,5 @@
 import React from "react";
-import { DesktopFile } from "../../../types";
+import { DesktopFile, FileStoreState } from "../../../types";
 
 export function getCloseClickHandler({
   files,
@@ -7,7 +7,7 @@ export function getCloseClickHandler({
   fileId,
 }: {
   files: DesktopFile[];
-  setFiles: React.Dispatch<React.SetStateAction<DesktopFile[]>>;
+  setFiles: FileStoreState["setFiles"];
   fileId: string;
 }): React.MouseEventHandler<any> {
   return (event) => {

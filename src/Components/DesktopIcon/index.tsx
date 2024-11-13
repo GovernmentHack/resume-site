@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import {
   DragSourceMonitor,
   DropTargetMonitor,
@@ -6,7 +6,6 @@ import {
   useDrag,
   useDrop,
 } from "react-dnd";
-import { FileContext } from "../../App";
 import { DesktopFile, FileDragItem } from "../../types";
 import { DRAG_TYPE, disableDragging } from "../shared/constants";
 import { getIconClickHandler } from "./getIconClickHandler";
@@ -18,6 +17,7 @@ import { IconText } from "./IconText";
 import { IconImage } from "./IconImage";
 import { IconContainer } from "./IconContainer";
 import { getFolderDropHandler } from "../shared/handlers/folderDropHandler";
+import { useFileStore } from "../../fileStore";
 
 export const ICON_HIGHLIGHTED_BOX_SHADOW =
   "inset 0 0 0 10000px rgba(1, 1, 122,.5), 0px 0px 1px 4px rgba(1, 1, 122,.5)";
@@ -41,7 +41,7 @@ const DesktopIcon: React.FunctionComponent<DesktopIconProps> = ({
   textIsEditing,
   directory,
 }) => {
-  const { files, setFiles, setLoading } = useContext(FileContext);
+  const { files, setFiles, setLoading } = useFileStore();
   const [tempFileName, setTempFileName] = useState(fileName);
   const [{ isDragging }, drag] = useDrag<
     FileDragItem,

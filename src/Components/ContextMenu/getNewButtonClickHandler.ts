@@ -1,11 +1,11 @@
 import React from "react";
 import { FILE_ICON, FILE_TYPE } from "../shared/constants";
 import { generateNewWindowLocation } from "../shared/handlers/generateNewWindowLocation";
-import { DesktopFile, Folder, TextFile } from "../../types";
+import { DesktopFile, FileStoreState, Folder, TextFile } from "../../types";
 import { v4 as uuidv4 } from "uuid";
 
 export type newItemClickHandlerProps = {
-  setFiles: React.Dispatch<React.SetStateAction<DesktopFile[]>>;
+  setFiles: FileStoreState["setFiles"];
   files: DesktopFile[];
   closeModals: () => void;
   location: DesktopFile["location"];

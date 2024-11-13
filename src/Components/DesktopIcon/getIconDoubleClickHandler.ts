@@ -1,4 +1,4 @@
-import { DesktopFile } from "../../types";
+import { DesktopFile, FileStoreState } from "../../types";
 
 export function getIconDoubleClickHandler({
   files,
@@ -7,8 +7,8 @@ export function getIconDoubleClickHandler({
   fileId,
 }: {
   files: DesktopFile[];
-  setFiles: React.Dispatch<React.SetStateAction<DesktopFile[]>>;
-  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setFiles: FileStoreState["setFiles"];
+  setLoading: FileStoreState["setLoading"];
   fileId: string;
 }): React.MouseEventHandler<HTMLDivElement> {
   return (event) => {

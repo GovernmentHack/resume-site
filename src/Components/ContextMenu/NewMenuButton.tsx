@@ -1,15 +1,15 @@
-import React, { useContext } from "react";
+import React from "react";
 import Modal from "react-modal";
 import { ContextMenuButton } from "../shared/ContextMenuButton";
 import { ContextMenuDivider } from "../shared/ContextMenuDivider";
 import { NewFolderButtonIcon } from "../shared/icons/NewFolderButtonIcon";
 import { NewTextDocumentIcon } from "../shared/icons/NewTextDocumentIcon";
-import { FileContext } from "../../App";
 import { getContextMenuModalStyle } from "../shared/handlers/getContextMenuModalStyle";
 import { XYCoord } from "react-dnd";
 import { DesktopFile } from "../../types";
 import { getNewButtonClickHandler } from "./getNewButtonClickHandler";
 import { FILE_TYPE } from "../shared/constants";
+import { useFileStore } from "../../fileStore";
 
 type NewButtonProps = {
   windowContextMenuLocation: XYCoord;
@@ -22,7 +22,7 @@ export const NewMenuButton: React.FunctionComponent<NewButtonProps> = ({
   setWindowContextMenuIsOpen,
   fileId,
 }) => {
-  const { files, setFiles } = useContext(FileContext);
+  const { files, setFiles } = useFileStore();
   const [windowNewMenuIsOpen, setWindowNewMenuIsOpen] = React.useState(false);
   return (
     <ContextMenuButton

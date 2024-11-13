@@ -2,8 +2,8 @@ import { vi } from "vitest";
 import { render, fireEvent } from "@testing-library/react";
 import React from "react";
 import { getMockTextFile, getMockFolder, getMockShortcut } from "../testUtils";
-import { FileContext } from "../App";
 import Desktop, { DRAG_OFFSET_FIX } from "./Desktop";
+import { useFileStore } from "../fileStore";
 
 const mocks = vi.hoisted(() => {
   return {
@@ -35,84 +35,30 @@ describe("Desktop", () => {
 
   describe("renders", () => {
     it("with no files", () => {
-      const { getByTestId } = render(
-        <FileContext.Provider
-          value={{
-            files: [],
-            setFiles: vi.fn(),
-            loading: false,
-            setLoading: vi.fn(),
-          }}
-        >
-          <Desktop />
-        </FileContext.Provider>,
-      );
+      const { getByTestId } = render(<Desktop />);
 
       expect(getByTestId("desktop")).toBeDefined();
     });
 
     it("with textFiles", () => {
-      const { getByTestId } = render(
-        <FileContext.Provider
-          value={{
-            files: [mockTextFile],
-            setFiles: vi.fn(),
-            loading: false,
-            setLoading: vi.fn(),
-          }}
-        >
-          <Desktop />
-        </FileContext.Provider>,
-      );
+      const { getByTestId } = render(<Desktop />);
       expect(getByTestId("desktop")).toBeDefined();
     });
 
     it("with folders", () => {
-      const { getByTestId } = render(
-        <FileContext.Provider
-          value={{
-            files: [mockFolder],
-            setFiles: vi.fn(),
-            loading: false,
-            setLoading: vi.fn(),
-          }}
-        >
-          <Desktop />
-        </FileContext.Provider>,
-      );
+      const { getByTestId } = render(<Desktop />);
       expect(getByTestId("desktop")).toBeDefined();
     });
 
     it("with shortcuts", () => {
-      const { getByTestId } = render(
-        <FileContext.Provider
-          value={{
-            files: [mockShortcut],
-            setFiles: vi.fn(),
-            loading: false,
-            setLoading: vi.fn(),
-          }}
-        >
-          <Desktop />
-        </FileContext.Provider>,
-      );
+      const { getByTestId } = render(<Desktop />);
       expect(getByTestId("desktop")).toBeDefined();
     });
 
     it("with the drag and drop config", () => {
       const mockSetFiles = vi.fn();
-      render(
-        <FileContext.Provider
-          value={{
-            files: [mockShortcut],
-            setFiles: mockSetFiles,
-            loading: false,
-            setLoading: vi.fn(),
-          }}
-        >
-          <Desktop />
-        </FileContext.Provider>,
-      );
+      useFileStore.setState({ files: [mockShortcut], setFiles: mockSetFiles });
+      render(<Desktop />);
 
       const dndFactory = mocks.useDrop.mock.calls[0][0];
       const dndHandlers = dndFactory();
@@ -153,18 +99,11 @@ describe("Desktop", () => {
 
   describe("file icons", () => {
     it("renders file icons if the file.directory is null", () => {
-      const { getByTestId } = render(
-        <FileContext.Provider
-          value={{
-            files: [mockTextFile, mockFolder, mockShortcut],
-            setFiles: vi.fn(),
-            loading: false,
-            setLoading: vi.fn(),
-          }}
-        >
-          <Desktop />
-        </FileContext.Provider>,
-      );
+      useFileStore.setState({
+        files: [mockFolder, mockShortcut, mockTextFile],
+      });
+
+      const { getByTestId } = render(<Desktop />);
       expect(getByTestId("desktop")).toBeDefined();
       expect(getByTestId(`${mockTextFile.fileId}_file_icon`)).toBeDefined();
       expect(getByTestId(`${mockFolder.fileId}_file_icon`)).toBeDefined();
@@ -175,18 +114,11 @@ describe("Desktop", () => {
       const nestedFolder = { ...mockFolder, directory: "some_id" };
       const nestedShortcut = { ...mockShortcut, directory: "some_id" };
 
-      const { getByTestId } = render(
-        <FileContext.Provider
-          value={{
-            files: [nestedFile, nestedFolder, nestedShortcut],
-            setFiles: vi.fn(),
-            loading: false,
-            setLoading: vi.fn(),
-          }}
-        >
-          <Desktop />
-        </FileContext.Provider>,
-      );
+      useFileStore.setState({
+        files: [nestedFolder, nestedShortcut, nestedFile],
+      });
+
+      const { getByTestId } = render(<Desktop />);
       expect(getByTestId("desktop")).toBeDefined();
       expect(() =>
         getByTestId(`${nestedFile.fileId}_file_icon`),
@@ -205,18 +137,9 @@ describe("Desktop", () => {
       const openFile = { ...mockTextFile, isOpen: true };
       const openFolder = { ...mockFolder, isOpen: true };
 
-      const { getByTestId } = render(
-        <FileContext.Provider
-          value={{
-            files: [openFile, openFolder],
-            setFiles: vi.fn(),
-            loading: false,
-            setLoading: vi.fn(),
-          }}
-        >
-          <Desktop />
-        </FileContext.Provider>,
-      );
+      useFileStore.setState({ files: [openFile, openFolder] });
+
+      const { getByTestId } = render(<Desktop />);
       expect(getByTestId("desktop")).toBeDefined();
       expect(
         getByTestId(`${openFile.fileId}_textfile_window_container`),
@@ -228,18 +151,7 @@ describe("Desktop", () => {
   });
 
   it("renders the window context menu on right click", () => {
-    const { getByTestId } = render(
-      <FileContext.Provider
-        value={{
-          files: [],
-          setFiles: vi.fn(),
-          loading: false,
-          setLoading: vi.fn(),
-        }}
-      >
-        <Desktop />
-      </FileContext.Provider>,
-    );
+    const { getByTestId } = render(<Desktop />);
 
     const desktop = getByTestId("desktop");
     fireEvent.contextMenu(desktop);

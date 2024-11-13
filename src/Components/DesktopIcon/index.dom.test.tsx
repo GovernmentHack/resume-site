@@ -7,7 +7,6 @@ import {
   getMockShortcut,
   getMockTextFile,
 } from "../../testUtils";
-import { FileContext } from "../../App";
 
 const mocks = vi.hoisted(() => {
   return {
@@ -52,19 +51,8 @@ describe("DesktopIcon", () => {
     });
 
     it("with the drag and drop config", () => {
-      const mockSetFiles = vi.fn();
-      render(
-        <FileContext.Provider
-          value={{
-            files: [mockShortcut],
-            setFiles: mockSetFiles,
-            loading: false,
-            setLoading: vi.fn(),
-          }}
-        >
-          <DesktopIcon {...mockTextFile} />
-        </FileContext.Provider>,
-      );
+      // const mockSetFiles = vi.fn();
+      render(<DesktopIcon {...mockTextFile} />);
 
       const dndFactory = mocks.useDrag.mock.lastCall[0];
       const dndHandlers = dndFactory();

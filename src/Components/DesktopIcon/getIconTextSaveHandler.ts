@@ -1,4 +1,4 @@
-import { DesktopFile } from "../../types";
+import { DesktopFile, FileStoreState } from "../../types";
 
 export function getIconTextSaveHandler({
   files,
@@ -7,7 +7,7 @@ export function getIconTextSaveHandler({
   newFileName,
 }: {
   files: DesktopFile[];
-  setFiles: React.Dispatch<React.SetStateAction<DesktopFile[]>>;
+  setFiles: FileStoreState["setFiles"];
   fileId: string;
   newFileName: string;
 }): React.KeyboardEventHandler<HTMLInputElement> {

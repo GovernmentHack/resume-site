@@ -1,14 +1,14 @@
-import React, { useContext } from "react";
+import React from "react";
 import { DropTargetMonitor, XYCoord, useDrop } from "react-dnd";
 import { DRAG_TYPE } from "./shared/constants";
 import styled from "styled-components";
-import { FileContext } from "../App";
 import DesktopIcon from "./DesktopIcon";
 import TextFileWindow from "./TextFileWindow";
 import { DesktopFile, FileDragItem } from "../types";
 import FolderWindow from "./FolderWindow";
 import { getWindowClickHandler } from "./shared/handlers/getWindowClickHandler";
 import { ContextMenu } from "./ContextMenu";
+import { useFileStore } from "../fileStore";
 
 export const DRAG_OFFSET_FIX = 17;
 export const INITIAL_WINDOW_LOCATION = { x: 24, y: 24 };
@@ -19,7 +19,7 @@ const DesktopDiv = styled.div`
 `;
 
 const Desktop: React.FunctionComponent = () => {
-  const { files, setFiles } = useContext(FileContext);
+  const { files, setFiles } = useFileStore();
   const [, drop] = useDrop<
     FileDragItem,
     unknown,

@@ -1,5 +1,5 @@
 import React from "react";
-import { DesktopFile } from "../../../types";
+import { DesktopFile, FileStoreState } from "../../../types";
 
 export function getMinimizeClickHandler({
   files,
@@ -8,7 +8,7 @@ export function getMinimizeClickHandler({
   shouldToggle = false,
 }: {
   files: DesktopFile[];
-  setFiles: React.Dispatch<React.SetStateAction<DesktopFile[]>>;
+  setFiles: FileStoreState["setFiles"];
   fileId: string;
   shouldToggle?: boolean;
 }): React.MouseEventHandler<any> {

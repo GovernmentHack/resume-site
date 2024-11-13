@@ -1,5 +1,5 @@
 import React from "react";
-import { DesktopFile, TextFile } from "../../types";
+import { DesktopFile, FileStoreState, TextFile } from "../../types";
 
 export function getSaveFileClickHandler({
   files,
@@ -9,7 +9,7 @@ export function getSaveFileClickHandler({
   newContent,
 }: {
   files: DesktopFile[];
-  setFiles: React.Dispatch<React.SetStateAction<DesktopFile[]>>;
+  setFiles: FileStoreState["setFiles"];
   fileId: string;
   closeMenu: () => void;
   newContent: string;

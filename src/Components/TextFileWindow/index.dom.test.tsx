@@ -1,7 +1,6 @@
 import { vi } from "vitest";
 import { render, fireEvent } from "@testing-library/react";
 import React from "react";
-import { FileContext } from "../../App";
 import TextFileDesktopWindow from ".";
 import { getMockTextFile } from "../../testUtils";
 import { DRAG_TYPE } from "../shared/constants";
@@ -32,23 +31,14 @@ describe("TextFileWindow", () => {
 
   it("renders", () => {
     const { getByTestId } = render(
-      <FileContext.Provider
-        value={{
-          files: [mockTextFile],
-          setFiles: vi.fn(),
-          loading: false,
-          setLoading: vi.fn(),
-        }}
-      >
-        <TextFileDesktopWindow
-          fileId={mockTextFile.fileId}
-          fileName={mockTextFile.fileName}
-          windowLocation={mockTextFile.windowLocation}
-          windowIsFocused={mockTextFile.windowIsFocused}
-          content={mockTextFile.content}
-          isEditable={mockTextFile.isEditable}
-        />
-      </FileContext.Provider>,
+      <TextFileDesktopWindow
+        fileId={mockTextFile.fileId}
+        fileName={mockTextFile.fileName}
+        windowLocation={mockTextFile.windowLocation}
+        windowIsFocused={mockTextFile.windowIsFocused}
+        content={mockTextFile.content}
+        isEditable={mockTextFile.isEditable}
+      />,
     );
 
     expect(
@@ -58,23 +48,14 @@ describe("TextFileWindow", () => {
 
   it("renders header text based on filename", () => {
     const { getByTestId } = render(
-      <FileContext.Provider
-        value={{
-          files: [mockTextFile],
-          setFiles: vi.fn(),
-          loading: false,
-          setLoading: vi.fn(),
-        }}
-      >
-        <TextFileDesktopWindow
-          fileId={mockTextFile.fileId}
-          fileName={mockTextFile.fileName}
-          windowLocation={mockTextFile.windowLocation}
-          windowIsFocused={mockTextFile.windowIsFocused}
-          content={mockTextFile.content}
-          isEditable={mockTextFile.isEditable}
-        />
-      </FileContext.Provider>,
+      <TextFileDesktopWindow
+        fileId={mockTextFile.fileId}
+        fileName={mockTextFile.fileName}
+        windowLocation={mockTextFile.windowLocation}
+        windowIsFocused={mockTextFile.windowIsFocused}
+        content={mockTextFile.content}
+        isEditable={mockTextFile.isEditable}
+      />,
     );
 
     expect(
@@ -84,23 +65,14 @@ describe("TextFileWindow", () => {
   });
   it("opens file menu on file click", async () => {
     const { getByTestId, getByText } = render(
-      <FileContext.Provider
-        value={{
-          files: [mockTextFile],
-          setFiles: vi.fn(),
-          loading: false,
-          setLoading: vi.fn(),
-        }}
-      >
-        <TextFileDesktopWindow
-          fileId={mockTextFile.fileId}
-          fileName={mockTextFile.fileName}
-          windowLocation={mockTextFile.windowLocation}
-          windowIsFocused={mockTextFile.windowIsFocused}
-          content={mockTextFile.content}
-          isEditable={mockTextFile.isEditable}
-        />
-      </FileContext.Provider>,
+      <TextFileDesktopWindow
+        fileId={mockTextFile.fileId}
+        fileName={mockTextFile.fileName}
+        windowLocation={mockTextFile.windowLocation}
+        windowIsFocused={mockTextFile.windowIsFocused}
+        content={mockTextFile.content}
+        isEditable={mockTextFile.isEditable}
+      />,
     );
 
     fireEvent.click(getByTestId("textfile_window_file_toolbar_button"));
@@ -109,25 +81,16 @@ describe("TextFileWindow", () => {
   });
 
   it("renders with the drag and drop config", () => {
-    const mockSetFiles = vi.fn();
+    // const mockSetFiles = vi.fn();
     render(
-      <FileContext.Provider
-        value={{
-          files: [mockTextFile],
-          setFiles: mockSetFiles,
-          loading: false,
-          setLoading: vi.fn(),
-        }}
-      >
-        <TextFileDesktopWindow
-          fileId={mockTextFile.fileId}
-          fileName={mockTextFile.fileName}
-          windowLocation={mockTextFile.windowLocation}
-          windowIsFocused={mockTextFile.windowIsFocused}
-          content={mockTextFile.content}
-          isEditable={mockTextFile.isEditable}
-        />
-      </FileContext.Provider>,
+      <TextFileDesktopWindow
+        fileId={mockTextFile.fileId}
+        fileName={mockTextFile.fileName}
+        windowLocation={mockTextFile.windowLocation}
+        windowIsFocused={mockTextFile.windowIsFocused}
+        content={mockTextFile.content}
+        isEditable={mockTextFile.isEditable}
+      />,
     );
 
     const dndFactory = mocks.useDrag.mock.lastCall[0];

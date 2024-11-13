@@ -1,9 +1,15 @@
-import { DesktopFile, FileDragItem, Folder, TextFile } from "../../../types";
+import {
+  DesktopFile,
+  FileDragItem,
+  FileStoreState,
+  Folder,
+  TextFile,
+} from "../../../types";
 import { DropTargetHookSpec, DropTargetMonitor, XYCoord } from "react-dnd";
 
 type GetFolderDropHandlerParams = {
   files: DesktopFile[];
-  setFiles: React.Dispatch<React.SetStateAction<DesktopFile[]>>;
+  setFiles: FileStoreState["setFiles"];
   targetFileId: string;
   windowLocation?: TextFile["windowLocation"] | Folder["windowLocation"];
 };

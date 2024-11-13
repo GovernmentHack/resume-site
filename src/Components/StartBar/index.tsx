@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
+import React from "react";
 import styled from "styled-components";
 import { WindowButton } from "./WindowButton";
 import { ContextMenuVerticalDivider } from "../shared/ContextMenuVerticalDivider";
 import { Folder, TextFile } from "../../types";
-import { FileContext } from "../../App";
+import { useFileStore } from "../../fileStore";
 
 const Bar = styled.div`
   background-color: silver;
@@ -57,7 +57,7 @@ const StartButtonIcon = styled.div`
 `;
 
 const StartBar: React.FunctionComponent<{}> = () => {
-  const { files } = useContext(FileContext);
+  const { files } = useFileStore();
   const sortedOpenFiles = files
     .filter((file) => file.isOpen || file.isMinimized) // inherently casts type to TextFile | Folder, but TS isn't picking up on that
     .sort((fileA, fileB) => fileA.fileId.localeCompare(fileB.fileId)) as (

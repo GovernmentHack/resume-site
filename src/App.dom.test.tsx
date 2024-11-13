@@ -18,7 +18,9 @@ const mocks = vi.hoisted(() => {
 
 vi.mock("uuid", () => {
   return {
-    v4: mocks.v4,
+    v4: mocks.v4
+      .mockReturnValueOnce("mock_id")
+      .mockReturnValueOnce("mock_other_id"),
   };
 });
 
@@ -56,9 +58,6 @@ describe("App", () => {
     mocks.DndProvider.mockImplementation(
       ({ children }: { children: ReactNode }) => <div>{children}</div>,
     );
-    mocks.v4
-      .mockReturnValueOnce("mock_id")
-      .mockReturnValueOnce("mock_other_id");
     window.open = vi.fn().mockReturnValue(window);
     window.focus = vi.fn().mockReturnValue(window);
   });

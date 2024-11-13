@@ -1,5 +1,4 @@
-import React, { useContext, useState } from "react";
-import { FileContext } from "../../App";
+import React, { useState } from "react";
 import { FileDragItem, Folder } from "../../types";
 import {
   DragSourceMonitor,
@@ -27,6 +26,7 @@ import { FolderExplorerIcon } from "../shared/icons/FolderExplorerIcon";
 import { getCloseClickHandler } from "../shared/handlers/closeClickHandler";
 import { getFolderDropHandler } from "../shared/handlers/folderDropHandler";
 import { getMinimizeClickHandler } from "../shared/handlers/minimizeClickHandler";
+import { useFileStore } from "../../fileStore";
 
 type FolderWindowProps = Pick<
   Folder,
@@ -43,7 +43,7 @@ const FolderWindow: React.FunctionComponent<FolderWindowProps> = ({
   windowLocation,
   windowIsFocused,
 }) => {
-  const { files, setFiles } = useContext(FileContext);
+  const { files, setFiles } = useFileStore();
   const [fileMenuIsOpen, setFileMenuIsOpen] = useState(false);
   const [windowContextMenuIsOpen, setWindowContextMenuIsOpen] =
     React.useState(false);

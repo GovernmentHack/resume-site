@@ -1,5 +1,4 @@
-import React, { useContext, useState } from "react";
-import { FileContext } from "../../App";
+import React, { useState } from "react";
 import { FileDragItem, TextFile } from "../../types";
 import { DragSourceMonitor, useDrag } from "react-dnd";
 import { DRAG_TYPE, disableDragging } from "../shared/constants";
@@ -17,6 +16,7 @@ import { Header } from "../shared/Header";
 import { NotepadIcon } from "../shared/icons/NotepadIcon";
 import { getCloseClickHandler } from "../shared/handlers/closeClickHandler";
 import { getMinimizeClickHandler } from "../shared/handlers/minimizeClickHandler";
+import { useFileStore } from "../../fileStore";
 
 type TextFileWindowProps = Pick<
   TextFile,
@@ -40,7 +40,7 @@ const TextFileDesktopWindow: React.FunctionComponent<TextFileWindowProps> = ({
   content,
   isEditable,
 }) => {
-  const { files, setFiles } = useContext(FileContext);
+  const { files, setFiles } = useFileStore();
   const [fileMenuIsOpen, setFileMenuIsOpen] = useState(false);
   const [tempTextContent, setTempTextContent] = useState(content);
   const [{ isDragging }, drag] = useDrag<

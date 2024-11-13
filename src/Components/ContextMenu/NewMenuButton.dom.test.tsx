@@ -1,7 +1,6 @@
 import { vi } from "vitest";
 import { render, fireEvent } from "@testing-library/react";
 import React from "react";
-import { FileContext } from "../../App";
 import { NewMenuButton } from "./NewMenuButton";
 import * as clickHandlerModule from "./getNewButtonClickHandler";
 
@@ -19,20 +18,11 @@ describe("NewMenuButton", () => {
 
   it("renders", () => {
     const { getByTestId } = render(
-      <FileContext.Provider
-        value={{
-          files: [],
-          setFiles: vi.fn(),
-          loading: false,
-          setLoading: vi.fn(),
-        }}
-      >
-        <NewMenuButton
-          fileId={null}
-          windowContextMenuLocation={{ x: 1, y: 1 }}
-          setWindowContextMenuIsOpen={mockSetWindowNewMenuIsOpen}
-        />
-      </FileContext.Provider>,
+      <NewMenuButton
+        fileId={null}
+        windowContextMenuLocation={{ x: 1, y: 1 }}
+        setWindowContextMenuIsOpen={mockSetWindowNewMenuIsOpen}
+      />,
     );
 
     expect(getByTestId("context_menu_new_button")).toBeDefined();
@@ -40,20 +30,11 @@ describe("NewMenuButton", () => {
 
   it("shows the submenu on mouseEnter and hides on mouseLeave", () => {
     const { getByTestId } = render(
-      <FileContext.Provider
-        value={{
-          files: [],
-          setFiles: vi.fn(),
-          loading: false,
-          setLoading: vi.fn(),
-        }}
-      >
-        <NewMenuButton
-          fileId={null}
-          windowContextMenuLocation={{ x: 1, y: 1 }}
-          setWindowContextMenuIsOpen={mockSetWindowNewMenuIsOpen}
-        />
-      </FileContext.Provider>,
+      <NewMenuButton
+        fileId={null}
+        windowContextMenuLocation={{ x: 1, y: 1 }}
+        setWindowContextMenuIsOpen={mockSetWindowNewMenuIsOpen}
+      />,
     );
 
     const newMenuButton = getByTestId("context_menu_new_button");
@@ -72,20 +53,11 @@ describe("NewMenuButton", () => {
 
   it("executes the provided click handler when new folder is clicked", () => {
     const { getByTestId } = render(
-      <FileContext.Provider
-        value={{
-          files: [],
-          setFiles: vi.fn(),
-          loading: false,
-          setLoading: vi.fn(),
-        }}
-      >
-        <NewMenuButton
-          fileId={null}
-          windowContextMenuLocation={{ x: 1, y: 1 }}
-          setWindowContextMenuIsOpen={mockSetWindowNewMenuIsOpen}
-        />
-      </FileContext.Provider>,
+      <NewMenuButton
+        fileId={null}
+        windowContextMenuLocation={{ x: 1, y: 1 }}
+        setWindowContextMenuIsOpen={mockSetWindowNewMenuIsOpen}
+      />,
     );
 
     const newMenuButton = getByTestId("context_menu_new_button");
@@ -99,20 +71,11 @@ describe("NewMenuButton", () => {
 
   it("executes the provided click handler when new text file is clicked", () => {
     const { getByTestId } = render(
-      <FileContext.Provider
-        value={{
-          files: [],
-          setFiles: vi.fn(),
-          loading: false,
-          setLoading: vi.fn(),
-        }}
-      >
-        <NewMenuButton
-          fileId={null}
-          windowContextMenuLocation={{ x: 1, y: 1 }}
-          setWindowContextMenuIsOpen={mockSetWindowNewMenuIsOpen}
-        />
-      </FileContext.Provider>,
+      <NewMenuButton
+        fileId={null}
+        windowContextMenuLocation={{ x: 1, y: 1 }}
+        setWindowContextMenuIsOpen={mockSetWindowNewMenuIsOpen}
+      />,
     );
 
     const newMenuButton = getByTestId("context_menu_new_button");

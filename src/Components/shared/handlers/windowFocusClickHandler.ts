@@ -1,4 +1,4 @@
-import { DesktopFile } from "../../../types";
+import { DesktopFile, FileStoreState } from "../../../types";
 
 export function getWindowFocusClickHandler({
   files,
@@ -6,7 +6,7 @@ export function getWindowFocusClickHandler({
   fileId,
 }: {
   files: DesktopFile[];
-  setFiles: React.Dispatch<React.SetStateAction<DesktopFile[]>>;
+  setFiles: FileStoreState["setFiles"];
   fileId: string;
 }) {
   return () => {

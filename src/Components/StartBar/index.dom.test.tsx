@@ -6,8 +6,8 @@ import {
   getMockFolder,
   getMockShortcut,
 } from "../../testUtils";
-import { FileContext } from "../../App";
 import StartBar from ".";
+import { useFileStore } from "../../fileStore";
 
 const mocks = vi.hoisted(() => {
   return {
@@ -38,22 +38,15 @@ describe("StarBar", () => {
   });
 
   it("renders only open start bar window buttons for files that have open windows or that are minimized", () => {
-    const { getByTestId } = render(
-      <FileContext.Provider
-        value={{
-          files: [
-            { ...mockTextFile, isOpen: false, isMinimized: true },
-            mockShortcut,
-            { ...mockFolder, isOpen: true },
-          ],
-          setFiles: vi.fn(),
-          loading: false,
-          setLoading: vi.fn(),
-        }}
-      >
-        <StartBar />
-      </FileContext.Provider>,
-    );
+    useFileStore.setState({
+      files: [
+        { ...mockTextFile, isOpen: false, isMinimized: true },
+        mockShortcut,
+        { ...mockFolder, isOpen: true },
+      ],
+      setFiles: vi.fn(),
+    });
+    const { getByTestId } = render(<StartBar />);
 
     expect(
       getByTestId(`startbar-window-button-${mockFolder.fileId}`),

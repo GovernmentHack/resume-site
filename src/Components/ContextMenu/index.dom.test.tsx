@@ -1,7 +1,6 @@
 import { vi } from "vitest";
 import { render } from "@testing-library/react";
 import React from "react";
-import { FileContext } from "../../App";
 import * as clickHandlerModule from "./getNewButtonClickHandler";
 import { ContextMenu } from ".";
 
@@ -19,21 +18,12 @@ describe("ContextMenu", () => {
 
   it("renders", () => {
     const { getByTestId } = render(
-      <FileContext.Provider
-        value={{
-          files: [],
-          setFiles: vi.fn(),
-          loading: false,
-          setLoading: vi.fn(),
-        }}
-      >
-        <ContextMenu
-          fileId={null}
-          windowContextMenuLocation={{ x: 1, y: 1 }}
-          setWindowContextMenuIsOpen={mockSetWindowNewMenuIsOpen}
-          windowContextMenuIsOpen={true}
-        />
-      </FileContext.Provider>,
+      <ContextMenu
+        fileId={null}
+        windowContextMenuLocation={{ x: 1, y: 1 }}
+        setWindowContextMenuIsOpen={mockSetWindowNewMenuIsOpen}
+        windowContextMenuIsOpen={true}
+      />,
     );
 
     expect(getByTestId("context_menu_new_button")).toBeDefined();

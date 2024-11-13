@@ -1,11 +1,11 @@
-import React, { useContext } from "react";
+import React from "react";
 import styled from "styled-components";
 import { Folder, TextFile } from "../../types";
 import { NotepadIcon } from "../shared/icons/NotepadIcon";
 import { FolderExplorerIcon } from "../shared/icons/FolderExplorerIcon";
-import { FileContext } from "../../App";
 import { getWindowFocusClickHandler } from "../shared/handlers/windowFocusClickHandler";
 import { getMinimizeClickHandler } from "../shared/handlers/minimizeClickHandler";
+import { useFileStore } from "../../fileStore";
 
 const WindowButtonContainer = styled.div<{
   $windowIsFocused?: boolean;
@@ -80,7 +80,7 @@ export const StartMenuFolderExplorerIcon = styled(FolderExplorerIcon)`
 export const WindowButton: React.FunctionComponent<{
   file: TextFile | Folder;
 }> = ({ file }) => {
-  const { files, setFiles } = useContext(FileContext);
+  const { files, setFiles } = useFileStore();
   const focusWindow = getWindowFocusClickHandler({
     files,
     setFiles,

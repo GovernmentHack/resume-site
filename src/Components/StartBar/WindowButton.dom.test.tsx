@@ -3,7 +3,7 @@ import { render, fireEvent } from "@testing-library/react";
 import React from "react";
 import { getMockTextFile, getMockFolder } from "../../testUtils";
 import { WindowButton } from "./WindowButton";
-import { FileContext } from "../../App";
+import { useFileStore } from "../../fileStore";
 
 const mockTextFile = getMockTextFile();
 
@@ -17,18 +17,7 @@ describe("WindowButton", () => {
   });
 
   it("renders proper icon for folders", () => {
-    const { getByTestId } = render(
-      <FileContext.Provider
-        value={{
-          files: [mockTextFile, mockFolder],
-          setFiles: mockSetFiles,
-          loading: false,
-          setLoading: vi.fn(),
-        }}
-      >
-        <WindowButton file={mockFolder} />
-      </FileContext.Provider>,
-    );
+    const { getByTestId } = render(<WindowButton file={mockFolder} />);
 
     const windowButton = getByTestId(
       `startbar-window-button-${mockFolder.fileId}`,
@@ -44,18 +33,7 @@ describe("WindowButton", () => {
   });
 
   it("renders proper icon for textFiles", () => {
-    const { getByTestId } = render(
-      <FileContext.Provider
-        value={{
-          files: [mockTextFile, mockFolder],
-          setFiles: mockSetFiles,
-          loading: false,
-          setLoading: vi.fn(),
-        }}
-      >
-        <WindowButton file={mockTextFile} />
-      </FileContext.Provider>,
-    );
+    const { getByTestId } = render(<WindowButton file={mockTextFile} />);
 
     const windowButton = getByTestId(
       `startbar-window-button-${mockTextFile.fileId}`,
@@ -69,18 +47,12 @@ describe("WindowButton", () => {
   });
 
   it("sets the associated file as focused when clicked", () => {
-    const { getByTestId } = render(
-      <FileContext.Provider
-        value={{
-          files: [mockTextFile, mockFolder],
-          setFiles: mockSetFiles,
-          loading: false,
-          setLoading: vi.fn(),
-        }}
-      >
-        <WindowButton file={mockTextFile} />
-      </FileContext.Provider>,
-    );
+    useFileStore.setState({
+      files: [mockFolder, mockTextFile],
+      setFiles: mockSetFiles,
+    });
+
+    const { getByTestId } = render(<WindowButton file={mockTextFile} />);
 
     const windowButton = getByTestId(
       `startbar-window-button-${mockTextFile.fileId}`,

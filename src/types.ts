@@ -8,6 +8,13 @@ export type FileDragItem = {
   type: DragType;
 };
 
+export type FileStoreState = {
+  files: DesktopFile[];
+  setFiles: (files: DesktopFile[]) => void;
+  loading: boolean;
+  setLoading: (loading: boolean) => void;
+};
+
 export type Shortcut = {
   fileName: string;
   fileId: string;
@@ -24,8 +31,8 @@ export type Shortcut = {
     setLoading,
   }: {
     files: DesktopFile[];
-    setFiles: React.Dispatch<React.SetStateAction<DesktopFile[]>>;
-    setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+    setFiles: FileStoreState["setFiles"];
+    setLoading: FileStoreState["setLoading"];
   }) => void;
   isEditable: boolean;
   type: typeof FILE_TYPE.shortcut;
