@@ -115,7 +115,10 @@ describe("App", () => {
 
     it("with the touch backend if the navigator has maxTouchPoints", () => {
       delete window.ontouchstart;
-      window.navigator = { maxTouchPoints: 4 } as typeof window.navigator;
+      vi.spyOn(window, "navigator", "get").mockReturnValue({
+        ...window.navigator,
+        maxTouchPoints: 4,
+      });
 
       render(<App />);
 
@@ -131,7 +134,10 @@ describe("App", () => {
 
     it("with the html5 backend if ontouchstart is not window", () => {
       delete window.ontouchstart;
-      window.navigator = { maxTouchPoints: 0 } as typeof window.navigator;
+      vi.spyOn(window, "navigator", "get").mockReturnValue({
+        ...window.navigator,
+        maxTouchPoints: 0,
+      });
 
       render(<App />);
 

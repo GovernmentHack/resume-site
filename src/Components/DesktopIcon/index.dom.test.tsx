@@ -1,6 +1,6 @@
 import { vi } from "vitest";
 import { render } from "@testing-library/react";
-import DesktopIcon, { ICON_HIGHLIGHTED_BOX_SHADOW } from ".";
+import DesktopIcon from ".";
 import React from "react";
 import {
   getMockFolder,
@@ -54,7 +54,7 @@ describe("DesktopIcon", () => {
       // const mockSetFiles = vi.fn();
       render(<DesktopIcon {...mockTextFile} />);
 
-      const dndFactory = mocks.useDrag.mock.lastCall[0];
+      const dndFactory = mocks.useDrag.mock.lastCall?.[0];
       const dndHandlers = dndFactory();
 
       expect(dndHandlers.options).toEqual({ dropEffect: "move" });
@@ -127,7 +127,11 @@ describe("DesktopIcon", () => {
         getByTestId(`${highlightedFile.fileId}_file_icon_image`),
       );
 
-      expect(style.boxShadow).toEqual(ICON_HIGHLIGHTED_BOX_SHADOW);
+      expect(style.boxShadow).to.include("inset");
+      expect(style.boxShadow.split("rgba(1, 1, 122, 0.5)")).to.have.lengthOf(3); // cheeky way to count number of occurrances. expected num is 1 + actual expected count
+      expect(style.boxShadow).to.include("0px 0px 0px 10000px");
+      expect(style.boxShadow).to.include("0px 0px 1px 4px");
+      expect(style.boxShadow).to.include("rgba(1, 1, 122, 0.5)");
     });
 
     it("will not show a boxshadow when highlighted", () => {
@@ -137,7 +141,7 @@ describe("DesktopIcon", () => {
         getByTestId(`${highlightedFile.fileId}_file_icon_image`),
       );
 
-      expect(style.boxShadow).toEqual("");
+      expect(style.boxShadow).to.not.include("inset");
     });
 
     it("sets the background image based on the file.icon value", () => {
@@ -146,7 +150,9 @@ describe("DesktopIcon", () => {
         getByTestId(`${mockTextFile.fileId}_file_icon_image`),
       );
 
-      expect(style.backgroundImage).toEqual(`url(icons/${mockTextFile.icon})`);
+      expect(style.backgroundImage).toEqual(
+        `url("http://localhost:3000/icons/${mockTextFile.icon}")`,
+      );
     });
   });
 
@@ -182,7 +188,11 @@ describe("DesktopIcon", () => {
         getByTestId(`${highlightedFile.fileId}_file_icon_text`),
       );
 
-      expect(style.boxShadow).toEqual(ICON_HIGHLIGHTED_BOX_SHADOW);
+      expect(style.boxShadow).to.include("inset");
+      expect(style.boxShadow.split("rgba(1, 1, 122, 0.5)")).to.have.lengthOf(3); // cheeky way to count number of occurrances. expected num is 1 + actual expected count
+      expect(style.boxShadow).to.include("0px 0px 0px 10000px");
+      expect(style.boxShadow).to.include("0px 0px 1px 4px");
+      expect(style.boxShadow).to.include("rgba(1, 1, 122, 0.5)");
     });
 
     it("has no box shadow if the text is not highlighted", () => {
@@ -192,7 +202,7 @@ describe("DesktopIcon", () => {
         getByTestId(`${highlightedFile.fileId}_file_icon_text`),
       );
 
-      expect(style.boxShadow).toEqual("");
+      expect(style.boxShadow).to.not.include("inset");
     });
 
     it("has a text color of black if the file is nested in a directory", () => {

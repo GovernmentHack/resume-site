@@ -4,9 +4,24 @@ export default defineConfig({
   test: {
     globals: true,
     testTimeout: 30_000,
-    environmentMatchGlobs: [
-      ["**/*.dom.test.{ts,tsx}", "jsdom"],
-      ["**/*.test.{ts,tsx}", "node"],
+    projects: [
+      {
+        extends: true,
+        test: {
+          name: "dom",
+          include: ["src/**/*.dom.test.{ts,tsx}"],
+          environment: "jsdom",
+        },
+      },
+      {
+        extends: true,
+        test: {
+          name: "node",
+          include: ["src/**/*.test.{ts,tsx}"],
+          exclude: ["src/**/*.dom.test.{ts,tsx}"],
+          environment: "node",
+        },
+      },
     ],
     coverage: {
       ...configDefaults.coverage,

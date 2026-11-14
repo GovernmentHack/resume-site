@@ -25,8 +25,7 @@ type GithubDirectoryDescriptor = {
 };
 
 type GithubContentApiResult = (
-  | GithubFileDescriptor
-  | GithubDirectoryDescriptor
+  GithubFileDescriptor | GithubDirectoryDescriptor
 )[];
 
 async function getGithubDirectoryContents(
@@ -40,7 +39,7 @@ async function getGithubDirectoryContents(
       return result.data;
     }
     return null;
-  } catch (error) {
+  } catch {
     console.error("Unable to fetch resume directory contents from Github :(");
     return null;
   }
@@ -53,7 +52,7 @@ async function getGithubRawFile(downloadUrl: string): Promise<string | null> {
       return result.data;
     }
     return null;
-  } catch (error) {
+  } catch {
     console.error("Unable to fetch resume file from Github :(");
     return null;
   }

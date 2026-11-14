@@ -61,8 +61,7 @@ const StartBar: React.FunctionComponent<{}> = () => {
   const sortedOpenFiles = files
     .filter((file) => file.isOpen || file.isMinimized) // inherently casts type to TextFile | Folder, but TS isn't picking up on that
     .sort((fileA, fileB) => fileA.fileId.localeCompare(fileB.fileId)) as (
-    | TextFile
-    | Folder
+    TextFile | Folder
   )[];
   return (
     <Bar>

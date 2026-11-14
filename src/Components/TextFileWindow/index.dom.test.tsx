@@ -93,7 +93,7 @@ describe("TextFileWindow", () => {
       />,
     );
 
-    const dndFactory = mocks.useDrag.mock.lastCall[0];
+    const dndFactory = mocks.useDrag.mock.lastCall?.[0];
     const dndHandlers = dndFactory();
 
     expect(dndHandlers.type).toEqual(DRAG_TYPE.window);

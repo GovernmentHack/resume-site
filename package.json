@@ -10,15 +10,10 @@
     "coverage-badge:generate": "node generate-badge.js",
     "coverage-badge:update": "npm run test:coverage && npm run coverage-badge:generate && (git commit lines.svg -m 'update test coverage badge' && git push) || echo 'No test coverage changes to update'",
     "build": "webpack --mode production",
+    "lint": "eslint 'src/**/*.{ts,tsx}'",
     "lint:fix": "eslint 'src/**/*.{ts,tsx}' --fix",
     "predeploy": "npm run coverage-badge:update && npm run build",
     "deploy": "echo grant.apodaca.pro > ./dist/CNAME && gh-pages -d dist"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
   },
   "browserslist": {
     "production": [
@@ -33,49 +28,54 @@
     ]
   },
   "dependencies": {
-    "axios": "^1.7.7",
-    "react": "18.2.0",
+    "axios": "^1.21.1",
+    "react": "18.3.1",
     "react-dnd": "16.0.1",
     "react-dnd-html5-backend": "16.0.1",
     "react-dnd-touch-backend": "16.0.1",
-    "react-dom": "18.2.0",
-    "react-modal": "3.16.1",
-    "uuid": "9.0.1",
-    "zustand": "^5.0.1"
+    "react-dom": "18.3.1",
+    "react-modal": "3.16.3",
+    "uuid": "14.0.3",
+    "zustand": "^5.1.0"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "5.17.0",
-    "@testing-library/react": "13.4.0",
-    "@testing-library/user-event": "13.5.0",
-    "@types/node": "^20.0.0",
-    "@types/react": "18.2.31",
-    "@types/react-dom": "18.2.14",
-    "@types/react-modal": "3.16.2",
-    "@types/uuid": "9.0.6",
-    "@typescript-eslint/eslint-plugin": "6.9.0",
-    "@typescript-eslint/parser": "6.9.0",
-    "@vitest/coverage-v8": "^1.5.0",
-    "@vitest/ui": "^1.5.0",
-    "badge-maker": "^3.3.1",
-    "copy-webpack-plugin": "11.0.0",
-    "css-loader": "^6.8.1",
-    "eslint": "^8.57.0",
-    "eslint-config-prettier": "8.5.0",
-    "eslint-plugin-import": "2.26.0",
-    "eslint-plugin-jest": "27.4.3",
-    "eslint-plugin-prettier": "5.0.0",
-    "gh-pages": "6.0.0",
-    "html-webpack-plugin": "5.5.3",
-    "jsdom": "^24.0.0",
-    "prettier": "3.0.3",
-    "style-loader": "^3.3.3",
-    "styled-components": "6.1.0",
-    "ts-loader": "^9.5.0",
-    "ts-node": "^10.9.1",
-    "typescript": "^4.9.5",
-    "vitest": "^1.5.0",
-    "webpack": "^5.89.0",
-    "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^4.15.1"
+    "@testing-library/jest-dom": "7.0.1",
+    "@testing-library/react": "16.3.3",
+    "@testing-library/user-event": "14.6.10",
+    "@types/node": "^24.19.2",
+    "@types/react": "18.3.31",
+    "@types/react-dom": "18.3.7",
+    "@types/react-modal": "3.16.3",
+    "@typescript-eslint/eslint-plugin": "^8.72.2",
+    "@typescript-eslint/parser": "^8.72.2",
+    "@vitest/coverage-v8": "5.1.0",
+    "@vitest/ui": "5.1.0",
+    "badge-maker": "6.0.0",
+    "copy-webpack-plugin": "14.0.0",
+    "css-loader": "^7.1.5",
+    "eslint": "9.39.5",
+    "eslint-config-prettier": "10.1.8",
+    "eslint-plugin-import": "2.32.0",
+    "eslint-plugin-jest": "^28.14.0",
+    "eslint-plugin-prettier": "5.5.7",
+    "gh-pages": "6.3.0",
+    "globals": "14.0.0",
+    "html-webpack-plugin": "5.6.8",
+    "jsdom": "31.0.0",
+    "prettier": "3.10.0",
+    "style-loader": "4.0.0",
+    "styled-components": "6.6.0",
+    "ts-loader": "9.6.2",
+    "ts-node": "10.9.2",
+    "typescript": "6.0.3",
+    "vitest": "5.1.0",
+    "webpack": "5.112.2",
+    "webpack-cli": "7.3.1",
+    "webpack-dev-server": "6.1.0"
+  },
+  "overrides": {
+    "@typescript-eslint/typescript-estree": {
+      "minimatch": "11.0.1"
+    }
   }
 }
